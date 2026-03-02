@@ -24,3 +24,8 @@
 ## 5. 零成本環境模擬 (Zero-cost Emulation)
 * **O(1) In-place Restructuring**: `post-build-live.ts` 利用檔案系統的 `rename` 原子操作，在不增加磁碟寫入負擔的情況下，於 `dist` 目錄內模擬物理子目錄結構。
 * **SPA Fallback**: 自動生成 `serve.json` 覆寫規則，確保在本地模擬環境下重新整理頁面不會發生 404。
+
+## 27. 現代化物件屬性校驗 (Modern Property Validation)
+- **屬性檢查標準**: 統一使用 `Object.hasOwn()` 替代舊有的 `hasOwnProperty` 模式。
+- **安全性原則**: 在進行動態索引存取 (Index Access) 前，必須透過 `hasOwn` 進行自有屬性驗證，杜絕原型鏈污染 (Prototype Pollution) 風險。
+- **類型降級與轉換**: 透過驗證後的字串應使用 `as TPageKey` 進行類型收窄，確保配置存取的型別安全性。

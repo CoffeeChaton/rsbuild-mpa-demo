@@ -50,23 +50,39 @@ export default defineConfig({
     define: {
       // 修正：動態注入前端，不再寫死字串
       'process.env.ASSET_PREFIX': JSON.stringify(assetPrefix),
-    }
+    },
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
   },
   output: {
-    assetPrefix: assetPrefix,
-    distPath: { root: 'dist', js: 'static/js', css: 'static/css' },
-    // 強制檔名範本，確保 [name] 不為空
+    distPath: {
+      root: 'dist',
+      js: 'static/js',      // 這裡已經定義了 JS 的資料夾
+      css: 'static/css',    // 這裡已經定義了 CSS 的資料夾
+      //  async: 'async',       // 非同步 Chunk 放在 static/js/async
+    },
     filename: {
-      // 這是最穩定的寫法：確保即使 entry 是空字串，檔名也會叫 index
       js: (pathData) => {
-        const name = pathData.chunk?.name || 'index';
-        return `static/js/${name}.[contenthash:8].js`;
+        // 如果是主入口 (Entry)
+        if (pathData.chunk?.name !== undefined) {
+          // 如果名稱是空字串 (根路徑)，強制改名為 index
+          const name = pathData.chunk.name === '' ? 'index' : pathData.chunk.name;
+          return `${name}.[contenthash:8].js`;
+        }
+        // 如果是非同步分包 (Async Chunk)，使用預設 ID
+        return '[name].[contenthash:8].js';
       },
       css: (pathData) => {
-        const name = pathData.chunk?.name || 'index';
-        return `static/css/${name}.[contenthash:8].css`;
+        if (pathData.chunk?.name !== undefined) {
+          const name = pathData.chunk.name === '' ? 'index' : pathData.chunk.name;
+          return `${name}.[contenthash:8].css`;
+        }
+        return '[name].[contenthash:8].css';
       },
     },
+    // 確保非同步加載的路徑也是相對 assetPrefix 計算的
+    assetPrefix: assetPrefix,
     cleanDistPath: true,
   },
   html: {

@@ -8,12 +8,14 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "rsbuild build && tsx scripts/ssg.ts",
+    "prebuild": "rimraf dist",
+    "build": "pnpm run prebuild && pnpm rsbuild build && tsx scripts/ssg.ts",
     "build:live": "pnpm build && tsx scripts/post-build-live.ts && pnpm dlx serve dist",
     "dev": "rsbuild dev --open",
     "lint": "eslint .",
     "toAI": "pnpm dlx repomix",
-    "preview": "rsbuild preview"
+    "preview": "rsbuild preview",
+    "watch:tsc": "tsc -watch"
   },
   "dependencies": {
     "react": "^19.2.3",
@@ -33,6 +35,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "rimraf": "^6.1.3",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0"
