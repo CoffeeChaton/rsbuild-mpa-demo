@@ -40,43 +40,795 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
-App.tsx
-main.tsx
+.github/workflows/deploy.yml
+.gitignore
+AGENTS.md
+ARCHITECTURE.md
+DEVELOPMENT.md
+eslint.config.mjs
+package.json
+pnpm-workspace.yaml
+postcss.config.mjs
+public/favicon.png
+public/index.html
+README.md
+rsbuild.config.ts
+scripts/ssg.ts
+src/common/config/pages.ts
+src/common/middleware/init.tsx
+src/common/Navbar.tsx
+src/common/styles/global.css
+src/env.d.ts
+src/pages/index/App.tsx
+src/pages/index/HomeView.tsx
+src/pages/index/Layout.tsx
+src/pages/index/main.tsx
+src/pages/products/ProductView.tsx
+tsconfig.json
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path="App.tsx">
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+<file path="src/pages/index/Layout.tsx">
+import { useLocation } from 'react-router-dom';
+import { PAGE_MAP } from '../../common/config/pages';
+import { useEffect } from 'react';
+
+const MetaUpdater = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // 移除開頭斜線並取得第一層路徑作為 Key
+    const pathKey = location.pathname.split('/')[1] || 'index';
+    const config = PAGE_MAP[pathKey] || PAGE_MAP.index;
+    
+    document.title = config.title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc instanceof HTMLMetaElement) {
+      metaDesc.content = config.description;
+    }
+    
+    // 面試加分點：更新 Open Graph 標籤
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle instanceof HTMLMetaElement) ogTitle.content = config.title;
+  }, [location]);
+
+  return null;
+};
+
+export const Layout = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <MetaUpdater />
+    {children}
+  </>
+);
+</file>
+
+<file path=".github/workflows/deploy.yml">
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main] # 當 main 分支有更新時觸發
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Set Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+</file>
+
+<file path=".gitignore">
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+
+# Profile
+.rspack-profile-*/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+</file>
+
+<file path="AGENTS.md">
+# AGENTS.md
+
+You are an expert in JavaScript, Rsbuild, and web application development. You write maintainable, performant, and accessible code.
+
+## Commands
+
+- `pnpm run dev` - Start the dev server
+- `pnpm run build` - Build the app for production
+- `pnpm run preview` - Preview the production build locally
+
+## Docs
+
+- Rsbuild: https://rsbuild.rs/llms.txt
+- Rspack: https://rspack.rs/llms.txt
+
+## Tools
+
+### ESLint
+
+- Run `pnpm run lint` to lint your code
+</file>
+
+<file path="ARCHITECTURE.md">
+# 系統架構與自動化原理
+
+## 1. 自動化 Entry 掃描機制
+系統在 `rsbuild.config.ts` 中透過 `getEntries` 函數動態掃描 `src/pages/` 目錄：
+* **根路徑映射**: `src/pages/index` 被映射為空字串 Entry，產出為 `/index.html`。
+* **物理路徑映射**: 其他資料夾（如 `products`）產出為 `/products/index.html`。
+* **後處理**: 透過自定義插件 `pluginFixPath` 在建置後修正 `404.html` 的物理位置。
+
+## 2. GitHub Pages 路徑適配原理
+為了解決非根目錄託管問題（`https://user.github.io/repo-name/`）：
+* **資產前綴 (Asset Prefix)**: 
+  - 自動從 `package.json` 讀取 `name`。
+  - 生產環境下資源路徑會自動變為 `/repo-name/static/...`。
+* **環境變數注入**: 
+  - 透過 `source.define` 將 `process.env.ASSET_PREFIX` 注入前端。
+  - `Navbar` 與 `React Router` 會讀取此變數來動態計算連結與 `basename`。
+
+* **404 處理機制**：透過 ssg.ts 在建置後自動於根目錄產出 404.html。當使用者訪問不存在的路徑時，GitHub Pages 會加載此檔案，隨後由 React Router 接管並顯示 NotFoundView，達成「偽動態」的 404 體驗。
+
+## 3. MPA + SPA 混合路由策略
+本架構結合了多頁面應用的 SEO 優勢與單頁面應用的流暢體驗：
+* **跨頁導航 (MPA)**: 當導航目標屬於不同 Entry 時，使用 `<a>` 標籤觸發物理跳轉，以更新每個頁面獨立的 SEO Meta 標籤。
+* **頁內導航 (SPA)**: 在同一個 Entry 內部（如產品列表到詳情），利用 React Router 7 的 `Link` 實現無刷新跳轉。
+
+## 4. 單一事實來源 (SSOT)
+`src/common/config/pages.ts` 為全專案的配置核心：
+* **建置期**: Rsbuild 讀取它來產生正確的 HTML `<title>` 與 `<meta name="description">`。
+* **執行期**: `Navbar` 組件讀取它來動態渲染導航選單與處理隱藏屬性。
+
+## 5. 中間層 (Bootstrap Layer)
+`src/common/middleware/init.tsx` 負責處理：
+* **環境識別**: 自動偵測是否有預渲染內容（Hydration vs Rendering）。
+* **全域樣式**: 統一注入 Tailwind CSS。
+* **錯誤邊界**: 提供統一的啟動錯誤捕捉邏輯。
+
+## 6. 混合渲染與優化 (Hybrid Rendering)
+* **Code Splitting**: 採用 `React.lazy` 進行路徑級別的代碼分割。首頁加載時不會下載 `ProductView` 的 JS 資源，顯著提升首屏速度 (LCP)。
+* **Meta 同步機制**: 透過 `MetaUpdater` 組件監聽 `react-router` 狀態，動態同步 `document.title` 與 Meta 標籤。
+* **靜態注入 (Post-build SSG)**: 在建置後透過自研 `ssg.ts` 腳本，將 `PAGE_MAP` 的 SEO 資訊直接寫入實體 HTML，解決純 CSR 初始標題閃爍與搜尋引擎抓取問題。
+</file>
+
+<file path="DEVELOPMENT.md">
+# 開發規範與操作手冊 (2026-03)
+
+## 🚀 快速開始
+* `pnpm dev`: 啟動開發環境 (http://localhost:3000)
+* `pnpm build`: 執行生產環境建置 (輸出至 /dist)
+* `pnpm preview`: 本地預覽生產環境產出（自動模擬 GitHub Pages 路徑）
+
+## 🛠️ 新增頁面標準流程
+1. **建立資料夾**: 在 `src/pages/` 下建立新資料夾（如 `about`）。
+2. **入口文件**: 建立 `main.tsx` 並呼叫 `bootstrap(App)`。
+3. **頁面邏輯**: 建立 `App.tsx`。若需內部路由，必須設定 `basename: getBasename('about')`。
+4. **註冊 Metadata**: 在 `src/common/config/pages.ts` 的 `PAGE_MAP` 增加該頁面的 `title`, `description` 與 `label`。
+
+## ⚠️ 代碼風格約束 (強制)
+* **具名匯出**: 永遠禁止使用 `export default function`。請使用 `export const Component = ...`。
+* **類型安全**: 嚴格禁止使用 `any`。請使用 `unknown` 並配合 `instanceof` 或類型守衛進行檢查。
+* **中間層**: 所有頁面入口必須經由 `src/common/middleware/init.tsx` 進行初始化。
+
+## ❓ 常見問題
+* **Q: 為什麼本地 Live Server 預覽會白屏？**
+  * A: 因為生產環境建置會帶有 `assetPrefix` (repo-name)。請統一使用 `pnpm preview` 進行本地測試。
+* **Q: 如何隱藏導航列中的頁面？**
+  * A: 在 `PAGE_MAP` 中將該頁面的 `hidden` 屬性設為 `true`。
+
+## 🛠️ 新增頁面標準流程 (V2)
+1. **View 建立**: 在 `src/pages/頁面名/` 下建立 `XxxView.tsx` (僅需 UI 組件)。
+2. **路由註冊**: 
+   - 於 `src/pages/index/App.tsx` 使用 `lazy()` 匯入。
+   - 在 `createBrowserRouter` 陣列中新增路由規則。
+3. **Metadata 註冊**: 於 `src/common/config/pages.ts` 加入對應配置。
+4. **自動化執行**: 執行 `pnpm build` 時，`ssg.ts` 會自動掃描並優化該頁面的實體 HTML。
+</file>
+
+<file path="eslint.config.mjs">
+import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat['recommended-latest'],
+      reactRefresh.configs.recommended,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+  },
+]);
+</file>
+
+<file path="pnpm-workspace.yaml">
+onlyBuiltDependencies:
+  - core-js
+  - esbuild
+</file>
+
+<file path="postcss.config.mjs">
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+};
+</file>
+
+<file path="public/index.html">
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+  </head>
+  <body>
+    <div id="root"></div>
+    </body>
+</html>
+</file>
+
+<file path="README.md">
+# Rsbuild project
+
+## Setup
+
+Install the dependencies:
+
+```bash
+pnpm install
+```
+
+## Get started
+
+Start the dev server, and the app will be available at [http://localhost:3000](http://localhost:3000).
+
+```bash
+pnpm run dev
+```
+
+Build the app for production:
+
+```bash
+pnpm run build
+```
+
+Preview the production build locally:
+
+```bash
+pnpm run preview
+```
+
+## Learn more
+
+To learn more about Rsbuild, check out the following resources:
+
+- [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
+- [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
+</file>
+
+<file path="scripts/ssg.ts">
+// scripts/ssg.ts
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { PAGE_MAP } from '../src/common/config/pages';
+
+const DIST_DIR = resolve(process.cwd(), 'dist');
+
+const runSSG = () => {
+  console.log('🚀 Starting Mini-SSG Optimization...');
+
+  // 先讀取主入口作為保底模板
+  const indexTemplatePath = join(DIST_DIR, 'index.html');
+  const indexContent = readFileSync(indexTemplatePath, 'utf-8');
+
+  Object.entries(PAGE_MAP).forEach(([key, info]) => {
+    let htmlPath = key === 'index' 
+      ? indexTemplatePath 
+      : join(DIST_DIR, key, 'index.html');
+
+    // 特殊處理 404：GitHub Pages 需要根目錄下的 404.html
+    if (key === '404') {
+      htmlPath = join(DIST_DIR, '404.html');
+    }
+
+    try {
+      // 如果檔案不存在（例如你沒在 rsbuild 設定該 entry），就用 index.html 複製一份
+      if (!existsSync(htmlPath)) {
+        console.log(`- Creating missing HTML for [${key}] using index template...`);
+        if (key !== '404' && !key.includes('.')) {
+          mkdirSync(join(DIST_DIR, key), { recursive: true });
+        }
+        writeFileSync(htmlPath, indexContent);
+      }
+
+      let content = readFileSync(htmlPath, 'utf-8');
+
+      // 注入 SEO 資訊
+      content = content.replace(/<title>.*?<\/title>/, `<title>${info.title}</title>`);
+      content = content.replace(
+        /<meta name="description" content=".*?" \/>/,
+        `<meta name="description" content="${info.description}" />`
+      );
+
+      writeFileSync(htmlPath, content);
+      console.log(`✅ Optimized: ${htmlPath}`);
+    } catch (e: unknown) {
+      console.error(`❌ Failed to process [${key}]:`, e);
+    }
+  });
+
+  console.log('✨ SSG Optimization Complete.');
+};
+
+runSSG();
+</file>
+
+<file path="src/common/config/pages.ts">
+export interface PageInfo {
+  title: string;
+  description: string;
+  label: string;      // 用於 Navbar 顯示的文字
+  hidden?: boolean;   // 是否在 Navbar 隱藏（例如 404）
+}
+
+export const PAGE_MAP: Record<string, PageInfo> = {
+  index: { 
+    title: '首頁 - 品牌門面', 
+    description: '歡迎來到我們的品牌官網', 
+    label: '首頁' 
+  },
+  products: { 
+    title: '產品清單 - 優質選物', 
+    description: '探索我們精選的產品系列', 
+    label: '產品' 
+  },
+  profile: { 
+    title: '個人中心', 
+    description: '管理您的個人資料與設定', 
+    label: '會員中心' 
+  },
+  '404': { 
+    title: '404 - 找不到頁面', 
+    description: '抱歉，您訪問的頁面不存在', 
+    label: '404', 
+    hidden: true 
+  },
+};
+</file>
+
+<file path="src/common/middleware/init.tsx">
+import '../styles/global.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+export const bootstrap = (App: React.ComponentType): void => {
+  const container: unknown = document.getElementById('root');
+
+  if (!(container instanceof HTMLElement)) {
+    console.error('[Bootstrap] Root element not found');
+    return;
+  }
+
+  // RR7 需要在嚴格模式下執行以獲得最佳 CSR 體驗
+  const content = (
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+
+  if (container.hasChildNodes()) {
+    ReactDOM.hydrateRoot(container, content);
+  } else {
+    ReactDOM.createRoot(container).render(content);
+  }
+};
+</file>
+
+<file path="src/common/styles/global.css">
+@import 'tailwindcss';
+
+:root {
+    --brand-color: #007bff;
+}
+
+body {
+    @apply bg-gray-50 text-gray-900;
+}
+</file>
+
+<file path="src/env.d.ts">
+/// <reference types="@rsbuild/core/types" />
+
+/**
+ * Imports the SVG file as a React component.
+ * @requires [@rsbuild/plugin-svgr](https://npmjs.com/package/@rsbuild/plugin-svgr)
+ */
+declare module '*.svg?react' {
+  import type React from 'react';
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+</file>
+
+<file path="src/pages/index/HomeView.tsx">
+// src/pages/index/HomeView.tsx
 import { Navbar } from '../../common/Navbar';
+
+export const HomeView = () => {
+  return (
+    <>
+      <Navbar />
+      <main className="flex flex-col items-center justify-center min-h-[60vh] p-10">
+        <div className="max-w-2xl text-center">
+          <h1 className="text-5xl font-black text-gray-900 leading-tight">
+            打造極致的 <span className="text-blue-600">MPA + CSR</span> 體驗
+          </h1>
+          <p className="mt-6 text-xl text-gray-600">
+            這是首頁大廳。你可以嘗試點擊導航列，觀察 Network 面板：
+            你會發現 URL 變了，但 **沒有重新請求 HTML**。
+          </p>
+          <div className="mt-10 flex gap-4 justify-center">
+            <button className="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">
+              開始探索
+            </button>
+            <button className="px-8 py-3 border border-gray-300 rounded-lg font-bold hover:bg-gray-50 transition">
+              了解更多
+            </button>
+          </div>
+        </div>
+      </main>
+    </>
+  );
+};
+</file>
+
+<file path="src/pages/index/main.tsx">
+import { bootstrap } from '../../common/middleware/init';
+import { App } from './App.tsx';
+
+bootstrap(App)
+</file>
+
+<file path="src/pages/products/ProductView.tsx">
+import { Navbar } from '../../common/Navbar';
+
+export const ProductView = () => {
+  return (
+    <>
+      {/* 這裡的 Navbar 不再需要傳 currentPage，因為它現在靠路由判斷 */}
+      <Navbar /> 
+      <main className="p-8">
+        <h1 className="text-3xl font-bold">產品大廳</h1>
+        <p className="mt-4 text-gray-600">這是透過 CSR 渲染的產品頁面內容。</p>
+        <div className="grid grid-cols-2 gap-4 mt-6">
+          <div className="p-4 border rounded shadow-sm">優質商品 A</div>
+          <div className="p-4 border rounded shadow-sm">優質商品 B</div>
+        </div>
+      </main>
+    </>
+  );
+};
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "lib": ["DOM", "ES2020"],
+    "jsx": "react-jsx",
+    "target": "ES2020",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+
+    /* modules */
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* type checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "rsbuild-mpa-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build && tsx scripts/ssg.ts",
+    "dev": "rsbuild dev --open",
+    "lint": "eslint .",
+    "toAI": "pnpm dlx repomix",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router-dom": "^7.13.1",
+    "tsx": "^4.21.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@rsbuild/core": "^1.7.1",
+    "@rsbuild/plugin-react": "^1.4.2",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0"
+  }
+}
+</file>
+
+<file path="src/common/Navbar.tsx">
+import { Link, useLocation } from 'react-router-dom';
+import { PAGE_MAP } from './config/pages';
+
+export const Navbar = () => {
+  const location = useLocation();
+  const prefix = process.env.ASSET_PREFIX || '/';
+
+  const navItems = Object.entries(PAGE_MAP)
+    .filter(([_, info]) => !info.hidden)
+    .map(([key, info]) => ({
+      key,
+      path: key === 'index' ? '/' : `/${key}`,
+      label: info.label,
+    }));
+
+  return (
+    <nav className="flex items-center gap-6 p-4 border-b bg-white shadow-sm">
+      <div className="text-xl font-black text-blue-600">BRAND</div>
+      <div className="flex gap-4">
+        {navItems.map((item) => {
+          // 精確匹配當前路由
+          const isActive = location.pathname === item.path || 
+                          (item.path === '/' && location.pathname === '');
+
+          return (
+            <Link
+              key={item.key}
+              to={item.path}
+              className={`${
+                isActive ? 'text-blue-600 font-bold' : 'text-gray-500'
+              } hover:text-blue-500 transition-colors px-1`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+};
+</file>
+
+<file path="src/pages/index/App.tsx">
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Layout } from './Layout';
+import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
+
+// Lazy Views
+const HomeView = lazy(() => import('./HomeView').then(m => ({ default: m.HomeView })));
+const ProductView = lazy(() => import('../products/ProductView').then(m => ({ default: m.ProductView })));
+
+// 直接定義 404 View (非 Lazy)
+const NotFoundView = () => (
+  <>
+    <Navbar />
+    <div className="h-[60vh] flex flex-col items-center justify-center">
+      <h1 className="text-9xl font-black text-gray-200">404</h1>
+      <p className="text-2xl font-bold mt-4">喔喔！這個頁面跑掉了</p>
+      <a href="/" className="mt-8 px-6 py-2 bg-blue-600 text-white rounded-lg">返回首頁</a>
+    </div>
+  </>
+);
 
 export const App = () => {
   const router = createBrowserRouter([
     {
       path: '/',
       element: (
-        <>
-          <Navbar currentPage="products" />
-          <main className="p-8">
-            <h1 className="text-2xl font-bold">產品頁面</h1>
-            <p>這是 CSR 渲染的內容</p>
-          </main>
-        </>
+        <Layout>
+          <Suspense fallback={null}><HomeView /></Suspense>
+        </Layout>
       ),
-    }
-  ], { basename: '/products' }); // 關鍵：讓該 Entry 的路由相對於物理路徑
+    },
+    {
+      path: '/products',
+      element: (
+        <Layout>
+          <Suspense fallback={null}><ProductView /></Suspense>
+        </Layout>
+      ),
+    },
+    {
+      path: '*', // 這裡接管所有未定義路徑
+      element: <Layout><NotFoundView /></Layout>,
+    },
+  ], { basename: process.env.ASSET_PREFIX || '/' });
 
   return <RouterProvider router={router} />;
 };
 </file>
 
-<file path="main.tsx">
-import { bootstrap } from '../../common/middleware/init';
-import { App } from './App.tsx';
+<file path="rsbuild.config.ts">
+import { defineConfig, RsbuildPlugin } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
+import { existsSync, readdirSync, readFileSync, renameSync, rmSync } from 'node:fs';
+import { resolve, dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { PAGE_MAP } from './src/common/config/pages'; // 引入共用配置
 
-// 只需要呼叫 bootstrap 即可
-bootstrap(App);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// 讀取 package.json 以獲取 repo 名稱
+const pkg: unknown = JSON.parse(
+  readFileSync(resolve(__dirname, 'package.json'), 'utf-8')
+);
+
+// 類型守衛：安全地獲取專案名稱
+const getProjectName = (p: unknown): string => {
+  if (typeof p === 'object' && p !== null && 'name' in p && typeof (p as { name: unknown }).name === 'string') {
+    return (p as { name: string }).name;
+  }
+  return '';
+};
+
+const repoName = getProjectName(pkg);
+const isProd = process.env.NODE_ENV === 'production';
+
+// 判斷是否在 GitHub Actions 環境中執行
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
+
+// 只有在 GitHub Actions 部署時才加上 repoName
+// 本地執行 pnpm build 依然維持 '/'，方便 Live Server 測試
+const assetPrefix = isProd && isGitHubActions ? `/${repoName}/` : '/';
+
+
+const getEntries = () => {
+  const pagesDir = resolve(__dirname, 'src/pages');
+  const folders = readdirSync(pagesDir);
+  const entries: Record<string, string> = {};
+
+  folders.forEach(name => {
+    const key = name === 'index' ? '' : name;
+    // 重點：全部 Entry 共享同一個渲染邏輯 (CSR 核心)
+    entries[key] = resolve(__dirname, 'src/pages/index/main.tsx');
+  });
+  return entries;
+};
+
+const pluginFixPath = (): RsbuildPlugin => ({
+  name: 'plugin-fix-path',
+  setup(api) {
+    api.onAfterBuild(async () => {
+      const distDir = resolve(__dirname, 'dist');
+      // 將空字串 entry (產出在 dist/index.html) 與 404 進行標準化
+      if (existsSync(join(distDir, '404/index.html'))) {
+        renameSync(join(distDir, '404/index.html'), join(distDir, '404.html'));
+        rmSync(join(distDir, '404'), { recursive: true });
+      }
+    });
+  },
+});
+
+export default defineConfig({
+  plugins: [pluginReact(), pluginFixPath()],
+  source: {
+    entry: getEntries(),
+    define: {
+      'process.env.ASSET_PREFIX': JSON.stringify(process.env.NODE_ENV === 'production' ? '/repo-name/' : '/'),
+    }
+  },
+  output: {
+    assetPrefix: assetPrefix,
+    distPath: { root: 'dist', js: 'static/js', css: 'static/css' },
+    cleanDistPath: true,
+  },
+  html: {
+    template: './public/index.html',
+    outputStructure: 'nested',
+    templateParameters: ({ entryName }) => {
+      const configKey = entryName === '' ? 'index' : entryName;
+      const config = PAGE_MAP[configKey as keyof typeof PAGE_MAP] || PAGE_MAP.index;
+      return {
+        title: config.title,
+        description: config.description,
+        base: process.env.NODE_ENV === 'production' ? '/repo-name/' : '/',
+      };
+    },
+  },
+server: {
+    historyApiFallback: {
+      index: '/index.html',
+      rewrites: [
+        // 確保開發環境刷新頁面時能找到對應的 HTML 入口
+        ...Object.keys(getEntries()).map(key => ({
+          from: new RegExp(`^\\/${key}`),
+          to: `/${key}/index.html`
+        }))
+      ]
+    }
+  }
+});
 </file>
 
 </files>

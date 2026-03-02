@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main] # 當 main 分支有更新時觸發
+    branches: [main] # 或是你的主分支名稱
 
 permissions:
   contents: read
@@ -13,25 +13,40 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout 
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
-      - name: Set Node.js
+      - name: Install Node.js 23
         uses: actions/setup-node@v4
         with:
           node-version: 23
-          cache: 'pnpm'
+
+      - name: Install pnpm 10
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm run build
+      - name: Build and Optimize
+        # 這裡會執行：rsbuild build -> ssg.ts (標題注入) -> pluginFixPath (404 修正)
+        run: pnpm build
+        env:
+          NODE_ENV: production
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,7 +54,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # 上傳編譯後的 dist 目錄
           path: './dist'
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

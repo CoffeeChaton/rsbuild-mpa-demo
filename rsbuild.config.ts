@@ -3,33 +3,18 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { existsSync, readdirSync, readFileSync, renameSync, rmSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PAGE_MAP } from './src/common/config/pages'; // 引入共用配置
+import { PAGE_MAP } from './src/common/config/pages';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// 讀取 package.json 以獲取 repo 名稱
-const pkg: unknown = JSON.parse(
-  readFileSync(resolve(__dirname, 'package.json'), 'utf-8')
-);
+// 1. 動態讀取 package.json 中的專案名稱
+const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
+const repoName = pkg.name; 
 
-// 類型守衛：安全地獲取專案名稱
-const getProjectName = (p: unknown): string => {
-  if (typeof p === 'object' && p !== null && 'name' in p && typeof (p as { name: unknown }).name === 'string') {
-    return (p as { name: string }).name;
-  }
-  return '';
-};
-
-const repoName = getProjectName(pkg);
 const isProd = process.env.NODE_ENV === 'production';
 
-// 判斷是否在 GitHub Actions 環境中執行
-const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
-
-// 只有在 GitHub Actions 部署時才加上 repoName
-// 本地執行 pnpm build 依然維持 '/'，方便 Live Server 測試
-const assetPrefix = isProd && isGitHubActions ? `/${repoName}/` : '/';
-
+// 2. 統一路徑前綴邏輯：生產環境為 /repo-name/，開發環境為 /
+const assetPrefix = isProd ? `/${repoName}/` : '/';
 
 const getEntries = () => {
   const pagesDir = resolve(__dirname, 'src/pages');
@@ -38,7 +23,7 @@ const getEntries = () => {
 
   folders.forEach(name => {
     const key = name === 'index' ? '' : name;
-    // 重點：全部 Entry 共享同一個渲染邏輯 (CSR 核心)
+    // 全部 Entry 共享 index/main.tsx 作為 CSR 超級入口
     entries[key] = resolve(__dirname, 'src/pages/index/main.tsx');
   });
   return entries;
@@ -49,7 +34,7 @@ const pluginFixPath = (): RsbuildPlugin => ({
   setup(api) {
     api.onAfterBuild(async () => {
       const distDir = resolve(__dirname, 'dist');
-      // 將空字串 entry (產出在 dist/index.html) 與 404 進行標準化
+      // 將 404/index.html 移至根目錄 404.html 以符合 GitHub Pages 規範
       if (existsSync(join(distDir, '404/index.html'))) {
         renameSync(join(distDir, '404/index.html'), join(distDir, '404.html'));
         rmSync(join(distDir, '404'), { recursive: true });
@@ -63,7 +48,8 @@ export default defineConfig({
   source: {
     entry: getEntries(),
     define: {
-      'process.env.ASSET_PREFIX': JSON.stringify(process.env.NODE_ENV === 'production' ? '/repo-name/' : '/'),
+      // 修正：動態注入前端，不再寫死字串
+      'process.env.ASSET_PREFIX': JSON.stringify(assetPrefix),
     }
   },
   output: {
@@ -80,20 +66,17 @@ export default defineConfig({
       return {
         title: config.title,
         description: config.description,
-        base: process.env.NODE_ENV === 'production' ? '/repo-name/' : '/',
+        // 修正：同步使用動態產出的前綴
+        base: assetPrefix,
       };
     },
   },
-server: {
+  server: {
+    // 修正：讓本地 preview 功能正確模擬 GitHub Pages 子目錄環境
+    base: assetPrefix,
     historyApiFallback: {
-      index: '/index.html',
-      rewrites: [
-        // 確保開發環境刷新頁面時能找到對應的 HTML 入口
-        ...Object.keys(getEntries()).map(key => ({
-          from: new RegExp(`^\\/${key}`),
-          to: `/${key}/index.html`
-        }))
-      ]
-    }
+      // 確保單頁路由在子目錄環境下能正確回退到入口 HTML
+      index: `${assetPrefix}index.html`,
+    },
   }
 });
