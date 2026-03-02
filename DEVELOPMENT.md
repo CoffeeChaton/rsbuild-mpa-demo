@@ -33,3 +33,11 @@
   2. 執行依賴快取。
   3. 執行物理建置、SSG 標題注入與 404 物理路徑修正。
   4. 自動推送至 GitHub Pages 靜態空間。
+
+## 🔍 故障排除：EBUSY Error
+**問題**: 執行 `build:live` 時出現 `EBUSY: resource busy or locked, rename...`。
+**原因**: Windows 系統鎖定了 `dist` 資料夾。通常是因為終端機路徑正位在 `dist` 內部，或 `serve` 正在運行。
+**解決**: 
+1. `cd ..` 退出 `dist` 目錄。
+2. 關閉所有開啟 `dist` 檔案的程式（如 VS Code 預覽、檔案總管）。
+3. 重新執行 `pnpm build:live`。

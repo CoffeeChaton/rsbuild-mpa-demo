@@ -9,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // 1. 動態讀取 package.json 中的專案名稱
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
-const repoName = pkg.name; 
+const repoName = pkg.name;
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -55,6 +55,18 @@ export default defineConfig({
   output: {
     assetPrefix: assetPrefix,
     distPath: { root: 'dist', js: 'static/js', css: 'static/css' },
+    // 強制檔名範本，確保 [name] 不為空
+    filename: {
+      // 這是最穩定的寫法：確保即使 entry 是空字串，檔名也會叫 index
+      js: (pathData) => {
+        const name = pathData.chunk?.name || 'index';
+        return `static/js/${name}.[contenthash:8].js`;
+      },
+      css: (pathData) => {
+        const name = pathData.chunk?.name || 'index';
+        return `static/css/${name}.[contenthash:8].css`;
+      },
+    },
     cleanDistPath: true,
   },
   html: {
