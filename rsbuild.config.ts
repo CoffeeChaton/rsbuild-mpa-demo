@@ -99,6 +99,7 @@ export default defineConfig({
     },
   },
   server: {
+    port: process.env.NODE_ENV === 'development' ? 3055 : 8080,
     // 修正：讓本地 preview 功能正確模擬 GitHub Pages 子目錄環境
     base: assetPrefix,
     historyApiFallback: {

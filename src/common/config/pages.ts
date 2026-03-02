@@ -16,10 +16,10 @@ export const PAGE_MAP = {
     description: '探索我們精選的產品系列',
     label: '產品'
   },
-  profile: {
-    title: '個人中心',
-    description: '管理您的個人資料與設定',
-    label: '會員中心'
+  'map-edit': { // 新增地圖編輯頁面
+    title: '地圖編輯器 - GIS 控制台',
+    description: '自定義您的地圖偏好與中心點',
+    label: '地圖編輯'
   },
   '404': {
     title: '404 - 找不到頁面',
@@ -27,7 +27,7 @@ export const PAGE_MAP = {
     label: '404',
     hidden: true
   },
-} as const satisfies Record<string, IPageInfo>;;
+} as const satisfies Record<string, IPageInfo>;
 
 // 定義導出的 Key 型別，供其他工具使用
 export type TPageKey = keyof typeof PAGE_MAP;

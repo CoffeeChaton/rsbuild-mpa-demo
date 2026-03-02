@@ -4,8 +4,9 @@ import { Layout } from './Layout';
 import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
 
 // Lazy Views
-const HomeView = lazy(() => import('./HomeView').then(m => ({ default: m.HomeView })));
-const ProductView = lazy(() => import('../products/ProductView').then(m => ({ default: m.ProductView })));
+const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.HomeView })));
+const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
+const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView = () => (
@@ -36,6 +37,10 @@ export const App = () => {
           <Suspense fallback={null}><ProductView /></Suspense>
         </Layout>
       ),
+    },
+    {
+      path: '/map-edit', // 對應 PAGE_MAP 的 Key
+      element: <Layout><Suspense fallback={null}><MapEditView /></Suspense></Layout>,
     },
     {
       path: '*', // 這裡接管所有未定義路徑
