@@ -37,9 +37,9 @@ const getEntries = () => {
   const entries: Record<string, string> = {};
 
   folders.forEach(name => {
-    // 關鍵：將 index 命名為空字串，終端機會顯示 http://localhost:3000/
     const key = name === 'index' ? '' : name;
-    entries[key] = resolve(pagesDir, `${name}/main.tsx`);
+    // 重點：全部 Entry 共享同一個渲染邏輯 (CSR 核心)
+    entries[key] = resolve(__dirname, 'src/pages/index/main.tsx');
   });
   return entries;
 };
@@ -60,7 +60,12 @@ const pluginFixPath = (): RsbuildPlugin => ({
 
 export default defineConfig({
   plugins: [pluginReact(), pluginFixPath()],
-  source: { entry: getEntries() },
+  source: {
+    entry: getEntries(),
+    define: {
+      'process.env.ASSET_PREFIX': JSON.stringify(process.env.NODE_ENV === 'production' ? '/repo-name/' : '/'),
+    }
+  },
   output: {
     assetPrefix: assetPrefix,
     distPath: { root: 'dist', js: 'static/js', css: 'static/css' },
@@ -70,26 +75,25 @@ export default defineConfig({
     template: './public/index.html',
     outputStructure: 'nested',
     templateParameters: ({ entryName }) => {
-      // 處理 Entry Key 為空字串的情況
       const configKey = entryName === '' ? 'index' : entryName;
       const config = PAGE_MAP[configKey as keyof typeof PAGE_MAP] || PAGE_MAP.index;
-
       return {
         title: config.title,
         description: config.description,
+        base: process.env.NODE_ENV === 'production' ? '/repo-name/' : '/',
       };
     },
   },
-  server: {
+server: {
     historyApiFallback: {
       index: '/index.html',
       rewrites: [
-        { from: /^\/404/, to: '/404/index.html' },
+        // 確保開發環境刷新頁面時能找到對應的 HTML 入口
         ...Object.keys(getEntries()).map(key => ({
           from: new RegExp(`^\\/${key}`),
           to: `/${key}/index.html`
         }))
-      ],
-    },
-  },
+      ]
+    }
+  }
 });

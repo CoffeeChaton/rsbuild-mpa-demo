@@ -1,21 +1,26 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Navbar } from "../../common/Navbar";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ProductView } from '../products/ProductView';
+import { HomeView } from './HomeView';
 
-// src/pages/index/App.tsx
+
 export const App = () => {
+  const prefix = process.env.ASSET_PREFIX || '/';
+
   const router = createBrowserRouter([
     {
       path: '/',
-      element: (
-        <>
-          <Navbar currentPage="index" />
-          <h1 className="p-10 text-3xl font-bold">首頁大廳</h1>
-        </>
-      ),
+      element: <HomeView />,
     },
+    {
+      path: '/products',
+      element: <ProductView />,
+    },
+    {
+      path: '*',
+      element: <div className="p-20 text-center text-2xl">404 - 這裡什麼都沒有</div>,
+    }
   ], { 
-    // 首頁直接使用環境變數中的前綴作為 basename
-    basename: process.env.ASSET_PREFIX || '/' 
+    basename: prefix 
   });
 
   return <RouterProvider router={router} />;
