@@ -40,3 +40,6 @@
     -   **靜態 (SSG)**: `ssg.ts` 腳本建置後將 `PAGE_MAP` 資訊直接寫入 HTML，防止標題閃爍。
     -   **動態 (Hook)**: `MetaUpdater` 在客戶端導航時即時同步瀏覽器 Tab 標題。
 
+## 36. 靜態斷言與 Never 守衛 (Static Assertions & Never Guard)
+- **非 Never 校驗**: 使用 `TIsNotNever<T>` 進行類型檢查。利用 `[T] extends [never]` 語法規避 TypeScript 對 `never` 類型的自動分發行為。
+- **編譯期中斷**: 關鍵配置（如地圖圖資、用戶偏好）在推導後必須通過 `TAssertEqual` 與 `TIsNotNever` 的雙重驗證，確保執行期 Schema 與靜態 Interface 絕對同步。
