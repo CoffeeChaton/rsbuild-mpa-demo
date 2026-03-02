@@ -1,5 +1,5 @@
 // scripts/ssg.ts
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { PAGE_MAP } from '../src/common/config/pages';
 
@@ -13,8 +13,8 @@ const runSSG = () => {
   const indexContent = readFileSync(indexTemplatePath, 'utf-8');
 
   Object.entries(PAGE_MAP).forEach(([key, info]) => {
-    let htmlPath = key === 'index' 
-      ? indexTemplatePath 
+    let htmlPath = key === 'index'
+      ? indexTemplatePath
       : join(DIST_DIR, key, 'index.html');
 
     // 特殊處理 404：GitHub Pages 需要根目錄下的 404.html

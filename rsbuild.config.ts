@@ -1,4 +1,4 @@
-import { defineConfig, RsbuildPlugin } from '@rsbuild/core';
+import { defineConfig, type RsbuildPlugin } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { existsSync, readdirSync, readFileSync, renameSync, rmSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 import { PAGE_MAP } from './src/common/config/pages';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 // 1. 動態讀取 package.json 中的專案名稱
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 const repoName = pkg.name;

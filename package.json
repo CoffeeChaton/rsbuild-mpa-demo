@@ -15,7 +15,8 @@
     "lint": "eslint .",
     "toAI": "pnpm dlx repomix",
     "preview": "rsbuild preview",
-    "watch:tsc": "tsc -watch"
+    "watch:tsc": "tsc -b -w",
+    "type-check": "tsc -b"
   },
   "dependencies": {
     "react": "^19.2.3",
