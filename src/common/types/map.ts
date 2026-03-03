@@ -32,3 +32,15 @@ export const TILE_LAYERS: Record<IMapPreferenceDef['tileLayer'], string> = {
     satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 };
+
+/**
+ * @description 簡化版 URL Schema，帶有非致命錯誤回退機制
+ */
+export const MapUrlSchema = v.object({
+  lat: v.fallback(v.pipe(v.number(), v.minValue(-90), v.maxValue(90)), DEFAULT_MAP_CONFIG.center[0]),
+  lng: v.fallback(v.pipe(v.number(), v.minValue(-180), v.maxValue(180)), DEFAULT_MAP_CONFIG.center[1]),
+  z: v.fallback(v.pipe(v.number(), v.minValue(0), v.maxValue(20)), DEFAULT_MAP_CONFIG.zoom),
+  l: v.fallback(v.picklist(['osm', 'satellite', 'dark']), DEFAULT_MAP_CONFIG.tileLayer),
+});
+
+export type TMapUrlState = v.InferOutput<typeof MapUrlSchema>;
