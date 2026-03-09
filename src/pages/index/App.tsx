@@ -7,7 +7,10 @@ import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
 const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.HomeView })));
 const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
 const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
-const ArknightsConfigTable = lazy(() => import('../ArknightsConfigTable/ArknightsConfigTable.tsx').then(m => ({ default: m.ModernResourceManager })));
+const ResourceManager = lazy(() => import('../game/index.tsx').then(m => ({ default: m.ResourceManager })));
+const IniEdit= lazy(() => import('../ini-edit/index.tsx').then(m => ({ default: m.IniConfigurationEditor }))); 
+// IniConfigurationEditor
+
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView = () => (
@@ -45,7 +48,11 @@ export const App = () => {
     },
     {
       path:"/game",
-      element: <Layout><Suspense fallback={null}><ArknightsConfigTable /></Suspense></Layout>,  
+      element: <Layout><Suspense fallback={null}><ResourceManager /></Suspense></Layout>,  
+    },
+    {
+      path:"/IniEdit",
+      element: <Layout><Suspense fallback={null}><IniEdit /></Suspense></Layout>,  
     },
     {
       path: '*', // 這裡接管所有未定義路徑

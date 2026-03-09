@@ -13,7 +13,7 @@
     "build:live": "pnpm build && tsx scripts/post-build-live.ts && pnpm dlx serve dist",
     "dev": "rsbuild dev --open",
     "lint": "eslint .",
-    "toAI": "pnpm dlx repomix",
+    "toAI": "pnpm dlx repomix src/pages/game",
     "preview": "rsbuild preview",
     "watch:tsc": "tsc -b -w",
     "type-check": "tsc -b"
