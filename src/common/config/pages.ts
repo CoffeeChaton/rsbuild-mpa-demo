@@ -21,6 +21,11 @@ export const PAGE_MAP = {
     description: '自定義您的地圖偏好與中心點',
     label: '地圖編輯'
   },
+  'game': { // 新增地圖編輯頁面
+    title: '明日方舟工具箱 精英材料PLUS',
+    description: '計算材料 PLUS',
+    label: '工具箱PLUS'
+  },
   '404': {
     title: '404 - 找不到頁面',
     description: '抱歉，您訪問的頁面不存在',

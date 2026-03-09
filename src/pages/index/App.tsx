@@ -7,6 +7,7 @@ import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
 const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.HomeView })));
 const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
 const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
+const ArknightsConfigTable = lazy(() => import('../ArknightsConfigTable/ArknightsConfigTable.tsx').then(m => ({ default: m.ModernResourceManager })));
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView = () => (
@@ -41,6 +42,10 @@ export const App = () => {
     {
       path: '/map-edit', // 對應 PAGE_MAP 的 Key
       element: <Layout><Suspense fallback={null}><MapEditView /></Suspense></Layout>,
+    },
+    {
+      path:"/game",
+      element: <Layout><Suspense fallback={null}><ArknightsConfigTable /></Suspense></Layout>,  
     },
     {
       path: '*', // 這裡接管所有未定義路徑
