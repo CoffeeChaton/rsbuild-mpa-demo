@@ -45,9 +45,9 @@ export function GroupRow({ group, materialMap, onUpdate, onDelete }: IProps) {
             return (
               <div key={idx} className="flex items-center gap-4">
                 {/* 圖片 40x40, Hover 80x80 不影響佈局 (使用絕對定位) */}
-                <div className="relative w-10 h-10 flex-shrink-0">
-                  <div className="absolute top-0 left-0 w-10 h-10 bg-slate-50 border rounded-lg overflow-hidden z-10 hover:z-50 hover:w-20 hover:h-20 hover:shadow-xl transition-all">
-                    {matKey ? <img src={`/img/game/${matKey}.png`} className="w-full h-full object-contain" alt="" /> : <div className="w-full h-full" />}
+                <div className="relative w-10 h-10 shrink-0">
+                  <div className="absolute top-0 left-0 w-10 h-10 overflow-hidden z-10 hover:z-50 hover:w-30 hover:h-30 hover:shadow-xl transition-all">
+                    {matKey ? <img src={`/img/game/item/${matKey}.png`} className="w-full h-full object-contain" alt="" /> : <div className="w-full h-full" />}
                   </div>
                 </div>
 
