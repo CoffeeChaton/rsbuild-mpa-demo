@@ -89,7 +89,8 @@ export function ResourceManager() {
         {/* 渲染 Modal */}
         {isEditorOpen && (
           <JsonConfigModal
-            initialValue={safeConfigs}
+            initialValue={safeConfigs} // 這裡傳入的是當前 HTML 畫面最新的 state
+            materialMap={materialMap}
             onClose={() => setIsEditorOpen(false)}
             onApply={(newData) => account.updateConfigs(newData)}
           />
