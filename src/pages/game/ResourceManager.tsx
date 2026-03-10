@@ -82,7 +82,7 @@ export function ResourceManager() {
             </button>
 
             {/* 小節始終顯示，且在按鈕下方 */}
-            <SummarySection summary={summary} />
+            <SummarySection summary={summary} materialMap={materialMap} />
           </div>
         </main>
 

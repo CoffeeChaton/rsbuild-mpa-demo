@@ -7,9 +7,10 @@ import React from 'react';
  */
 interface ISummaryProps {
   summary: Record<string, number>;
+  materialMap: Record<string, string>
 }
 
-export const SummarySection: React.FC<ISummaryProps> = ({ summary }) => {
+export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }) => {
   const copyAsCSV = () => {
     const csv = "材料,數量\n" + Object.entries(summary).map(([k, v]) => `"${k}",${v}`).join("\n");
     navigator.clipboard.writeText(csv);
@@ -46,12 +47,29 @@ export const SummarySection: React.FC<ISummaryProps> = ({ summary }) => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-        {Object.entries(summary).map(([name, amt]) => (
-          <div key={name} className="flex flex-col gap-1 bg-slate-50/50 border border-slate-100 p-3 rounded-2xl">
-            <span className="text-[10px] font-bold text-slate-400 truncate">{name}</span>
-            <span className="text-base font-black text-slate-800">+{amt}</span>
-          </div>
-        ))}
+        {Object.entries(summary).map(([name, amt]) => {
+          const matKey = Object.keys(materialMap).find(k => materialMap[k] === name);
+          return (
+            <div key={name} className="flex flex-col gap-2 bg-slate-50/50 border border-slate-100 p-3 rounded-2xl">
+              {/* 圖片容器：40px -> 120px (w-30 約為 120px) */}
+              <div className="relative w-10 h-10 group">
+                <img
+                  src={`/img/game/item/${matKey}.png`} // 假設路徑，請根據你的資料夾結構調整
+                  alt={name}
+                  className="absolute top-0 left-0 w-10 h-10 object-contain z-10 
+                     transition-all duration-300 ease-in-out
+                     group-hover:z-50 group-hover:w-30 group-hover:h-30 
+                     group-hover:shadow-2xl group-hover:scale-110"
+                />
+              </div>
+
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-bold text-slate-400 truncate tracking-tight">{name}</span>
+                <span className="text-base font-black text-slate-800 leading-none">+{amt}</span>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </section>
   );
