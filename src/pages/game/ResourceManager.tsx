@@ -38,7 +38,7 @@ export function ResourceManager() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-10 lg:p-16">
+    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-10">
       <div className="max-w-5xl mx-auto space-y-10">
         <DashboardHeader
           profiles={account.profiles}
