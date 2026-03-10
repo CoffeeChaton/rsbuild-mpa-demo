@@ -2,6 +2,8 @@
 
 一些想法驗證
 
+[預覽](https://coffeechaton.github.io/rsbuild-mpa-demo/game/)
+
 ## IMG
 
 ### Source

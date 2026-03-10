@@ -12,10 +12,12 @@ export function ResourceManager() {
   const [materialMap, setMaterialMap] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    fetch('/locales/tw/material.json')
-      .then(res => res.json())
-      .then(data => setMaterialMap(data as Record<string, string>))
-      .catch(() => console.error("Failed to load material map"));
+    import("./material.json")
+      .then((json) => setMaterialMap(json.default))
+    // fetch(process.env.ASSET_PREFIX + '/locales/tw/material.json')
+    //   .then(res => res.json())
+    //   .then(data => setMaterialMap(data as Record<string, string>))
+    //   .catch(() => console.error("Failed to load material map"));
   }, []);
 
   const safeConfigs = useMemo(() => account.currentAccount.configs || [], [account.currentAccount]);
