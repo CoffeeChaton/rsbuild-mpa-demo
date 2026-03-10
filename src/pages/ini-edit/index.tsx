@@ -1,2 +1,0 @@
-
-export { IniConfigurationEditor } from "./App"

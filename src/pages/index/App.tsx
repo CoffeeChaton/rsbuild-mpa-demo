@@ -8,7 +8,7 @@ const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.Hom
 const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
 const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
 const ResourceManager = lazy(() => import('../game/index.tsx').then(m => ({ default: m.ResourceManager })));
-const IniEdit= lazy(() => import('../ini-edit/index.tsx').then(m => ({ default: m.IniConfigurationEditor }))); 
+
 // IniConfigurationEditor
 
 
@@ -47,12 +47,8 @@ export const App = () => {
       element: <Layout><Suspense fallback={null}><MapEditView /></Suspense></Layout>,
     },
     {
-      path:"/game",
-      element: <Layout><Suspense fallback={null}><ResourceManager /></Suspense></Layout>,  
-    },
-    {
-      path:"/IniEdit",
-      element: <Layout><Suspense fallback={null}><IniEdit /></Suspense></Layout>,  
+      path: "/game",
+      element: <Layout><Suspense fallback={null}><ResourceManager /></Suspense></Layout>,
     },
     {
       path: '*', // 這裡接管所有未定義路徑
