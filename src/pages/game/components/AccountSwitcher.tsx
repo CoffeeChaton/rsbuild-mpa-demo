@@ -36,7 +36,7 @@ export const AccountSwitcher: React.FC<IAccountSwitcherProps> = (props) => {
         }}
         className="flex items-center gap-2 px-3 py-1.5 text-white text-xs font-bold hover:bg-blue-700 transition-colors border-r border-blue-500/50 rounded-l-lg"
       >
-        <span className="max-w-[80px] truncate">{currentAcc?.accountName || '切換帳號'}</span>
+        <span className="max-w-20 truncate">{currentAcc?.accountName || '切換帳號'}</span>
         <ChevronDownIcon className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
@@ -53,10 +53,10 @@ export const AccountSwitcher: React.FC<IAccountSwitcherProps> = (props) => {
       {isOpen && (
         <>
           {/* 全域遮罩，點擊關閉 */}
-          <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
+          <div className="fixed inset-0 z-60" onClick={() => setIsOpen(false)} />
 
           {/* 選單本體：確保 z-index 比遮罩高 */}
-          <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-2xl z-[70] py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-2xl z-70 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="px-3 py-1 mb-1 border-b border-slate-50">
               <span className="text-[10px] font-black text-slate-400 uppercase">切換帳號</span>
             </div>

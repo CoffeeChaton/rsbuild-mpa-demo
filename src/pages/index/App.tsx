@@ -7,7 +7,7 @@ import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
 const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.HomeView })));
 const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
 const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
-const ResourceManager = lazy(() => import('../game/index.tsx').then(m => ({ default: m.ResourceManager })));
+const GameView = lazy(() => import('../game/index.tsx').then(m => ({ default: m.App })));
 
 // IniConfigurationEditor
 
@@ -48,7 +48,7 @@ export const App = () => {
     },
     {
       path: "/game",
-      element: <Layout><Suspense fallback={null}><ResourceManager /></Suspense></Layout>,
+      element: <Layout><Suspense fallback={null}><GameView /></Suspense></Layout>,
     },
     {
       path: '*', // 這裡接管所有未定義路徑

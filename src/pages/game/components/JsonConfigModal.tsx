@@ -130,9 +130,9 @@ export const JsonConfigModal: React.FC<IProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-110 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#1e1e1e] w-full max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200">
+      <div className="relative bg-[#1e1e1e] w-full max-w-4xl h-[80vh] rounded-4xl shadow-2xl flex flex-col overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200">
 
         {/* Header */}
         <div className="flex justify-between items-center px-8 py-4 bg-[#252526] border-b border-white/5">

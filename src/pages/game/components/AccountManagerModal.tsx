@@ -11,7 +11,7 @@ export const AccountManagerModal: React.FC<{
 }> = ({ profiles, onClose, onAdd, onDelete, onUpdate }) => {
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       {/* 遮罩層：強化毛玻璃效果 */}
       <div
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity animate-in fade-in duration-300"
@@ -36,14 +36,14 @@ export const AccountManagerModal: React.FC<{
         </div>
 
         {/* 帳號列表：卡片式佈局 */}
-        <div className="max-h-[450px] overflow-y-auto p-6 space-y-3 custom-scrollbar">
+        <div className="max-h-112.5 overflow-y-auto p-6 space-y-3 custom-scrollbar">
           {profiles.map((p, index) => (
             <div
               key={p.id}
               className="group flex items-center gap-4 p-4 bg-slate-50/50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-blue-100 rounded-2xl transition-all duration-200"
             >
               {/* 序號/圖示 */}
-              <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-[10px] font-black text-slate-300 group-hover:text-blue-500 group-hover:border-blue-500 transition-colors">
+              <div className="shrink-0 w-8 h-8 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-[10px] font-black text-slate-300 group-hover:text-blue-500 group-hover:border-blue-500 transition-colors">
                 {index + 1}
               </div>
 

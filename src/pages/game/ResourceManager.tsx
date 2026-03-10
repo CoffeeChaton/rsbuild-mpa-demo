@@ -76,7 +76,7 @@ export function ResourceManager() {
           <div className="pt-4 space-y-10">
             <button
               onClick={handleAddProject}
-              className="w-full py-4 border-2 border-dashed border-slate-200 rounded-[2rem] text-slate-400 font-bold hover:bg-white hover:border-blue-400 hover:text-blue-500 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-4 border-2 border-dashed border-slate-200 rounded-4xl text-slate-400 font-bold hover:bg-white hover:border-blue-400 hover:text-blue-500 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <span className="text-lg">+ ADD GROUP</span>
             </button>

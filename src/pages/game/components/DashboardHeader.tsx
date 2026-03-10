@@ -38,7 +38,7 @@ export const DashboardHeader: React.FC<IDashboardHeaderProps> = (props) => (
         onUpdate={props.onUpdateAccount}
       />
 
-      <div className="h-6 w-[1px] bg-slate-100 mx-1 hidden xl:block" />
+      <div className="h-6 w-px bg-slate-100 mx-1 hidden xl:block" />
 
       <div className="flex gap-2 flex-1 sm:flex-none">
         <button
