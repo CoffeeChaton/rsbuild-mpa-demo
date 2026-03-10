@@ -1,36 +1,19 @@
 # Rsbuild project
 
-## Setup
+一些想法驗證
 
-Install the dependencies:
+## IMG
 
-```bash
-pnpm install
-```
+### Source
 
-## Get started
+- [Kengxxiao/ArknightsGameData](https://github.com/Kengxxiao/ArknightsGameData)
+- [yuanyan3060/Arknights-Bot-Resource](https://github.com/yuanyan3060/Arknights-Bot-Resource)
+- [MooncellWiki/OpenArknightsFBS](https://github.com/MooncellWiki/OpenArknightsFBS)
+- [arkntools/arknights-toolbox-data](https://github.com/arkntools/arknights-toolbox-data)
 
-Start the dev server, and the app will be available at [http://localhost:3000](http://localhost:3000).
+### 版权
+https://github.com/arkntools/arknights-toolbox-data
 
-```bash
-pnpm run dev
-```
+本项目所使用的游戏资源（包括但不限于：游戏图片、文本原文或其转译版本等）仅用于更好地表现游戏资料、增强用户体验，其版权属于上海鹰角网络科技有限公司和（或）其关联公司。
 
-Build the app for production:
 
-```bash
-pnpm run build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm run preview
-```
-
-## Learn more
-
-To learn more about Rsbuild, check out the following resources:
-
-- [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
-- [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
