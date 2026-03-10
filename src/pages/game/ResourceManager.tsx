@@ -4,9 +4,11 @@ import { useAccountManager } from "./AccountLogic";
 import { DashboardHeader } from "./components/DashboardHeader";
 import { GroupRow } from "./components/GroupRow";
 import { SummarySection } from "./components/SummarySection";
+import { JsonConfigModal } from "./components/JsonConfigModal";
 
 export function ResourceManager() {
   const account = useAccountManager();
+  const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const [materialMap, setMaterialMap] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -28,20 +30,6 @@ export function ResourceManager() {
     return sum;
   }, [safeConfigs]);
 
-  const handleImportJSON = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      const parsed: unknown = JSON.parse(text);
-      if (Array.isArray(parsed)) {
-        account.updateConfigs(parsed);
-      } else {
-        throw new Error();
-      }
-    } catch {
-      alert("剪貼簿內容無效，請確保為 JSON 陣列格式");
-    }
-  };
-
   const handleAddProject = () => {
     account.updateConfigs([...safeConfigs, {
       id: crypto.randomUUID(), isEnabled: true, isCollapsed: false,
@@ -60,11 +48,8 @@ export function ResourceManager() {
           onAddAccount={account.addAccount}
           onDeleteAccount={account.deleteAccount}
           onUpdateAccount={account.updateAccountInfo}
-          onCopy={() => {
-            navigator.clipboard.writeText(JSON.stringify(safeConfigs, null, 2));
-            alert("配置已複製");
-          }}
-          onImport={handleImportJSON}
+          onCopy={() => setIsEditorOpen(true)} // 點擊複製改成開啟編輯器
+          onImport={() => setIsEditorOpen(true)} // 點擊填充也開啟編輯器
         />
 
         {/* 內容區塊 */}
@@ -100,6 +85,15 @@ export function ResourceManager() {
             <SummarySection summary={summary} />
           </div>
         </main>
+
+        {/* 渲染 Modal */}
+        {isEditorOpen && (
+          <JsonConfigModal
+            initialValue={safeConfigs}
+            onClose={() => setIsEditorOpen(false)}
+            onApply={(newData) => account.updateConfigs(newData)}
+          />
+        )}
       </div>
     </div>
   );
