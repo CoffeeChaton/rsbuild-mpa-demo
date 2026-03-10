@@ -23,15 +23,15 @@ export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }
 
     navigator.clipboard.writeText(tsv).then(() => {
       // 這裡建議用更現代的 Toast，但 alert 也是 Evil 你的風格
-      alert("小結已複製 (可直接貼上 Excel 儲存格)");
+      alert("已複製 ");
     });
   };
 
   const copyAsJSON = () => {
     navigator.clipboard.writeText(JSON.stringify(summary, null, 2))
-    alert("小結已複製為 JSON");
-
+    alert("已複製為 JSON");
   }
+
   return (
     <section className="bg-white border border-slate-200 p-6 rounded-[2.5rem] shadow-sm">
       {/* Header 區域：使用 items-center 與 justify-between */}
