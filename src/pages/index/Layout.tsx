@@ -8,7 +8,7 @@ const MetaUpdater = () => {
 
   useEffect(() => {
     // 2. 處理子目錄 Prefix (例如 /rsbuild-mpa-demo/)
-    const prefix = process.env.ASSET_PREFIX || '/';
+    const prefix = '/';
     // 移除 Prefix 後取得第一層路徑
     const normalizedPath = location.pathname.replace(prefix, '').split('/')[0] || 'index';
 

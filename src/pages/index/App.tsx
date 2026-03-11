@@ -54,7 +54,7 @@ export const App = () => {
       path: '*', // 這裡接管所有未定義路徑
       element: <Layout><NotFoundView /></Layout>,
     },
-  ], { basename: process.env.ASSET_PREFIX || '/' });
+  ], { basename: import.meta.env.BASE_URL || '/' });
 
   return <RouterProvider router={router} />;
 };

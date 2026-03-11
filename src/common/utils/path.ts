@@ -8,7 +8,7 @@ import type { TPageKey } from "../config/pages";
  * @returns 包含 ASSET_PREFIX 的格式化路徑
  */
 export const getStaticPath = (pageKey: TPageKey): string => {
-    const prefix = process.env.ASSET_PREFIX || '/';
+    const prefix ='/';
 
     // 針對根路徑 'index' 進行特殊處理
     const subPath = pageKey === 'index' ? '' : pageKey;

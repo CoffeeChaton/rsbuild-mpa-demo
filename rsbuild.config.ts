@@ -10,10 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 const repoName = pkg.name;
 
-const isProd = process.env.NODE_ENV === 'production';
-
-// 2. 統一路徑前綴邏輯：生產環境為 /repo-name/，開發環境為 /
-const assetPrefix = isProd ? `/${repoName}/` : '/';
+// 2. 統一路徑前綴邏輯
+const assetPrefix = `/${repoName}/`
 
 const getEntries = () => {
   const pagesDir = resolve(__dirname, 'src/pages');
@@ -46,10 +44,6 @@ export default defineConfig({
   plugins: [pluginReact(), pluginFixPath()],
   source: {
     entry: getEntries(),
-    define: {
-      // 修正：動態注入前端，不再寫死字串
-      'process.env.ASSET_PREFIX': JSON.stringify(assetPrefix),
-    },
     alias: {
       '@': resolve(__dirname, 'src'),
     },

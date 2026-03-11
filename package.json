@@ -10,13 +10,11 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "pnpm run prebuild && pnpm rsbuild build && tsx scripts/ssg.ts",
-    "build:live": "pnpm build && tsx scripts/post-build-live.ts && pnpm dlx serve dist",
     "dev": "rsbuild dev --open",
     "lint": "eslint .",
     "toAI": "pnpm dlx repomix src/pages/game",
     "preview": "rsbuild preview",
-    "watch:tsc": "tsc -b -w",
-    "type-check": "tsc -b"
+    "watch:tsc": "tsc -b -w"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

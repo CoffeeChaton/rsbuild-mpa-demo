@@ -88,7 +88,7 @@ export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }
                 <div className="absolute inset-0 bg-blue-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
 
                 <img
-                  src={`/img/game/item/${matKey}.png`}
+                  src={`${import.meta.env.BASE_URL}/img/game/item/${matKey}.png`}
                   alt={name}
                   // 基礎 w-20/h-20 (80px)，RWD 下自動調整
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
