@@ -38,3 +38,9 @@ export function parseArknightsItemsToTSV(htmlString: string): string {
 // 測試執行
 // const tsvOutput = parseArknightsItemsToTSV(yourHtmlString);
 // console.log(tsvOutput);
+
+export function TEMP() {
+    const yourHtmlString = ``;
+    const tsvOutput = parseArknightsItemsToTSV(yourHtmlString);
+    console.log(tsvOutput);
+}
