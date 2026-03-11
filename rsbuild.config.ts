@@ -44,6 +44,7 @@ export default defineConfig({
   plugins: [pluginReact(), pluginFixPath()],
   source: {
     entry: getEntries(),
+     assetsInclude: [/\.tsv$/], 
     // alias: {
     //   '@shared': './shared',
     //   '@': resolve(__dirname, 'src'),

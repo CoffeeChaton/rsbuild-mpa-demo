@@ -31,6 +31,11 @@ export const PAGE_MAP = {
     description: '材料未來視',
     label: '材料未來視'
   },
+  'game3': {
+    title: '明日方舟工具箱 材料未來視 計算器',
+    description: '材料未來視 計算器',
+    label: '材料未來視 計算器'
+  },
   '404': {
     title: '404 - 找不到頁面',
     description: '抱歉，您訪問的頁面不存在',
