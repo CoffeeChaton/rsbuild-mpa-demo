@@ -2,10 +2,15 @@
   "compilerOptions": {
     "target": "ES2023",
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": [
+    //     "./src/*"
+    //   ],
+    //   "@shared/*": [
+    //     "./shared/*"
+    //   ] // 注意最後要加 /* 才能匹配子資料夾
+    // },
     /* 嚴格規範 */
     "strict": true,
     "skipLibCheck": true,

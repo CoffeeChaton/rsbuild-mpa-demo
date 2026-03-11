@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { type TMapPreference, TILE_LAYERS } from '@/common/types/map';
-import { loadMapPreference, saveMapPreference } from '@/common/utils/mapStorage';
-import { getInitialMapState, syncStateToUrl } from '@/common/utils/urlSync';
+ 
 
 // 修正 Leaflet 預設 Icon 遺失問題
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { TILE_LAYERS, type TMapPreference } from '../../common/types/map';
+import { loadMapPreference, saveMapPreference } from '../../common/utils/mapStorage';
+import { getInitialMapState, syncStateToUrl } from '../../common/utils/urlSync';
 
 const DefaultIcon = L.icon({
   iconUrl: markerIcon,

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { MapViewer } from '@/components/Map/MapViewer';
-import { Navbar } from '@/common/Navbar';
-import { TILE_LAYERS, type TMapPreference } from '@/common/types/map';
-import { loadMapPreference, saveMapPreference } from '@/common/utils/mapStorage';
+import { Navbar } from '../../common/Navbar';
+import { type TMapPreference, TILE_LAYERS } from '../../common/types/map';
+import { loadMapPreference, saveMapPreference } from '../../common/utils/mapStorage';
+import { MapViewer } from './MapViewer';
 
 export const MapEditView = () => {
   const [pref, setPref] = useState<TMapPreference>(loadMapPreference());
@@ -13,7 +13,7 @@ export const MapEditView = () => {
     setPref(newPref);
     saveMapPreference(newPref);
     // 提示：因為 MapViewer 內部會監聽 moveend，手動更新底圖後需重刷或透過狀態通知地圖
-    window.location.reload(); 
+    window.location.reload();
   };
 
   return (
@@ -38,11 +38,10 @@ export const MapEditView = () => {
                   <button
                     key={key}
                     onClick={() => handleTileChange(key)}
-                    className={`w-full text-left px-4 py-2 rounded-lg text-sm transition ${
-                      pref.tileLayer === key 
-                        ? 'bg-blue-600 text-white shadow-md' 
+                    className={`w-full text-left px-4 py-2 rounded-lg text-sm transition ${pref.tileLayer === key
+                        ? 'bg-blue-600 text-white shadow-md'
                         : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
-                    }`}
+                      }`}
                   >
                     {key.toUpperCase()}
                   </button>

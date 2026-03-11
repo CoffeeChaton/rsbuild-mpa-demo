@@ -44,9 +44,10 @@ export default defineConfig({
   plugins: [pluginReact(), pluginFixPath()],
   source: {
     entry: getEntries(),
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
+    // alias: {
+    //   '@shared': './shared',
+    //   '@': resolve(__dirname, 'src'),
+    // },
   },
   output: {
     distPath: {

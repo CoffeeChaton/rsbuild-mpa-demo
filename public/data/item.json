@@ -1,0 +1,1241 @@
+{
+	"3211": {
+		"type": 1,
+		"sortId": 400018,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3271": 3
+		},
+		"name": {
+			"cn": "先锋芯片",
+			"tw": "先鋒晶片",
+			"us": "Vanguard Chip"
+		}
+	},
+	"3212": {
+		"type": 1,
+		"sortId": 400010,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3272": 3
+		},
+		"name": {
+			"cn": "先锋芯片组",
+			"tw": "先鋒晶片組",
+			"us": "Vanguard Chip Pack"
+		}
+	},
+	"3213": {
+		"type": 1,
+		"sortId": 400002,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3212": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "先锋双芯片",
+			"tw": "先鋒雙晶片",
+			"us": "Vanguard Dualchip"
+		}
+	},
+	"3221": {
+		"type": 1,
+		"sortId": 400019,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3281": 3
+		},
+		"name": {
+			"cn": "近卫芯片",
+			"tw": "近衛晶片",
+			"us": "Guard Chip"
+		}
+	},
+	"3222": {
+		"type": 1,
+		"sortId": 400011,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3282": 3
+		},
+		"name": {
+			"cn": "近卫芯片组",
+			"tw": "近衛晶片組",
+			"us": "Guard Chip Pack"
+		}
+	},
+	"3223": {
+		"type": 1,
+		"sortId": 400003,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3222": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "近卫双芯片",
+			"tw": "近衛雙晶片",
+			"us": "Guard Dualchip"
+		}
+	},
+	"3231": {
+		"type": 1,
+		"sortId": 400020,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3261": 3
+		},
+		"name": {
+			"cn": "重装芯片",
+			"tw": "重裝晶片",
+			"us": "Defender Chip"
+		}
+	},
+	"3232": {
+		"type": 1,
+		"sortId": 400012,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3262": 3
+		},
+		"name": {
+			"cn": "重装芯片组",
+			"tw": "重裝晶片組",
+			"us": "Defender Chip Pack"
+		}
+	},
+	"3233": {
+		"type": 1,
+		"sortId": 400004,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3232": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "重装双芯片",
+			"tw": "重裝雙晶片",
+			"us": "Defender Dualchip"
+		}
+	},
+	"3241": {
+		"type": 1,
+		"sortId": 400021,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3251": 3
+		},
+		"name": {
+			"cn": "狙击芯片",
+			"tw": "狙擊晶片",
+			"us": "Sniper Chip"
+		}
+	},
+	"3242": {
+		"type": 1,
+		"sortId": 400013,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3252": 3
+		},
+		"name": {
+			"cn": "狙击芯片组",
+			"tw": "狙擊晶片組",
+			"us": "Sniper Chip Pack"
+		}
+	},
+	"3243": {
+		"type": 1,
+		"sortId": 400005,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3242": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "狙击双芯片",
+			"tw": "狙擊雙晶片",
+			"us": "Sniper Dualchip"
+		}
+	},
+	"3251": {
+		"type": 1,
+		"sortId": 400022,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3241": 3
+		},
+		"name": {
+			"cn": "术师芯片",
+			"tw": "術師晶片",
+			"us": "Caster Chip"
+		}
+	},
+	"3252": {
+		"type": 1,
+		"sortId": 400014,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3242": 3
+		},
+		"name": {
+			"cn": "术师芯片组",
+			"tw": "術師晶片組",
+			"us": "Caster Chip Pack"
+		}
+	},
+	"3253": {
+		"type": 1,
+		"sortId": 400006,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3252": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "术师双芯片",
+			"tw": "術師雙晶片",
+			"us": "Caster Dualchip"
+		}
+	},
+	"3261": {
+		"type": 1,
+		"sortId": 400023,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3231": 3
+		},
+		"name": {
+			"cn": "医疗芯片",
+			"tw": "醫療晶片",
+			"us": "Medic Chip"
+		}
+	},
+	"3262": {
+		"type": 1,
+		"sortId": 400015,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3232": 3
+		},
+		"name": {
+			"cn": "医疗芯片组",
+			"tw": "醫療晶片組",
+			"us": "Medic Chip Pack"
+		}
+	},
+	"3263": {
+		"type": 1,
+		"sortId": 400007,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3262": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "医疗双芯片",
+			"tw": "醫療雙晶片",
+			"us": "Medic Dualchip"
+		}
+	},
+	"3271": {
+		"type": 1,
+		"sortId": 400024,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3211": 3
+		},
+		"name": {
+			"cn": "辅助芯片",
+			"tw": "輔助晶片",
+			"us": "Supporter Chip"
+		}
+	},
+	"3272": {
+		"type": 1,
+		"sortId": 400016,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3212": 3
+		},
+		"name": {
+			"cn": "辅助芯片组",
+			"tw": "輔助晶片組",
+			"us": "Supporter Chip Pack"
+		}
+	},
+	"3273": {
+		"type": 1,
+		"sortId": 400008,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3272": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "辅助双芯片",
+			"tw": "輔助雙晶片",
+			"us": "Supporter Dualchip"
+		}
+	},
+	"3281": {
+		"type": 1,
+		"sortId": 400025,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3221": 3
+		},
+		"name": {
+			"cn": "特种芯片",
+			"tw": "特種晶片",
+			"us": "Specialist Chip"
+		}
+	},
+	"3282": {
+		"type": 1,
+		"sortId": 400017,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3222": 3
+		},
+		"name": {
+			"cn": "特种芯片组",
+			"tw": "特種晶片組",
+			"us": "Specialist Chip Pack"
+		}
+	},
+	"3283": {
+		"type": 1,
+		"sortId": 400009,
+		"rare": 5,
+		"formulaType": "MANUFACTURE",
+		"formula": {
+			"3282": 2,
+			"32001": 1
+		},
+		"name": {
+			"cn": "特种双芯片",
+			"tw": "特種雙晶片",
+			"us": "Specialist Dualchip"
+		}
+	},
+	"3301": {
+		"type": 3,
+		"sortId": 80003,
+		"rare": 2,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "技巧概要·卷1",
+			"tw": "技巧概要·卷1",
+			"us": "Skill Summary - 1"
+		}
+	},
+	"3302": {
+		"type": 3,
+		"sortId": 80002,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3301": 3
+		},
+		"name": {
+			"cn": "技巧概要·卷2",
+			"tw": "技巧概要·卷2",
+			"us": "Skill Summary - 2"
+		}
+	},
+	"3303": {
+		"type": 3,
+		"sortId": 80001,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"3302": 3
+		},
+		"name": {
+			"cn": "技巧概要·卷3",
+			"tw": "技巧概要·卷3",
+			"us": "Skill Summary - 3"
+		}
+	},
+	"4006": {
+		"type": 4,
+		"sortId": 10205,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "采购凭证",
+			"tw": "採購憑證",
+			"us": "Purchase Certificate"
+		}
+	},
+	"30011": {
+		"type": 0,
+		"sortId": 100036,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "源岩",
+			"tw": "源岩",
+			"us": "Orirock"
+		}
+	},
+	"30012": {
+		"type": 0,
+		"sortId": 100035,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30011": 3
+		},
+		"name": {
+			"cn": "固源岩",
+			"tw": "固源岩",
+			"us": "Orirock Cube"
+		}
+	},
+	"30013": {
+		"type": 0,
+		"sortId": 100034,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30012": 5
+		},
+		"name": {
+			"cn": "固源岩组",
+			"tw": "固源岩組",
+			"us": "Orirock Cluster"
+		}
+	},
+	"30014": {
+		"type": 0,
+		"sortId": 100033,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30013": 4
+		},
+		"name": {
+			"cn": "提纯源岩",
+			"tw": "提純源岩",
+			"us": "Orirock Concentration"
+		}
+	},
+	"30021": {
+		"type": 0,
+		"sortId": 100048,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "代糖",
+			"tw": "代糖",
+			"us": "Sugar Substitute"
+		}
+	},
+	"30022": {
+		"type": 0,
+		"sortId": 100047,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30021": 3
+		},
+		"name": {
+			"cn": "糖",
+			"tw": "糖",
+			"us": "Sugar"
+		}
+	},
+	"30023": {
+		"type": 0,
+		"sortId": 100046,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30022": 4
+		},
+		"name": {
+			"cn": "糖组",
+			"tw": "糖組",
+			"us": "Sugar Pack"
+		}
+	},
+	"30024": {
+		"type": 0,
+		"sortId": 100045,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30023": 2,
+			"30043": 1,
+			"30083": 1
+		},
+		"name": {
+			"cn": "糖聚块",
+			"tw": "糖聚塊",
+			"us": "Sugar Lump"
+		}
+	},
+	"30031": {
+		"type": 0,
+		"sortId": 100044,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "酯原料",
+			"tw": "酯原料",
+			"us": "Ester"
+		}
+	},
+	"30032": {
+		"type": 0,
+		"sortId": 100043,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30031": 3
+		},
+		"name": {
+			"cn": "聚酸酯",
+			"tw": "聚酸酯",
+			"us": "Polyester"
+		}
+	},
+	"30033": {
+		"type": 0,
+		"sortId": 100042,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30032": 4
+		},
+		"name": {
+			"cn": "聚酸酯组",
+			"tw": "聚酸酯組",
+			"us": "Polyester Pack"
+		}
+	},
+	"30034": {
+		"type": 0,
+		"sortId": 100041,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30033": 2,
+			"30053": 1,
+			"30073": 1
+		},
+		"name": {
+			"cn": "聚酸酯块",
+			"tw": "聚酸酯塊",
+			"us": "Polyester Lump"
+		}
+	},
+	"30041": {
+		"type": 0,
+		"sortId": 100052,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "异铁碎片",
+			"tw": "異鐵碎片",
+			"us": "Oriron Shard"
+		}
+	},
+	"30042": {
+		"type": 0,
+		"sortId": 100051,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30041": 3
+		},
+		"name": {
+			"cn": "异铁",
+			"tw": "異鐵",
+			"us": "Oriron"
+		}
+	},
+	"30043": {
+		"type": 0,
+		"sortId": 100050,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30042": 4
+		},
+		"name": {
+			"cn": "异铁组",
+			"tw": "異鐵組",
+			"us": "Oriron Cluster"
+		}
+	},
+	"30044": {
+		"type": 0,
+		"sortId": 100049,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30033": 1,
+			"30043": 2,
+			"30063": 1
+		},
+		"name": {
+			"cn": "异铁块",
+			"tw": "異鐵塊",
+			"us": "Oriron Block"
+		}
+	},
+	"30051": {
+		"type": 0,
+		"sortId": 100056,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "双酮",
+			"tw": "雙酮",
+			"us": "Diketon"
+		}
+	},
+	"30052": {
+		"type": 0,
+		"sortId": 100055,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30051": 3
+		},
+		"name": {
+			"cn": "酮凝集",
+			"tw": "酮凝集",
+			"us": "Polyketon"
+		}
+	},
+	"30053": {
+		"type": 0,
+		"sortId": 100054,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30052": 4
+		},
+		"name": {
+			"cn": "酮凝集组",
+			"tw": "酮凝集組",
+			"us": "Aketon"
+		}
+	},
+	"30054": {
+		"type": 0,
+		"sortId": 100053,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30023": 1,
+			"30053": 2,
+			"30083": 1
+		},
+		"name": {
+			"cn": "酮阵列",
+			"tw": "酮陣列",
+			"us": "Keton Colloid"
+		}
+	},
+	"30061": {
+		"type": 0,
+		"sortId": 100040,
+		"rare": 1,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "破损装置",
+			"tw": "破損裝置",
+			"us": "Damaged Device"
+		}
+	},
+	"30062": {
+		"type": 0,
+		"sortId": 100039,
+		"rare": 2,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30061": 3
+		},
+		"name": {
+			"cn": "装置",
+			"tw": "裝置",
+			"us": "Device"
+		}
+	},
+	"30063": {
+		"type": 0,
+		"sortId": 100038,
+		"rare": 3,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30062": 4
+		},
+		"name": {
+			"cn": "全新装置",
+			"tw": "全新裝置",
+			"us": "Integrated Device"
+		}
+	},
+	"30064": {
+		"type": 0,
+		"sortId": 100037,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30013": 2,
+			"30063": 1,
+			"30093": 1
+		},
+		"name": {
+			"cn": "改量装置",
+			"tw": "改量裝置",
+			"us": "Optimized Device"
+		}
+	},
+	"30073": {
+		"type": 0,
+		"sortId": 100026,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "扭转醇",
+			"tw": "扭轉醇",
+			"us": "Loxic Kohl"
+		}
+	},
+	"30074": {
+		"type": 0,
+		"sortId": 100025,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30023": 1,
+			"30073": 1,
+			"30103": 1
+		},
+		"name": {
+			"cn": "白马醇",
+			"tw": "白馬醇",
+			"us": "White Horse Kohl"
+		}
+	},
+	"30083": {
+		"type": 0,
+		"sortId": 100028,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "轻锰矿",
+			"tw": "輕錳礦",
+			"us": "Manganese Ore"
+		}
+	},
+	"30084": {
+		"type": 0,
+		"sortId": 100027,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30033": 1,
+			"30073": 1,
+			"30083": 2
+		},
+		"name": {
+			"cn": "三水锰矿",
+			"tw": "三水錳礦",
+			"us": "Manganese Trihydrate"
+		}
+	},
+	"30093": {
+		"type": 0,
+		"sortId": 100030,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "研磨石",
+			"tw": "研磨石",
+			"us": "Grindstone"
+		}
+	},
+	"30094": {
+		"type": 0,
+		"sortId": 100029,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30043": 1,
+			"30063": 1,
+			"30093": 1
+		},
+		"name": {
+			"cn": "五水研磨石",
+			"tw": "五水研磨石",
+			"us": "Grindstone Pentahydrate"
+		}
+	},
+	"30103": {
+		"type": 0,
+		"sortId": 100032,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "RMA70-12",
+			"tw": "RMA70-12",
+			"us": "RMA70-12"
+		}
+	},
+	"30104": {
+		"type": 0,
+		"sortId": 100031,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30013": 2,
+			"30053": 1,
+			"30103": 1
+		},
+		"name": {
+			"cn": "RMA70-24",
+			"tw": "RMA70-24",
+			"us": "RMA70-24"
+		}
+	},
+	"30115": {
+		"type": 0,
+		"sortId": 100006,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30014": 1,
+			"30044": 1,
+			"30054": 1
+		},
+		"name": {
+			"cn": "聚合剂",
+			"tw": "聚合劑",
+			"us": "Polymerization Preparation"
+		}
+	},
+	"30125": {
+		"type": 0,
+		"sortId": 100005,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30064": 1,
+			"30074": 2
+		},
+		"name": {
+			"cn": "双极纳米片",
+			"tw": "雙極納米片",
+			"us": "Bipolar Nanoflake"
+		}
+	},
+	"30135": {
+		"type": 0,
+		"sortId": 100004,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30084": 1,
+			"30094": 1,
+			"30104": 1
+		},
+		"name": {
+			"cn": "D32钢",
+			"tw": "D32鋼",
+			"us": "D32 Steel"
+		}
+	},
+	"30145": {
+		"type": 0,
+		"sortId": 100003,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31014": 2,
+			"31024": 1,
+			"31034": 1
+		},
+		"name": {
+			"cn": "晶体电子单元",
+			"tw": "晶體電子單元",
+			"us": "Crystalline Electronic Unit"
+		}
+	},
+	"30155": {
+		"type": 0,
+		"sortId": 100002,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31044": 2,
+			"31054": 1,
+			"31064": 1
+		},
+		"name": {
+			"cn": "烧结核凝晶",
+			"tw": "燒結核凝晶",
+			"us": "Nucleic Crystal Sinter"
+		}
+	},
+	"30165": {
+		"type": 0,
+		"sortId": 100001,
+		"rare": 5,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31074": 1,
+			"31084": 1,
+			"31094": 2
+		},
+		"name": {
+			"cn": "重相位对映体",
+			"tw": "重相位對映體",
+			"us": "Rephasic Enantiomer"
+		}
+	},
+	"31013": {
+		"type": 0,
+		"sortId": 100024,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "凝胶",
+			"tw": "凝膠",
+			"us": "Coagulating Gel"
+		}
+	},
+	"31014": {
+		"type": 0,
+		"sortId": 100023,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30043": 1,
+			"31013": 1,
+			"31023": 1
+		},
+		"name": {
+			"cn": "聚合凝胶",
+			"tw": "聚合凝膠",
+			"us": "Polymerized Gel"
+		}
+	},
+	"31023": {
+		"type": 0,
+		"sortId": 100022,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "炽合金",
+			"tw": "熾合金",
+			"us": "Incandescent Alloy"
+		}
+	},
+	"31024": {
+		"type": 0,
+		"sortId": 100021,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30063": 1,
+			"30093": 1,
+			"31023": 1
+		},
+		"name": {
+			"cn": "炽合金块",
+			"tw": "熾合金塊",
+			"us": "Incandescent Alloy Block"
+		}
+	},
+	"31033": {
+		"type": 0,
+		"sortId": 100020,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "晶体元件",
+			"tw": "晶體元件",
+			"us": "Crystalline Component"
+		}
+	},
+	"31034": {
+		"type": 0,
+		"sortId": 100019,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31013": 1,
+			"31023": 1,
+			"31033": 2
+		},
+		"name": {
+			"cn": "晶体电路",
+			"tw": "晶體電路",
+			"us": "Crystalline Circuit"
+		}
+	},
+	"31043": {
+		"type": 0,
+		"sortId": 100018,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "半自然溶剂",
+			"tw": "半自然溶劑",
+			"us": "Semi-Synthetic Solvent"
+		}
+	},
+	"31044": {
+		"type": 0,
+		"sortId": 100017,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31013": 1,
+			"31043": 1,
+			"31053": 1
+		},
+		"name": {
+			"cn": "精炼溶剂",
+			"tw": "精煉溶劑",
+			"us": "Refined Solvent"
+		}
+	},
+	"31053": {
+		"type": 0,
+		"sortId": 100016,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "化合切削液",
+			"tw": "化合切削液",
+			"us": "Compound Cutting Fluid"
+		}
+	},
+	"31054": {
+		"type": 0,
+		"sortId": 100015,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30103": 1,
+			"31033": 1,
+			"31053": 1
+		},
+		"name": {
+			"cn": "切削原液",
+			"tw": "切削原液",
+			"us": "Cutting Fluid Solution"
+		}
+	},
+	"31063": {
+		"type": 0,
+		"sortId": 100014,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "转质盐组",
+			"tw": "轉質鹽組",
+			"us": "Transmuted Salt"
+		}
+	},
+	"31064": {
+		"type": 0,
+		"sortId": 100013,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30023": 1,
+			"31043": 1,
+			"31063": 1
+		},
+		"name": {
+			"cn": "转质盐聚块",
+			"tw": "轉質鹽聚塊",
+			"us": "Transmuted Salt Agglomerate"
+		}
+	},
+	"31073": {
+		"type": 0,
+		"sortId": 100012,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "褐素纤维",
+			"tw": "褐素纖維",
+			"us": "Fuscous Fiber"
+		}
+	},
+	"31074": {
+		"type": 0,
+		"sortId": 100011,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30013": 1,
+			"30033": 2,
+			"31073": 1
+		},
+		"name": {
+			"cn": "固化纤维板",
+			"tw": "固化纖維板",
+			"us": "Solidified Fiber Board"
+		}
+	},
+	"31083": {
+		"type": 0,
+		"sortId": 100010,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "环烃聚质",
+			"tw": "環烴聚質",
+			"us": "Aggregate Cyclicene"
+		}
+	},
+	"31084": {
+		"type": 0,
+		"sortId": 100009,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"31063": 1,
+			"31073": 1,
+			"31083": 1
+		},
+		"name": {
+			"cn": "环烃预制体",
+			"tw": "環烴預製體",
+			"us": "Cyclicene Prefab"
+		}
+	},
+	"31093": {
+		"type": 0,
+		"sortId": 100008,
+		"rare": 3,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "类凝结核",
+			"tw": "類凝結核",
+			"us": "Coagulative Nodule"
+		}
+	},
+	"31094": {
+		"type": 0,
+		"sortId": 100007,
+		"rare": 4,
+		"formulaType": "WORKSHOP",
+		"formula": {
+			"30023": 1,
+			"31083": 1,
+			"31093": 1
+		},
+		"name": {
+			"cn": "手性屈光体",
+			"tw": "手性屈光體",
+			"us": "Chiral Refractor"
+		}
+	},
+	"32001": {
+		"type": 4,
+		"sortId": 400001,
+		"rare": 4,
+		"formulaType": null,
+		"formula": {
+			"4006": 90
+		},
+		"name": {
+			"cn": "芯片助剂",
+			"tw": "晶片助劑",
+			"us": "Chip Catalyst"
+		}
+	},
+	"mod_unlock_token": {
+		"type": 2,
+		"sortId": 90001,
+		"rare": 5,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "模组数据块",
+			"tw": "模組數據塊",
+			"us": "Module Data Block"
+		}
+	},
+	"mod_update_token_2": {
+		"type": 2,
+		"sortId": 90002,
+		"rare": 5,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "数据增补仪",
+			"tw": "數據增補儀",
+			"us": "Data Supplement Instrument"
+		}
+	},
+	"mod_update_token_1": {
+		"type": 2,
+		"sortId": 90003,
+		"rare": 4,
+		"formulaType": null,
+		"formula": null,
+		"name": {
+			"cn": "数据增补条",
+			"tw": "數據增補條",
+			"us": "Data Supplement Stick"
+		}
+	}
+}

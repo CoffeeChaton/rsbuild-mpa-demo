@@ -8,7 +8,6 @@
     -   **資產前綴**: 從 `package.json` 自動讀取 `name` 作為生產環境 `ASSET_PREFIX`。
     -   **路徑注入**: 透過 `source.define` 將前綴注入前端，確保 React Router 的 `basename` 與 Rsbuild 靜態資源路徑一致。
 3.  **pluginFixPath 插件**: 建置後自動將 `404/index.html` 提升至根目錄 `404.html`，以符合 GitHub Pages 的 SPA Fallback 規範。
-4.  **零成本環境模擬**: `post-build-live.ts` 利用 Node.js 的 `rename` 原子操作，在 `dist` 內模擬物理子目錄結構，不增加磁碟寫入負擔。
 
 ## 二、 建置穩定性與安全性 (Infrastructure)
 
