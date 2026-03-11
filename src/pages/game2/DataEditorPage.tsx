@@ -36,7 +36,7 @@ export function DataEditorPage() {
         return rows.map(row => {
             const matchedId = bundle.items[row.product] ? row.product : bundle.nameToIdMap.get(row.product);
             const matchedItem = matchedId ? bundle.items[matchedId] : null;
-            return { ...row, status: !!matchedItem ? 'O' : 'X', isValid: !!matchedItem, matchedItem, matchedId };
+            return { ...row, status: matchedItem ? 'O' : 'X', isValid: !!matchedItem, matchedItem, matchedId };
         });
     }, [rows, bundle]);
 
@@ -58,7 +58,7 @@ export function DataEditorPage() {
 
     // 生成結算 TSV 字串
     const settlementTsv = useMemo(() => {
-        let lines = ["稀有度\t名稱\t數量"];
+        const lines = ["稀有度\t名稱\t數量"];
         [5, 4, 3, 2, 1, 0].forEach(rare => {
             const items = settlementGroups[rare];
             if (items.length === 0) return;
