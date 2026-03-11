@@ -173,9 +173,9 @@ export function DataEditorPage() {
                                         <div
                                             key={item.id}
                                             className="flex items-center gap-4 p-3 rounded-2xl border border-slate-50 hover:bg-slate-50/50 cursor-pointer transition-all"
-                                            onClick={() => setPreviewImg(`./img/game/item/${item.id}.png`)}
+                                            onClick={() => setPreviewImg(`${import.meta.env.BASE_URL}/img/game/item/${item.id}.png`)}
                                         >
-                                            <img src={`./img/game/item/${item.id}.png`} className="w-10 h-10 object-contain rounded-lg border bg-white" alt={item.name} />
+                                            <img src={`${import.meta.env.BASE_URL}/img/game/item/${item.id}.png`} className="w-10 h-10 object-contain rounded-lg border bg-white" alt={item.name} />
                                             <div className="min-w-0">
                                                 <div className="text-[10px] font-black text-slate-300 uppercase">ID: {item.id}</div>
                                                 <div className="text-xs font-black text-slate-700 truncate">{item.name}</div>
