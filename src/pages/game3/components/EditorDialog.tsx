@@ -12,6 +12,7 @@ import {
   ChevronDownIcon,
   MagicWandIcon,
 } from "@radix-ui/react-icons";
+import type { TDefaultPlanKey } from "../assets/planLoader";
 
 export interface IEditorDialogParam {
   open: boolean;
@@ -24,7 +25,7 @@ export interface IEditorDialogParam {
   };
   // 外部注入的行為
   onSave: (title: string, content: string, targetId: string | null) => void;
-  loadDefault: (planId: string) => Promise<string>;
+  loadDefault: (planId: TDefaultPlanKey) => Promise<string>;
 }
 
 export const EditorDialog: React.FC<IEditorDialogParam> = ({
@@ -42,7 +43,7 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
     onSave(tempTitle, tempContent, initialData.targetId);
   };
 
-  const handleImportDefault = async (p: string) => {
+  const handleImportDefault = async (p: TDefaultPlanKey) => {
     const raw = await loadDefault(p);
     setTempContent(raw);
   };

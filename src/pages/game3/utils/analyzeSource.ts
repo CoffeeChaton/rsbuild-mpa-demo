@@ -16,7 +16,7 @@ export function analyzeSource(
   if (isJson) {
     try {
       const data = JSON.parse(content);
-      return new Map(Object.entries(data)); 
+      return new Map(Object.entries(data));
     } catch {
       return map;
     }

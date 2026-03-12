@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
-
 import { ITEM_DATA_KEY, itemFetcher } from "../game2/services/itemFetcher";
 import { ImportDialog } from "./components/ImportDialog";
 import { EditorDialog } from "./components/EditorDialog";
@@ -13,6 +12,7 @@ import { useMaterialRows } from "./hooks/useMaterialRows";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { PlanContext } from "./context/PlanContext";
 import { useEditor } from "./hooks/useEditor";
+import { tsvFetcher } from "./assets/planLoader";
 
 const NAVBAR_HEIGHT = 70; // px
 
@@ -85,7 +85,7 @@ export function FutureMaterialPage() {
 
       {/* EditorDialog */}
       <EditorDialog
-        key={editor.open ? `edit-${editor.targetId}-${Date.now()}` : "edit-closed"}
+        key={editor.open ? `edit-${editor.targetId}` : "edit-closed"}
         open={editor.open}
         onOpenChange={(v) => setEditorOpen(v)}
         initialData={{
@@ -94,10 +94,7 @@ export function FutureMaterialPage() {
           content: editor.content,
         }}
         onSave={onEditorSave}
-        loadDefault={async (p: string) => {
-          const m = await import(`./assets/${p}.tsv?raw`);
-          return m.default as string;
-        }}
+        loadDefault={tsvFetcher}
       />
 
       {/* Import Dialog */}
