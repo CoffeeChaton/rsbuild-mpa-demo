@@ -7,6 +7,7 @@ import { ImportDialog } from "./components/ImportDialog";
 import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
+import type { TEditor } from "./type";
 
 const NAVBAR_HEIGHT = 70; // px
 interface IItemRow {
@@ -59,11 +60,19 @@ export function FutureMaterialPage() {
   const [search, setSearch] = useState<string>("");
   const [hideEmpty, setHideEmpty] = useState<boolean>(true);
 
+  // 簡化為 editor
+  // const [editorOpen, setEditorOpen] = useState(false);
+  // const [editTargetId, setEditTargetId] = useState<string | null>(null);
+  // const [editTitle, setEditTitle] = useState("");
+  // const [editContent, setEditContent] = useState("");
+
   // Editor States
-  const [editorOpen, setEditorOpen] = useState(false);
-  const [editTargetId, setEditTargetId] = useState<string | null>(null); // 舊 Key
-  const [editTitle, setEditTitle] = useState(""); // 新名稱
-  const [editContent, setEditContent] = useState("");
+  const [editor, setEditor] = useState<TEditor>({
+    open: false,
+    targetId: null as string | null,
+    title: "",
+    content: "",
+  });
 
   const [importOpen, setImportOpen] = useState(false);
 
@@ -127,25 +136,27 @@ export function FutureMaterialPage() {
 
   const handleSavePlan = () => {
     const next = { ...customPlans };
-    const title = editTitle.trim() || "未命名方案";
+    const title = editor.title.trim() || "未命名方案";
 
     // 如果是編輯舊有的，且名字改了，要刪除舊的 key
-    if (editTargetId && editTargetId !== title) {
-      delete next[editTargetId];
+    if (editor.targetId && editor.targetId !== title) {
+      delete next[editor.targetId];
     }
 
-    next[title] = editContent;
+    next[title] = editor.content;
     setCustomPlans(next);
     setPlanName(title);
-    setEditorOpen(false);
+    setEditor({ ...editor, open: false })
   };
 
 
   const loadDefaultToEditor = async (p: string) => {
     try {
       const m = await import(`./assets/${p}.tsv?raw`);
-      setEditContent(m.default);
-    } catch { /* ignore */ }
+      setEditor({ ...editor, content: m.default })
+    } catch (error) {
+      console.error("loadDefaultToEditor error", error)
+    }
   };
 
 
@@ -162,12 +173,10 @@ export function FutureMaterialPage() {
         setPlanName={setPlanName}
         customPlans={customPlans}
         setCustomPlans={setCustomPlans}
-        setEditTargetId={setEditTargetId}
-        setEditTitle={setEditTitle}
-        setEditContent={setEditContent}
-        setEditorOpen={setEditorOpen}
         tsvB={tsvB}
         setImportOpen={setImportOpen}
+
+        setEditor={setEditor}
       />
 
       {/* TableArea */}
@@ -175,14 +184,10 @@ export function FutureMaterialPage() {
 
       {/* EditorDialog */}
       <EditorDialog
-        editorOpen={editorOpen}
-        setEditorOpen={setEditorOpen}
         loadDefaultToEditor={loadDefaultToEditor}
-        editTitle={editTitle}
-        setEditTitle={setEditTitle}
-        editContent={editContent}
-        setEditContent={setEditContent}
         handleSavePlan={handleSavePlan}
+        editor={editor}
+        setEditor={setEditor}
       />
 
       {/* Import Dialog */}

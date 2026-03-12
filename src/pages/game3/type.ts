@@ -6,3 +6,10 @@ export interface IItemRow {
   need: number;
   total: number;
 }
+
+export type TEditor = {
+  open: boolean;
+  targetId: string | null;
+  title: string;
+  content: string;
+}

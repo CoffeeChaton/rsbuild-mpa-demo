@@ -10,7 +10,7 @@ import {
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
 import type { Dispatch, SetStateAction } from "react";
-import type { IItemRow } from "../type";
+import type { IItemRow, TEditor } from "../type";
 
 export interface IToolbarAreaProp {
   search: string;
@@ -22,13 +22,13 @@ export interface IToolbarAreaProp {
   setPlanName: Dispatch<SetStateAction<string>>;
   customPlans: Record<string, string>;
   setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
-  setEditTargetId: Dispatch<SetStateAction<string | null>>;
-  setEditTitle: Dispatch<SetStateAction<string>>;
-  setEditContent: Dispatch<SetStateAction<string>>;
-  setEditorOpen: Dispatch<SetStateAction<boolean>>;
+
   tsvB: string;
   //
   setImportOpen: Dispatch<SetStateAction<boolean>>;
+
+  // 重構
+  setEditor: Dispatch<SetStateAction<TEditor>>,
 }
 
 export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
@@ -41,12 +41,9 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
   setPlanName,
   customPlans,
   setCustomPlans,
-  setEditTargetId,
-  setEditTitle,
-  setEditContent,
-  setEditorOpen,
   tsvB,
   setImportOpen,
+  setEditor,
 }) => {
   return (
     <Box p="3" className="bg-white border-b shadow-sm z-20">
@@ -63,11 +60,9 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
               setPlanName={setPlanName}
               customPlans={customPlans}
               setCustomPlans={setCustomPlans}
-              setEditTargetId={setEditTargetId}
-              setEditTitle={setEditTitle}
-              setEditContent={setEditContent}
-              setEditorOpen={setEditorOpen}
               tsvB={tsvB}
+
+              setEditor={setEditor}
             />
 
             <Button

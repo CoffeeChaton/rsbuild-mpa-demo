@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type Dispatch, type SetStateAction } from "react";
 import {
   Box,
   Button,
@@ -12,30 +12,26 @@ import {
   ChevronDownIcon,
   MagicWandIcon,
 } from "@radix-ui/react-icons";
+import type { TEditor } from "../type";
 
 export interface IEditorDialogParam {
-  editorOpen: boolean;
-  setEditorOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  editor: TEditor,
+  setEditor: Dispatch<SetStateAction<TEditor>>,
   loadDefaultToEditor: (p: string) => Promise<void>;
-  editTitle: string;
-  setEditTitle: React.Dispatch<React.SetStateAction<string>>;
-  editContent: string;
-  setEditContent: React.Dispatch<React.SetStateAction<string>>;
   handleSavePlan: () => void;
 }
 
 export const EditorDialog: React.FC<IEditorDialogParam> = ({
-  editorOpen,
-  setEditorOpen,
+  editor,
+  setEditor,
   loadDefaultToEditor,
-  editTitle,
-  setEditTitle,
-  editContent,
-  setEditContent,
   handleSavePlan,
 }) => {
   return (
-    <Dialog.Root open={editorOpen} onOpenChange={setEditorOpen}>
+    <Dialog.Root
+      open={editor.open}
+      onOpenChange={(v) => setEditor(e => ({ ...e, open: v }))}
+    >
       <Dialog.Content style={{ maxWidth: 700 }} className="rounded-3xl p-0 overflow-hidden">
         <Box p="4" className="bg-slate-50 border-b">
           <Flex justify="between" align="center">
@@ -58,14 +54,17 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
           <Flex direction="column" gap="3">
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">方案名稱</Text>
-              <TextField.Root placeholder="輸入方案標題..." value={editTitle} onChange={e => setEditTitle(e.target.value)} className="bg-slate-100 border-none" />
+              <TextField.Root placeholder="輸入方案標題..."
+                value={editor.title}
+                onChange={e => setEditor(s => ({ ...s, title: e.target.value }))}
+                className="bg-slate-100 border-none" />
             </Box>
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">TSV 數據內容</Text>
               <textarea
                 className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none bg-slate-100"
-                value={editContent}
-                onChange={e => setEditContent(e.target.value)}
+                value={editor.content}
+                onChange={e => setEditor(s => ({ ...s, content: e.target.value }))}
                 placeholder="活動名稱	產物	數量"
               />
             </Box>

@@ -2,17 +2,16 @@ import React from "react";
 import { Button, DropdownMenu, Flex, IconButton, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { Dispatch, SetStateAction } from "react";
+import type { TEditor } from "../type";
 
 interface IPlanSwitcher {
   planName: string;
   setPlanName: Dispatch<SetStateAction<string>>;
   customPlans: Record<string, string>;
   setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
-  setEditTargetId: Dispatch<SetStateAction<string | null>>;
-  setEditTitle: Dispatch<SetStateAction<string>>;
-  setEditContent: Dispatch<SetStateAction<string>>;
-  setEditorOpen: Dispatch<SetStateAction<boolean>>;
   tsvB: string;
+
+  setEditor: Dispatch<SetStateAction<TEditor>>,
 }
 
 export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
@@ -20,11 +19,9 @@ export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
   setPlanName,
   customPlans,
   setCustomPlans,
-  setEditTargetId,
-  setEditTitle,
-  setEditContent,
-  setEditorOpen,
   tsvB,
+  //
+  setEditor,
 }) => {
   return (
     <DropdownMenu.Root>
@@ -66,10 +63,12 @@ export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
         <DropdownMenu.Item
           color="indigo"
           onClick={() => {
-            setEditTargetId(null);
-            setEditTitle(`USR_${new Date().getTime().toString().slice(-4)}`);
-            setEditContent("");
-            setEditorOpen(true);
+            setEditor({
+              open: true,
+              targetId: null,
+              title: `USR_${Date.now()}`,
+              content: "",
+            });
           }}
         >
           <PlusIcon /> 新增方案...
@@ -77,10 +76,12 @@ export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
         {customPlans[planName] !== undefined && (
           <DropdownMenu.Item
             onClick={() => {
-              setEditTargetId(planName);
-              setEditTitle(planName);
-              setEditContent(tsvB);
-              setEditorOpen(true);
+              setEditor({
+                open: true,
+                targetId: planName,
+                title: planName,
+                content: tsvB,
+              });
             }}
           >
             <GearIcon /> 編輯方案名稱/內容...
