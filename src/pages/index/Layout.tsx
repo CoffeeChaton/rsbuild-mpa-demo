@@ -1,6 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { PAGE_MAP, type TPageKey, type IPageInfo } from '../../common/config/pages';
 import { useEffect } from 'react';
+import "@radix-ui/themes/styles.css";
+import { Theme } from "@radix-ui/themes";
 
 const MetaUpdater = () => {
   // 1. 強制排除 any，符合 IPageInfo 嚴格型別
@@ -38,8 +40,8 @@ const MetaUpdater = () => {
 };
 
 export const Layout = ({ children }: { children: React.ReactNode }) => (
-  <>
+  <Theme>
     <MetaUpdater />
     {children}
-  </>
+  </Theme>
 );
