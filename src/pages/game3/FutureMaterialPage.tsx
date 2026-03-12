@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
 
@@ -79,6 +79,17 @@ export function FutureMaterialPage() {
     }
   };
 
+  const copyResult = useCallback(() => {
+    const result = Object.fromEntries(rows
+      .filter(r => r.total > 0)
+      .map(r => [r.id, r.total]),
+    );
+
+    navigator.clipboard.writeText(
+      JSON.stringify(result, null, 2),
+    );
+  }, [rows]);
+
   return (
     <Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
       {/* ToolbarArea */}
@@ -97,6 +108,7 @@ export function FutureMaterialPage() {
           setEditor={setEditor}
           filter={filter}
           setFilter={setFilter}
+          copyResult={copyResult}
         />
       </PlanContext.Provider>
 

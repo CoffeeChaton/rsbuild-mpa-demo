@@ -18,6 +18,7 @@ export interface IToolbarAreaProp {
   setEditor: Dispatch<SetStateAction<TEditor>>;
   filter: TFilter;
   setFilter: Dispatch<SetStateAction<TFilter>>;
+  copyResult: () => void;
 }
 
 export const ToolbarArea = memo<IToolbarAreaProp>(({
@@ -26,6 +27,7 @@ export const ToolbarArea = memo<IToolbarAreaProp>(({
   setEditor,
   filter,
   setFilter,
+  copyResult,
 }) => {
   return (
     <Box p="3" className="bg-white border-b shadow-sm z-20">
@@ -43,10 +45,7 @@ export const ToolbarArea = memo<IToolbarAreaProp>(({
 
             <Button
               variant="outline"
-              onClick={() => {
-                const result = Object.fromEntries(rows.filter(r => r.total > 0).map(r => [r.id, r.total]));
-                navigator.clipboard.writeText(JSON.stringify(result, null, 2));
-              }}
+              onClick={copyResult}
             >
               <BackpackIcon /> 複製結果
             </Button>
