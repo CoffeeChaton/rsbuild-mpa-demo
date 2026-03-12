@@ -9,6 +9,7 @@ import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
 import type { TEditor, TFilter } from "./type";
 import { analyzeSource, type IItemBundle } from "./utils/analyzeSource";
+import { usePlanManager } from "./hooks/usePlanManager";
 
 const NAVBAR_HEIGHT = 70; // px
 interface IItemRow {
@@ -24,27 +25,19 @@ export function FutureMaterialPage() {
   const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
 
   const [jsonA, setJsonA] = useState<string>(() => localStorage.getItem("fm_a_v5") || "{}");
-  const [planName, setPlanName] = useState<string>(() => localStorage.getItem("fm_current_plan_name") || "plan_a");
-  const [customPlans, setCustomPlans] = useState<Record<string, string>>(() => {
-    const saved = localStorage.getItem("fm_custom_plans");
-    return saved ? JSON.parse(saved) : {};
-  });
 
-  const [tsvB, setTsvB] = useState<string>("");
-
-  // const [search, setSearch] = useState<string>("");
-  // const [hideEmpty, setHideEmpty] = useState<boolean>(true);
+  const {
+    planName,
+    setPlanName,
+    customPlans,
+    setCustomPlans,
+    tsvB,
+  } = usePlanManager();
 
   const [filter, setFilter] = useState<TFilter>({
     search: "",
     hideEmpty: true,
   });
-
-  // 簡化為 editor
-  // const [editorOpen, setEditorOpen] = useState(false);
-  // const [editTargetId, setEditTargetId] = useState<string | null>(null);
-  // const [editTitle, setEditTitle] = useState("");
-  // const [editContent, setEditContent] = useState("");
 
   // Editor States
   const [editor, setEditor] = useState<TEditor>({
@@ -65,22 +58,6 @@ export function FutureMaterialPage() {
   useEffect(() => {
     localStorage.setItem("fm_current_plan_name", planName);
   }, [planName]);
-
-  useEffect(() => {
-    const fetchTsv = async () => {
-      if (customPlans[planName] !== undefined) {
-        setTsvB(customPlans[planName]);
-      } else if (planName.startsWith("plan_")) {
-        try {
-          const m = await import(`./assets/${planName}.tsv?raw`);
-          setTsvB(m.default);
-        } catch {
-          setTsvB("");
-        }
-      }
-    };
-    fetchTsv();
-  }, [planName, customPlans]);
 
   const dataA = useMemo(() => analyzeSource(jsonA, bundle, true), [jsonA, bundle]);
   const dataB = useMemo(() => analyzeSource(tsvB, bundle, false), [tsvB, bundle]);
