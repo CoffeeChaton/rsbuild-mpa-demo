@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
 
@@ -8,23 +8,19 @@ import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
 import type { TEditor, TFilter } from "./type";
-import { analyzeSource, type IItemBundle } from "./utils/analyzeSource";
 import { usePlanManager } from "./hooks/usePlanManager";
+import { useMaterialRows } from "./hooks/useMaterialRows";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 const NAVBAR_HEIGHT = 70; // px
-interface IItemRow {
-  id: string;
-  name: string;
-  rare: number;
-  stock: number;
-  need: number;
-  total: number;
-}
 
 export function FutureMaterialPage() {
   const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
 
-  const [jsonA, setJsonA] = useState<string>(() => localStorage.getItem("fm_a_v5") || "{}");
+  const [jsonA, setJsonA] = useLocalStorageState<string>(
+    "fm_a_v5",
+    "{}",
+  );
 
   const {
     planName,
@@ -50,46 +46,13 @@ export function FutureMaterialPage() {
   const [importOpen, setImportOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("fm_a_v5", jsonA);
-  }, [jsonA]);
-  useEffect(() => {
     localStorage.setItem("fm_custom_plans", JSON.stringify(customPlans));
   }, [customPlans]);
   useEffect(() => {
     localStorage.setItem("fm_current_plan_name", planName);
   }, [planName]);
 
-  const dataA = useMemo(() => analyzeSource(jsonA, bundle, true), [jsonA, bundle]);
-  const dataB = useMemo(() => analyzeSource(tsvB, bundle, false), [tsvB, bundle]);
-
-  const rows = useMemo<IItemRow[]>(() => {
-    const b = bundle as IItemBundle | undefined;
-    if (!b) return [];
-    return Object.keys(b.items).map(id => {
-      const stock = dataA.get(id) || 0;
-      const need = dataB.get(id) || 0;
-      return {
-        id,
-        name: b.items[id]?.name.tw || id,
-        rare: b.items[id]?.rare || 0,
-        stock,
-        need,
-        total: stock + need,
-      };
-    })
-      .filter(r => {
-        const matchSearch = r.name.toLowerCase().includes(filter.search.toLowerCase());
-        const hasData = r.stock !== 0 || r.need !== 0;
-        return filter.hideEmpty ? (matchSearch && hasData) : matchSearch;
-      })
-      .sort((a, b) => b.rare - a.rare || a.id.localeCompare(b.id));
-  }, [dataA, dataB, bundle, filter]);
-
-  const groupedRows = useMemo(() => {
-    const groups: Record<number, IItemRow[]> = { 5: [], 4: [], 3: [], 2: [], 1: [] };
-    rows.forEach(r => groups[r.rare]?.push(r));
-    return groups;
-  }, [rows]);
+  const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, bundle, filter);
 
   const handleSavePlan = () => {
     const next = { ...customPlans };

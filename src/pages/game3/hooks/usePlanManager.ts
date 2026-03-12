@@ -1,28 +1,13 @@
 import { useEffect, useState } from "react";
+import { useLocalStorageState } from "./useLocalStorageState";
 
 export function usePlanManager() {
-  const [planName, setPlanName] = useState<string>(
-    () => localStorage.getItem("fm_current_plan_name") || "plan_a",
-  );
-
-  const [customPlans, setCustomPlans] = useState<Record<string, string>>(
-    () => {
-      const saved = localStorage.getItem("fm_custom_plans");
-      return saved ? JSON.parse(saved) : {};
-    },
-  );
-
   const [tsvB, setTsvB] = useState<string>("");
 
   // 保存 custom plans
-  useEffect(() => {
-    localStorage.setItem("fm_custom_plans", JSON.stringify(customPlans));
-  }, [customPlans]);
-
+  const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {});
   // 保存當前方案
-  useEffect(() => {
-    localStorage.setItem("fm_current_plan_name", planName);
-  }, [planName]);
+  const [planName, setPlanName] = useLocalStorageState<string>("fm_current_plan_name", "plan_a");
 
   // 載入 TSV
   useEffect(() => {
