@@ -1,13 +1,14 @@
 import { createContext, useContext } from "react";
 import type { TEditor } from "../type";
 
-interface IPlanContext {
+export interface IPlanContext {
   planName: string;
   setPlanName: (v: string) => void;
   customPlans: Record<string, string>;
   setCustomPlans: (v: Record<string, string>) => void;
   tsvB: string;
   setEditorOpen: (open: boolean, data?: Partial<TEditor>) => void;
+  updateCustomPlan: (title: string, content: string, targetId: string | null) => void;
   deletePlan: (name: string) => void;
 }
 

@@ -12,7 +12,6 @@ import { useMaterialRows } from "./hooks/useMaterialRows";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { PlanContext } from "./context/PlanContext";
 import { useEditor } from "./hooks/useEditor";
-import { tsvFetcher } from "./assets/planLoader";
 
 const NAVBAR_HEIGHT = 70; // px
 
@@ -25,12 +24,6 @@ export function FutureMaterialPage() {
   // 1. Hook 回傳值已經穩定，直接拿來用
   const planManager: IPlanManagerContext = usePlanManager();
   const { editor, setEditorOpen } = useEditor();
-
-  /** 2. 存檔邏輯優化 當點擊「確認保存」時 */
-  const onEditorSave = useCallback((title: string, content: string, targetId: string | null) => {
-    planManager.updateCustomPlan(title, content, targetId);
-    setEditorOpen(false);
-  }, [planManager, setEditorOpen]);
 
   /** 3. 計算 Row 數據 */
   const { rows, groupedRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
@@ -65,29 +58,26 @@ export function FutureMaterialPage() {
           setFilter={setFilter}
           copyResult={copyResult}
         />
+        {/* TableArea */}
+        <TableArea groupedRows={groupedRows} />
+
+        {/* EditorDialog */}
+        <EditorDialog
+          key={editor.open ? `edit-${editor.targetId}` : "edit-closed"}
+          open={editor.open}
+          onOpenChange={setEditorOpen}
+          initialData={editor}
+        />
+
+        {/* Import Dialog */}
+        <ImportDialog
+          key={importOpen ? "open" : "closed"} // 透過 key 強制 Dialog 開啟時重新初始化 state
+          importOpen={importOpen}
+          setImportOpen={setImportOpen}
+          jsonA={jsonA}
+          setJsonA={setJsonA}
+        />
       </PlanContext.Provider>
-
-      {/* TableArea */}
-      <TableArea groupedRows={groupedRows} />
-
-      {/* EditorDialog */}
-      <EditorDialog
-        key={editor.open ? `edit-${editor.targetId}` : "edit-closed"}
-        open={editor.open}
-        onOpenChange={setEditorOpen}
-        initialData={editor}
-        onSave={onEditorSave}
-        loadDefault={tsvFetcher}
-      />
-
-      {/* Import Dialog */}
-      <ImportDialog
-        key={importOpen ? "open" : "closed"} // 透過 key 強制 Dialog 開啟時重新初始化 state
-        importOpen={importOpen}
-        setImportOpen={setImportOpen}
-        jsonA={jsonA}
-        setJsonA={setJsonA}
-      />
     </Flex>
   );
 }

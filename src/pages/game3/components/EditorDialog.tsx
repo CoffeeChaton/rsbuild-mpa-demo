@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   Box,
   Button,
@@ -12,36 +12,34 @@ import {
   ChevronDownIcon,
   MagicWandIcon,
 } from "@radix-ui/react-icons";
-import type { TDefaultPlanKey } from "../assets/planLoader";
+import { type TDefaultPlanKey, tsvFetcher } from "../assets/planLoader";
 import type { TEditor } from "../type";
+import { type IPlanContext, usePlanContext } from "../context/PlanContext";
 
 export interface IEditorDialogParam {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  // 傳入編輯所需的初始資訊
   initialData: TEditor;
-  // 外部注入的行為
-  onSave: (title: string, content: string, targetId: string | null) => void;
-  loadDefault: (planId: TDefaultPlanKey) => Promise<string>;
 }
 
-export const EditorDialog: React.FC<IEditorDialogParam> = ({
+export const EditorDialog: React.FC<IEditorDialogParam> = memo(({
   open,
   onOpenChange,
   initialData,
-  onSave,
-  loadDefault,
 }) => {
-  // 內部受控，輸入時不影響外界
+  // 從 Context 取得更新方法
+  const planContext: IPlanContext = usePlanContext();
   const [tempTitle, setTempTitle] = useState(initialData.title);
   const [tempContent, setTempContent] = useState(initialData.content);
 
   const handleInternalSave = () => {
-    onSave(tempTitle, tempContent, initialData.targetId);
+    if (!planContext) return;
+    planContext.updateCustomPlan(tempTitle, tempContent, initialData.targetId);
+    onOpenChange(false);
   };
 
   const handleImportDefault = async (p: TDefaultPlanKey) => {
-    const raw = await loadDefault(p);
+    const raw = await tsvFetcher(p);
     setTempContent(raw);
   };
 
@@ -99,4 +97,4 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
       </Dialog.Content>
     </Dialog.Root>
   );
-};
+});
