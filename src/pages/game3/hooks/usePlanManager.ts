@@ -3,11 +3,23 @@ import { useLocalStorageState } from "./useLocalStorageState";
 
 export function usePlanManager() {
   const [tsvB, setTsvB] = useState<string>("");
-
-  // 保存 custom plans
   const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {});
-  // 保存當前方案
   const [planName, setPlanName] = useLocalStorageState<string>("fm_current_plan_name", "plan_a");
+
+  // 新增：集中處理存檔邏輯，確保正確性
+  const updateCustomPlan = (title: string, content: string, targetId: string | null) => {
+    const next = { ...customPlans };
+    const finalTitle = title.trim() || "未命名方案";
+
+    // 如果是更名編輯，刪除舊 key
+    if (targetId && targetId !== finalTitle) {
+      delete next[targetId];
+    }
+
+    next[finalTitle] = content;
+    setCustomPlans(next);
+    setPlanName(finalTitle); // 存檔後自動切換到該方案
+  };
 
   // 載入 TSV
   useEffect(() => {
@@ -33,5 +45,6 @@ export function usePlanManager() {
     customPlans,
     setCustomPlans,
     tsvB,
+    updateCustomPlan,
   };
 }

@@ -23,13 +23,26 @@ export function FutureMaterialPage() {
     "{}",
   );
 
+  const planOps = usePlanManager();
   const {
     planName,
     setPlanName,
     customPlans,
     setCustomPlans,
     tsvB,
-  } = usePlanManager();
+    updateCustomPlan,
+  } = planOps;
+
+  // 當點擊「確認保存」時
+  const onEditorSave = (title: string, content: string, targetId: string | null) => {
+    updateCustomPlan(title, content, targetId);
+    setEditor(prev => ({ ...prev, open: false }));
+  };
+
+  const loadAsset = async (p: string) => {
+    const m = await import(`./assets/${p}.tsv?raw`);
+    return m.default as string;
+  };
 
   const [filter, setFilter] = useState<TFilter>({
     search: "",
@@ -46,30 +59,6 @@ export function FutureMaterialPage() {
 
   const [importOpen, setImportOpen] = useState(false);
   const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, filter, bundle);
-
-  const handleSavePlan = () => {
-    const next = { ...customPlans };
-    const title = editor.title.trim() || "未命名方案";
-
-    // 如果是編輯舊有的，且名字改了，要刪除舊的 key
-    if (editor.targetId && editor.targetId !== title) {
-      delete next[editor.targetId];
-    }
-
-    next[title] = editor.content;
-    setCustomPlans(next);
-    setPlanName(title);
-    setEditor((e) => ({ ...e, open: false }));
-  };
-
-  const loadDefaultToEditor = async (p: string) => {
-    try {
-      const m = await import(`./assets/${p}.tsv?raw`);
-      setEditor((e) => ({ ...e, content: m.default }));
-    } catch (error) {
-      console.error("loadDefaultToEditor error", error);
-    }
-  };
 
   const copyResult = useCallback(() => {
     const result = Object.fromEntries(
@@ -110,10 +99,16 @@ export function FutureMaterialPage() {
 
       {/* EditorDialog */}
       <EditorDialog
-        loadDefaultToEditor={loadDefaultToEditor}
-        handleSavePlan={handleSavePlan}
-        editor={editor}
-        setEditor={setEditor}
+        key={editor.open ? `edit-${editor.targetId}-${Date.now()}` : "edit-closed"}
+        open={editor.open}
+        onOpenChange={(v) => setEditor(e => ({ ...e, open: v }))}
+        initialData={{
+          targetId: editor.targetId,
+          title: editor.title,
+          content: editor.content,
+        }}
+        onSave={onEditorSave}
+        loadDefault={loadAsset}
       />
 
       {/* Import Dialog */}

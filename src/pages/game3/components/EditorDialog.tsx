@@ -1,4 +1,4 @@
-import React, { type Dispatch, type SetStateAction } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -12,25 +12,45 @@ import {
   ChevronDownIcon,
   MagicWandIcon,
 } from "@radix-ui/react-icons";
-import type { TEditor } from "../type";
 
 export interface IEditorDialogParam {
-  editor: TEditor;
-  setEditor: Dispatch<SetStateAction<TEditor>>;
-  loadDefaultToEditor: (p: string) => Promise<void>;
-  handleSavePlan: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  // 傳入編輯所需的初始資訊
+  initialData: {
+    targetId: string | null,
+    title: string,
+    content: string,
+  };
+  // 外部注入的行為
+  onSave: (title: string, content: string, targetId: string | null) => void;
+  loadDefault: (planId: string) => Promise<string>;
 }
 
 export const EditorDialog: React.FC<IEditorDialogParam> = ({
-  editor,
-  setEditor,
-  loadDefaultToEditor,
-  handleSavePlan,
+  open,
+  onOpenChange,
+  initialData,
+  onSave,
+  loadDefault,
 }) => {
+  // 內部受控，輸入時不影響外界
+  const [tempTitle, setTempTitle] = useState(initialData.title);
+  const [tempContent, setTempContent] = useState(initialData.content);
+
+  const handleInternalSave = () => {
+    onSave(tempTitle, tempContent, initialData.targetId);
+  };
+
+  const handleImportDefault = async (p: string) => {
+    const raw = await loadDefault(p);
+    setTempContent(raw);
+  };
+
   return (
     <Dialog.Root
-      open={editor.open}
-      onOpenChange={(v) => setEditor(e => ({ ...e, open: v }))}
+      open={open}
+      onOpenChange={onOpenChange}
     >
       <Dialog.Content style={{ maxWidth: 700 }} className="rounded-3xl p-0 overflow-hidden">
         <Box p="4" className="bg-slate-50 border-b">
@@ -43,9 +63,9 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
                 </Button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content>
-                <DropdownMenu.Item onClick={() => loadDefaultToEditor("plan_a")}>導入 方案 A</DropdownMenu.Item>
-                <DropdownMenu.Item onClick={() => loadDefaultToEditor("plan_b")}>導入 方案 B</DropdownMenu.Item>
-                <DropdownMenu.Item onClick={() => loadDefaultToEditor("plan_c")}>導入 方案 C</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => handleImportDefault("plan_a")}>導入 方案 A</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => handleImportDefault("plan_b")}>導入 方案 B</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => handleImportDefault("plan_c")}>導入 方案 C</DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </Flex>
@@ -54,15 +74,20 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
           <Flex direction="column" gap="3">
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">方案名稱</Text>
-              <TextField.Root placeholder="輸入方案標題..." value={editor.title} onChange={e => setEditor(s => ({ ...s, title: e.target.value }))} className="bg-slate-100 border-none" />
+              <TextField.Root
+                placeholder="輸入方案標題..."
+                className="bg-slate-100 border-none"
+                value={tempTitle}
+                onChange={e => setTempTitle(e.target.value)}
+              />
             </Box>
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">TSV 數據內容</Text>
               <textarea
-                className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none bg-slate-100"
-                value={editor.content}
-                onChange={e => setEditor(s => ({ ...s, content: e.target.value }))}
                 placeholder="活動名稱	產物	數量"
+                className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none bg-slate-100"
+                value={tempContent}
+                onChange={e => setTempContent(e.target.value)}
               />
             </Box>
           </Flex>
@@ -70,7 +95,7 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
             <Dialog.Close>
               <Button variant="soft" color="gray">取消</Button>
             </Dialog.Close>
-            <Button color="indigo" onClick={handleSavePlan}>確認保存</Button>
+            <Button color="indigo" onClick={handleInternalSave}>確認保存</Button>
           </Flex>
         </Box>
       </Dialog.Content>
