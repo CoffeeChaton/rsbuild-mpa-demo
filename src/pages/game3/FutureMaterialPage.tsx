@@ -11,6 +11,7 @@ import type { TEditor, TFilter } from "./type";
 import { usePlanManager } from "./hooks/usePlanManager";
 import { useMaterialRows } from "./hooks/useMaterialRows";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
+import { PlanContext } from "./context/PlanContext";
 
 const NAVBAR_HEIGHT = 70; // px
 
@@ -81,18 +82,23 @@ export function FutureMaterialPage() {
   return (
     <Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
       {/* ToolbarArea */}
-      <ToolbarArea
-        rows={rows}
-        planName={planName}
-        setPlanName={setPlanName}
-        customPlans={customPlans}
-        setCustomPlans={setCustomPlans}
-        tsvB={tsvB}
-        setImportOpen={setImportOpen}
-        setEditor={setEditor}
-        filter={filter}
-        setFilter={setFilter}
-      />
+      <PlanContext.Provider
+        value={{
+          planName,
+          setPlanName,
+          customPlans,
+          setCustomPlans,
+          tsvB,
+        }}
+      >
+        <ToolbarArea
+          rows={rows}
+          setImportOpen={setImportOpen}
+          setEditor={setEditor}
+          filter={filter}
+          setFilter={setFilter}
+        />
+      </PlanContext.Provider>
 
       {/* TableArea */}
       <TableArea groupedRows={groupedRows} />

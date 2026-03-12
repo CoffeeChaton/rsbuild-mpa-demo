@@ -14,16 +14,7 @@ import type { IItemRow, TEditor, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
   rows: IItemRow[];
-  planName: string;
-  setPlanName: Dispatch<SetStateAction<string>>;
-  customPlans: Record<string, string>;
-  setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
-
-  tsvB: string;
-  //
   setImportOpen: Dispatch<SetStateAction<boolean>>;
-
-  // 重構
   setEditor: Dispatch<SetStateAction<TEditor>>;
   filter: TFilter;
   setFilter: Dispatch<SetStateAction<TFilter>>;
@@ -31,13 +22,7 @@ export interface IToolbarAreaProp {
 
 export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
   rows,
-  planName,
-  setPlanName,
-  customPlans,
-  setCustomPlans,
-  tsvB,
   setImportOpen,
-  //
   setEditor,
   filter,
   setFilter,
@@ -53,11 +38,6 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
             </Button>
 
             <PlanSwitcher
-              planName={planName}
-              setPlanName={setPlanName}
-              customPlans={customPlans}
-              setCustomPlans={setCustomPlans}
-              tsvB={tsvB}
               setEditor={setEditor}
             />
 

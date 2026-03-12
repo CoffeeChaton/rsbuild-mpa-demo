@@ -3,26 +3,23 @@ import { Button, DropdownMenu, Flex, IconButton, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { Dispatch, SetStateAction } from "react";
 import type { TEditor } from "../type";
+import { usePlanContext } from "../context/PlanContext";
 
 interface IPlanSwitcher {
-  planName: string;
-  setPlanName: Dispatch<SetStateAction<string>>;
-  customPlans: Record<string, string>;
-  setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
-  tsvB: string;
-
   setEditor: Dispatch<SetStateAction<TEditor>>;
 }
 
 export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
-  planName,
-  setPlanName,
-  customPlans,
-  setCustomPlans,
-  tsvB,
-  //
   setEditor,
 }) => {
+  const {
+    planName,
+    setPlanName,
+    customPlans,
+    setCustomPlans,
+    tsvB,
+  } = usePlanContext();
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
