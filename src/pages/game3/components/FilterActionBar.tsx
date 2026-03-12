@@ -26,11 +26,10 @@ export const MaterialToolbar: React.FC<IMaterialToolbarProps> = ({
       <Button
         variant="outline"
         onClick={() => {
-          let out = "稀有度\t名稱\t原有\t需求\t合計\n";
-          rows.forEach(r => {
-            out += `${r.rare}\t${r.name}\t${r.stock}\t${r.need}\t${r.total}\n`;
-          });
-          navigator.clipboard.writeText(out);
+          const lines: string[] = rows.map(r => `${r.rare}\t${r.name}\t${r.stock}\t${r.need}\t${r.total}`);
+          navigator.clipboard.writeText(
+            ["稀有度\t名稱\t原有\t需求\t合計", ...lines].join("\n"),
+          );
         }}
       >
         <CopyIcon /> 複製為 Excel

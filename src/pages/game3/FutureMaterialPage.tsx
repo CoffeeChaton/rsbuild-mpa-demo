@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
 
@@ -45,15 +45,7 @@ export function FutureMaterialPage() {
   });
 
   const [importOpen, setImportOpen] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem("fm_custom_plans", JSON.stringify(customPlans));
-  }, [customPlans]);
-  useEffect(() => {
-    localStorage.setItem("fm_current_plan_name", planName);
-  }, [planName]);
-
-  const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, bundle, filter);
+  const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, filter, bundle);
 
   const handleSavePlan = () => {
     const next = { ...customPlans };
@@ -67,22 +59,23 @@ export function FutureMaterialPage() {
     next[title] = editor.content;
     setCustomPlans(next);
     setPlanName(title);
-    setEditor({ ...editor, open: false });
+    setEditor((e) => ({ ...e, open: false }));
   };
 
   const loadDefaultToEditor = async (p: string) => {
     try {
       const m = await import(`./assets/${p}.tsv?raw`);
-      setEditor({ ...editor, content: m.default });
+      setEditor((e) => ({ ...e, content: m.default }));
     } catch (error) {
       console.error("loadDefaultToEditor error", error);
     }
   };
 
   const copyResult = useCallback(() => {
-    const result = Object.fromEntries(rows
-      .filter(r => r.total > 0)
-      .map(r => [r.id, r.total]),
+    const result = Object.fromEntries(
+      rows
+        .filter(r => r.total > 0)
+        .map(r => [r.id, r.total]),
     );
 
     navigator.clipboard.writeText(

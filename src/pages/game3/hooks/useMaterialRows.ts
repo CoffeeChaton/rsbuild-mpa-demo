@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { analyzeSource } from "../utils/analyzeSource";
+import { RARE_LEVELS } from "../shared/constants/material";
 import type { IItemRow, TFilter } from "../type";
+import type { IItemDataBundle } from "../../game2/services/itemFetcher";
 
 interface IItemBundle {
   items: Record<string, { name: { tw: string }, rare: number }>;
@@ -9,8 +11,8 @@ interface IItemBundle {
 export function useMaterialRows(
   jsonA: string,
   tsvB: string,
-  bundle: unknown,
   filter: TFilter,
+  bundle: IItemDataBundle | undefined,
 ) {
   const dataA = useMemo(
     () => analyzeSource(jsonA, bundle, true),
@@ -41,9 +43,8 @@ export function useMaterialRows(
         };
       })
       .filter((r) => {
-        const matchSearch = r.name
-          .toLowerCase()
-          .includes(filter.search.toLowerCase());
+        const search = filter.search.toLowerCase();
+        const matchSearch = r.name.toLowerCase().includes(search);
 
         const hasData = r.stock !== 0 || r.need !== 0;
 
@@ -52,16 +53,12 @@ export function useMaterialRows(
           : matchSearch;
       })
       .sort((a, b) => b.rare - a.rare || a.id.localeCompare(b.id));
-  }, [bundle, dataA, dataB, filter]);
+  }, [bundle, dataA, dataB, filter.search, filter.hideEmpty]);
 
   const groupedRows = useMemo(() => {
-    const groups: Record<number, IItemRow[]> = {
-      5: [],
-      4: [],
-      3: [],
-      2: [],
-      1: [],
-    };
+    const groups = Object.fromEntries(
+      RARE_LEVELS.map(r => [r, []]),
+    ) as Record<number, IItemRow[]>;
 
     rows.forEach((r) => {
       groups[r.rare]?.push(r);

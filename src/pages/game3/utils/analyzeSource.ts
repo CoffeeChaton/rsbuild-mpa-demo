@@ -1,3 +1,5 @@
+import type { IItemDataBundle } from "../../game2/services/itemFetcher";
+
 export interface IItemBundle {
   items: Record<string, { name: { tw: string }, rare: number }>;
   nameToIdMap: Map<string, string>;
@@ -5,13 +7,13 @@ export interface IItemBundle {
 
 export function analyzeSource(
   content: string,
-  bundle: unknown,
+  bundle: IItemDataBundle | undefined,
   isJson: boolean,
 ): Map<string, number> {
   const map = new Map<string, number>();
   if (!content || !bundle) return map;
 
-  const typedBundle = bundle as IItemBundle;
+  const typedBundle = bundle;
 
   if (isJson) {
     try {
@@ -26,7 +28,7 @@ export function analyzeSource(
       if (c.length < 3) return;
 
       const id = typedBundle.nameToIdMap?.get(c[1]) || c[1];
-      const val = parseInt(c[2]) || 0;
+      const val = Number(c[2]) || 0;
 
       map.set(id, (map.get(id) || 0) + val);
     });

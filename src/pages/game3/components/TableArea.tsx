@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-
+import { RARE_LEVELS } from "../shared/constants/material";
 import {
   Box,
   Card,
@@ -28,9 +28,9 @@ export const TableArea: React.FC<ITableAreaParam> = memo<ITableAreaParam>(({ gro
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {[5, 4, 3, 2, 1].map(rare => (
+              {RARE_LEVELS.map((rare) => (
                 <React.Fragment key={rare}>
-                  {groupedRows[rare].length > 0 && (
+                  {(groupedRows[rare] ?? []).length > 0 && (
                     <Table.Row className="bg-slate-50/50">
                       <Table.RowHeaderCell colSpan={5} className="py-1 px-4">
                         <Text size="1" weight="bold" color="gray">RARE {rare}</Text>
