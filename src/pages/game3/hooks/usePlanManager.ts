@@ -1,10 +1,20 @@
-import { useEffect } from "react";
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo } from "react";
 import { useLocalStorageState } from "./useLocalStorageState";
 import { DEFAULT_PLANS, type TDefaultPlanKey, tsvFetcher } from "../assets/planLoader";
 import { mutate } from "swr";
 import useSWRImmutable from "swr/immutable";
 
-export function usePlanManager() {
+export interface IPlanManagerContext {
+  planName: string;
+  setPlanName: Dispatch<SetStateAction<string>>;
+  customPlans: Record<string, string>;
+  setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
+  tsvB: string;
+  updateCustomPlan: (title: string, content: string, targetId: string | null) => void;
+  deletePlan: (name: string) => void;
+}
+
+export function usePlanManager(): IPlanManagerContext {
   const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {});
   const [planName, setPlanName] = useLocalStorageState<string>("fm_current_plan_name", "plan_a");
 
@@ -21,16 +31,14 @@ export function usePlanManager() {
 
   // 3. 預載邏輯：利用 SWR 的 mutate 預熱快取
   useEffect(() => {
-    // 渲染完成後，預載剩餘的預設方案
+    // 只在初次掛載時把「所有」預設方案塞進 SWR 快取
     Object.keys(DEFAULT_PLANS).forEach((key) => {
-      if (key !== planName) {
-        mutate(key, tsvFetcher(key as TDefaultPlanKey), false);
-      }
+      mutate(key, tsvFetcher(key as TDefaultPlanKey), false);
     });
-  }, [planName]);
+  }, []);
 
   // 新增：集中處理存檔邏輯，確保正確性
-  const updateCustomPlan = (title: string, content: string, targetId: string | null) => {
+  const updateCustomPlan = useCallback((title: string, content: string, targetId: string | null) => {
     const next = { ...customPlans };
     const finalTitle = title.trim() || "未命名方案";
 
@@ -42,17 +50,18 @@ export function usePlanManager() {
     next[finalTitle] = content;
     setCustomPlans(next);
     setPlanName(finalTitle); // 存檔後自動切換到該方案
-  };
+  }, [customPlans, setCustomPlans, setPlanName]);
 
   // 新增：刪除邏輯收攏
-  const deletePlan = (name: string) => {
+  const deletePlan = useCallback((name: string) => {
     const next = { ...customPlans };
     delete next[name];
     setCustomPlans(next);
     if (planName === name) setPlanName("plan_a");
-  };
+  }, [customPlans, setCustomPlans, planName, setPlanName]);
 
-  return {
+  // 2. 直接在 Hook 內產出穩定的 result 物件
+  return useMemo(() => ({
     planName,
     setPlanName,
     customPlans,
@@ -60,5 +69,5 @@ export function usePlanManager() {
     tsvB,
     updateCustomPlan,
     deletePlan,
-  };
+  }), [planName, setPlanName, customPlans, setCustomPlans, tsvB, updateCustomPlan, deletePlan]);
 }

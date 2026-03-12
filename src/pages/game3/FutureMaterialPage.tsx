@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
 import { ITEM_DATA_KEY, itemFetcher } from "../game2/services/itemFetcher";
@@ -7,7 +7,7 @@ import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
 import type { TFilter } from "./type";
-import { usePlanManager } from "./hooks/usePlanManager";
+import { type IPlanManagerContext, usePlanManager } from "./hooks/usePlanManager";
 import { useMaterialRows } from "./hooks/useMaterialRows";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { PlanContext } from "./context/PlanContext";
@@ -18,33 +18,30 @@ const NAVBAR_HEIGHT = 70; // px
 
 export function FutureMaterialPage() {
   const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
-
   const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
-
-  const {
-    planName,
-    setPlanName,
-    customPlans,
-    setCustomPlans,
-    tsvB,
-    updateCustomPlan,
-    deletePlan,
-  } = usePlanManager();
-
   const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
+  const [importOpen, setImportOpen] = useState(false);
 
+  // 1. Hook 回傳值已經穩定，直接拿來用
+  const planManager: IPlanManagerContext = usePlanManager();
   const { editor, setEditorOpen } = useEditor();
 
-  /** 當點擊「確認保存」時 */
-  const onEditorSave = (title: string, content: string, targetId: string | null) => {
-    updateCustomPlan(title, content, targetId);
-    // 用統一方法關閉 Editor
+  /** 2. 存檔邏輯優化 當點擊「確認保存」時 */
+  const onEditorSave = useCallback((title: string, content: string, targetId: string | null) => {
+    planManager.updateCustomPlan(title, content, targetId);
     setEditorOpen(false);
-  };
+  }, [planManager, setEditorOpen]);
 
-  const [importOpen, setImportOpen] = useState(false);
-  const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, filter, bundle);
+  /** 3. 計算 Row 數據 */
+  const { rows, groupedRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
 
+  /** 4. 合併 Context，這時只需合併 Page 專屬的 setEditorOpen */
+  const planContextValue = useMemo(() => ({
+    ...planManager,
+    setEditorOpen,
+  }), [planManager, setEditorOpen]);
+
+  /** 5. 複製內容 */
   const copyResult = useCallback(() => {
     const result = Object.fromEntries(
       rows
@@ -60,17 +57,7 @@ export function FutureMaterialPage() {
   return (
     <Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
       {/* ToolbarArea */}
-      <PlanContext.Provider
-        value={{
-          planName,
-          setPlanName,
-          customPlans,
-          setCustomPlans,
-          tsvB,
-          setEditorOpen,
-          deletePlan,
-        }}
-      >
+      <PlanContext.Provider value={planContextValue}>
         <ToolbarArea
           rows={rows}
           setImportOpen={setImportOpen}
@@ -87,12 +74,8 @@ export function FutureMaterialPage() {
       <EditorDialog
         key={editor.open ? `edit-${editor.targetId}` : "edit-closed"}
         open={editor.open}
-        onOpenChange={(v) => setEditorOpen(v)}
-        initialData={{
-          targetId: editor.targetId,
-          title: editor.title,
-          content: editor.content,
-        }}
+        onOpenChange={setEditorOpen}
+        initialData={editor}
         onSave={onEditorSave}
         loadDefault={tsvFetcher}
       />

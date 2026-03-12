@@ -13,16 +13,13 @@ import {
   MagicWandIcon,
 } from "@radix-ui/react-icons";
 import type { TDefaultPlanKey } from "../assets/planLoader";
+import type { TEditor } from "../type";
 
 export interface IEditorDialogParam {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   // 傳入編輯所需的初始資訊
-  initialData: {
-    targetId: string | null,
-    title: string,
-    content: string,
-  };
+  initialData: TEditor;
   // 外部注入的行為
   onSave: (title: string, content: string, targetId: string | null) => void;
   loadDefault: (planId: TDefaultPlanKey) => Promise<string>;
