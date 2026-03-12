@@ -1,4 +1,1 @@
-
-
-
-export { DataEditorPage as App } from "./DataEditorPage"
+export { DataEditorPage as App } from "./DataEditorPage";

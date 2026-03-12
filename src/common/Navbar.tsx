@@ -1,6 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
-import { PAGE_MAP, type IPageInfo, type TPageKey } from './config/pages';
-import { getStaticPath } from './utils/path';
+import { Link, useLocation } from "react-router-dom";
+import { type IPageInfo, PAGE_MAP, type TPageKey } from "./config/pages";
+import { getStaticPath } from "./utils/path";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -32,16 +32,15 @@ export const Navbar = () => {
         {navItems.map((item) => {
           // 2. 使用 useLocation 進行狀態比對
           // 移除末尾斜槓以確保匹配一致性 (例如 /products/ 與 /products)
-          const current = location.pathname.replace(/\/+$/, '') || '/';
-          const target = item.path.replace(/\/+$/, '') || '/';
+          const current = location.pathname.replace(/\/+$/, "") || "/";
+          const target = item.path.replace(/\/+$/, "") || "/";
           const isActive = current === target;
 
           return (
             <Link
               key={item.key}
               to={item.path} // React Router 會根據 basename 自動補上 /repo-name
-              className={`${isActive ? 'text-blue-600 font-bold border-b-2 border-blue-600' : 'text-gray-500'
-                } hover:text-blue-500 transition-colors px-1 pb-1`}
+              className={`${isActive ? "text-blue-600 font-bold border-b-2 border-blue-600" : "text-gray-500"} hover:text-blue-500 transition-colors px-1 pb-1`}
             >
               {item.label}
             </Link>

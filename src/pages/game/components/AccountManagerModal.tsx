@@ -1,15 +1,14 @@
-import React from 'react';
-import { TrashIcon, Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-import type { IAccountProfile, TAccountId } from '../types';
+import React from "react";
+import { Cross1Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import type { IAccountProfile, TAccountId } from "../types";
 
 export const AccountManagerModal: React.FC<{
-  profiles: IAccountProfile[];
-  onClose: () => void;
-  onAdd: (name: string) => void;
-  onDelete: (id: TAccountId) => void;
-  onUpdate: (id: TAccountId, name: string, server: string) => void;
+  profiles: IAccountProfile[],
+  onClose: () => void,
+  onAdd: (name: string) => void,
+  onDelete: (id: TAccountId) => void,
+  onUpdate: (id: TAccountId, name: string, server: string) => void,
 }> = ({ profiles, onClose, onAdd, onDelete, onUpdate }) => {
-
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       {/* 遮罩層：強化毛玻璃效果 */}
@@ -20,7 +19,6 @@ export const AccountManagerModal: React.FC<{
 
       {/* 彈窗主體：大圓角與柔和陰影 */}
       <div className="relative bg-white w-full max-w-md rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-
         {/* Header：清爽簡約 */}
         <div className="flex justify-between items-center px-8 py-6 border-b border-slate-50">
           <div>
@@ -51,7 +49,7 @@ export const AccountManagerModal: React.FC<{
               <div className="flex-1 flex flex-col gap-1">
                 <input
                   value={p.accountName}
-                  onChange={(e) => onUpdate(p.id, e.target.value, p.server || 'CN')}
+                  onChange={(e) => onUpdate(p.id, e.target.value, p.server || "CN")}
                   className="bg-transparent text-sm font-bold text-slate-700 outline-none focus:text-blue-600 placeholder:text-slate-300"
                   placeholder="帳號名稱..."
                 />
@@ -59,14 +57,15 @@ export const AccountManagerModal: React.FC<{
                   <span className="text-[9px] font-black text-slate-400 uppercase">Server</span>
 
                   <div className="flex items-center p-1 bg-slate-100 rounded-lg">
-                    {['CN', 'TW', 'US'].map((srv) => (
+                    {["CN", "TW", "US"].map((srv) => (
                       <button
                         key={srv}
                         onClick={() => onUpdate(p.id, p.accountName, srv)}
-                        className={`px-2 py-1 text-[9px] font-black rounded-md transition-all ${p.server === srv
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-slate-400 hover:text-slate-600'
-                          }`}
+                        className={`px-2 py-1 text-[9px] font-black rounded-md transition-all ${
+                          p.server === srv
+                            ? "bg-white text-blue-600 shadow-sm"
+                            : "text-slate-400 hover:text-slate-600"
+                        }`}
                       >
                         {srv}
                       </button>
@@ -100,7 +99,7 @@ export const AccountManagerModal: React.FC<{
             共 {profiles.length} 個配置存檔
           </p>
           <button
-            onClick={() => onAdd('新帳號')}
+            onClick={() => onAdd("新帳號")}
             className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-xs font-black hover:bg-slate-800 active:scale-95 transition-all shadow-lg shadow-slate-200"
           >
             <PlusIcon className="w-4 h-4" /> 添加新帳號

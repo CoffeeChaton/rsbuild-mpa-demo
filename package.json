@@ -13,6 +13,7 @@
     "build": "pnpm run prebuild && pnpm rsbuild build && tsx scripts/ssg.ts",
     "dev": "rsbuild dev --open",
     "lint": "eslint .",
+    "format": "dprint fmt",
     "toAI": "pnpm dlx repomix src/pages/game2",
     "preview": "rsbuild preview",
     "watch:tsc": "tsc -b -w"
@@ -50,6 +51,7 @@
     "@types/node": "^25.3.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "dprint": "^0.52.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

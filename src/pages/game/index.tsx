@@ -1,3 +1,1 @@
-
-
-export { ResourceManager as App } from "./ResourceManager"
+export { ResourceManager as App } from "./ResourceManager";

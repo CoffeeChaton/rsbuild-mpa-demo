@@ -1,18 +1,17 @@
-import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Layout } from './Layout';
-import { Navbar } from '../../common/Navbar'; // 確保 404 也有導航
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Layout } from "./Layout";
+import { Navbar } from "../../common/Navbar"; // 確保 404 也有導航
 
 // Lazy Views
-const HomeView = lazy(() => import('./HomeView.tsx').then(m => ({ default: m.HomeView })));
-const ProductView = lazy(() => import('../products/ProductView.tsx').then(m => ({ default: m.ProductView })));
-const MapEditView = lazy(() => import('../map-edit/MapEditView.tsx').then(m => ({ default: m.MapEditView })));
-const GameView = lazy(() => import('../game/index.tsx').then(m => ({ default: m.App })));
-const Game2View = lazy(() => import('../game2/index.tsx').then(m => ({ default: m.App })));
-const Game3View = lazy(() => import('../game3/index.tsx').then(m => ({ default: m.App })));
+const HomeView = lazy(() => import("./HomeView.tsx").then(m => ({ default: m.HomeView })));
+const ProductView = lazy(() => import("../products/ProductView.tsx").then(m => ({ default: m.ProductView })));
+const MapEditView = lazy(() => import("../map-edit/MapEditView.tsx").then(m => ({ default: m.MapEditView })));
+const GameView = lazy(() => import("../game/index.tsx").then(m => ({ default: m.App })));
+const Game2View = lazy(() => import("../game2/index.tsx").then(m => ({ default: m.App })));
+const Game3View = lazy(() => import("../game3/index.tsx").then(m => ({ default: m.App })));
 
 // IniConfigurationEditor
-
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView = () => (
@@ -29,42 +28,74 @@ const NotFoundView = () => (
 export const App = () => {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: (
         <Layout>
-          <Suspense fallback={null}><HomeView /></Suspense>
+          <Suspense fallback={null}>
+            <HomeView />
+          </Suspense>
         </Layout>
       ),
     },
     {
-      path: '/products',
+      path: "/products",
       element: (
         <Layout>
-          <Suspense fallback={null}><ProductView /></Suspense>
+          <Suspense fallback={null}>
+            <ProductView />
+          </Suspense>
         </Layout>
       ),
     },
     {
-      path: '/map-edit', // 對應 PAGE_MAP 的 Key
-      element: <Layout><Suspense fallback={null}><MapEditView /></Suspense></Layout>,
+      path: "/map-edit", // 對應 PAGE_MAP 的 Key
+      element: (
+        <Layout>
+          <Suspense fallback={null}>
+            <MapEditView />
+          </Suspense>
+        </Layout>
+      ),
     },
     {
       path: "/game",
-      element: <Layout><Suspense fallback={null}><GameView /></Suspense></Layout>,
+      element: (
+        <Layout>
+          <Suspense fallback={null}>
+            <GameView />
+          </Suspense>
+        </Layout>
+      ),
     },
     {
       path: "/game2",
-      element: <Layout><Suspense fallback={null}><Game2View /></Suspense></Layout>,
+      element: (
+        <Layout>
+          <Suspense fallback={null}>
+            <Game2View />
+          </Suspense>
+        </Layout>
+      ),
     },
     {
       path: "/game3",
-      element: <Layout><Suspense fallback={null}><Game3View /></Suspense></Layout>,
+      element: (
+        <Layout>
+          <Suspense fallback={null}>
+            <Game3View />
+          </Suspense>
+        </Layout>
+      ),
     },
     {
-      path: '*', // 這裡接管所有未定義路徑
-      element: <Layout><NotFoundView /></Layout>,
+      path: "*", // 這裡接管所有未定義路徑
+      element: (
+        <Layout>
+          <NotFoundView />
+        </Layout>
+      ),
     },
-  ], { basename: import.meta.env.BASE_URL || '/' });
+  ], { basename: import.meta.env.BASE_URL || "/" });
 
   return <RouterProvider router={router} />;
 };

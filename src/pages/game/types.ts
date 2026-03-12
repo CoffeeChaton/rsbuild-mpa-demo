@@ -14,7 +14,7 @@ export interface IConfigGroup {
   id: string;
   isEnabled: boolean;
   isCollapsed: boolean;
-  listName: string;    // 組標題
+  listName: string; // 組標題
   description: string; // 一行說明
   materials: IMaterialEntry[];
 }

@@ -1,9 +1,11 @@
-import { Navbar } from "../../common/Navbar"
-import { FutureMaterialPage } from "./FutureMaterialPage"
+import { Navbar } from "../../common/Navbar";
+import { FutureMaterialPage } from "./FutureMaterialPage";
 
 export const App = () => {
-    return (<>
-        <Navbar />
-        < FutureMaterialPage />
-    </>)
-}
+  return (
+    <>
+      <Navbar />
+      <FutureMaterialPage />
+    </>
+  );
+};

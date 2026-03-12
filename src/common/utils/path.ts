@@ -8,14 +8,14 @@ import type { TPageKey } from "../config/pages";
  * @returns 包含 ASSET_PREFIX 的格式化路徑
  */
 export const getStaticPath = (pageKey: TPageKey): string => {
-    const prefix ='/';
+  const prefix = "/";
 
-    // 針對根路徑 'index' 進行特殊處理
-    const subPath = pageKey === 'index' ? '' : pageKey;
+  // 針對根路徑 'index' 進行特殊處理
+  const subPath = pageKey === "index" ? "" : pageKey;
 
-    // 拼接路徑並過濾掉重複或結尾的斜槓
-    // 範例：prefix='/repo/' + subPath='products' -> '/repo/products'
-    const joined = `${prefix}${subPath}`.replace(/\/+$/, '');
+  // 拼接路徑並過濾掉重複或結尾的斜槓
+  // 範例：prefix='/repo/' + subPath='products' -> '/repo/products'
+  const joined = `${prefix}${subPath}`.replace(/\/+$/, "");
 
-    return joined || '/';
+  return joined || "/";
 };

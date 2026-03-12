@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { GearIcon, ChevronDownIcon, CheckIcon } from '@radix-ui/react-icons';
-import type { IAccountProfile, TAccountId } from '../types';
-import { AccountManagerModal } from './AccountManagerModal';
-
+import React, { useState } from "react";
+import { CheckIcon, ChevronDownIcon, GearIcon } from "@radix-ui/react-icons";
+import type { IAccountProfile, TAccountId } from "../types";
+import { AccountManagerModal } from "./AccountManagerModal";
 
 /**
  * @interface IAccountSwitcherProps
@@ -36,8 +35,8 @@ export const AccountSwitcher: React.FC<IAccountSwitcherProps> = (props) => {
         }}
         className="flex items-center gap-2 px-3 py-1.5 text-white text-xs font-bold hover:bg-blue-700 transition-colors border-r border-blue-500/50 rounded-l-lg"
       >
-        <span className="max-w-20 truncate">{currentAcc?.accountName || '切換帳號'}</span>
-        <ChevronDownIcon className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="max-w-20 truncate">{currentAcc?.accountName || "切換帳號"}</span>
+        <ChevronDownIcon className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {/* 右側：管理入口 */}

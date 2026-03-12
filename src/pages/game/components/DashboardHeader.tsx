@@ -1,8 +1,8 @@
 // components/DashboardHeader.tsx
-import React from 'react';
-import { AccountSwitcher } from './AccountSwitcher';
-import type { IAccountProfile, TAccountId } from '../types';
-import { SymbolIcon } from '@radix-ui/react-icons';
+import React from "react";
+import { AccountSwitcher } from "./AccountSwitcher";
+import type { IAccountProfile, TAccountId } from "../types";
+import { SymbolIcon } from "@radix-ui/react-icons";
 
 interface IDashboardHeaderProps {
   profiles: IAccountProfile[];

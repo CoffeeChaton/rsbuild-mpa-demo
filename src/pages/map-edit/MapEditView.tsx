@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Navbar } from '../../common/Navbar';
-import { type TMapPreference, TILE_LAYERS } from '../../common/types/map';
-import { loadMapPreference, saveMapPreference } from '../../common/utils/mapStorage';
-import { MapViewer } from './MapViewer';
+import { useState } from "react";
+import { Navbar } from "../../common/Navbar";
+import { TILE_LAYERS, type TMapPreference } from "../../common/types/map";
+import { loadMapPreference, saveMapPreference } from "../../common/utils/mapStorage";
+import { MapViewer } from "./MapViewer";
 
 export const MapEditView = () => {
   const [pref, setPref] = useState<TMapPreference>(loadMapPreference());
 
   // 處理底圖切換
-  const handleTileChange = (layer: TMapPreference['tileLayer']): void => {
+  const handleTileChange = (layer: TMapPreference["tileLayer"]): void => {
     const newPref = { ...pref, tileLayer: layer };
     setPref(newPref);
     saveMapPreference(newPref);
@@ -34,14 +34,15 @@ export const MapEditView = () => {
                 底圖樣式
               </h3>
               <div className="space-y-2">
-                {(Object.keys(TILE_LAYERS) as Array<TMapPreference['tileLayer']>).map((key) => (
+                {(Object.keys(TILE_LAYERS) as Array<TMapPreference["tileLayer"]>).map((key) => (
                   <button
                     key={key}
                     onClick={() => handleTileChange(key)}
-                    className={`w-full text-left px-4 py-2 rounded-lg text-sm transition ${pref.tileLayer === key
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
-                      }`}
+                    className={`w-full text-left px-4 py-2 rounded-lg text-sm transition ${
+                      pref.tileLayer === key
+                        ? "bg-blue-600 text-white shadow-md"
+                        : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                    }`}
                   >
                     {key.toUpperCase()}
                   </button>

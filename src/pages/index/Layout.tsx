@@ -1,25 +1,25 @@
-import { useLocation } from 'react-router-dom';
-import { PAGE_MAP, type TPageKey, type IPageInfo } from '../../common/config/pages';
-import { useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pages";
+import { useEffect } from "react";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 
 const MetaUpdater = () => {
   // 1. 強制排除 any，符合 IPageInfo 嚴格型別
-  const location = useLocation()
+  const location = useLocation();
 
   useEffect(() => {
     // 2. 處理子目錄 Prefix (例如 /rsbuild-mpa-demo/)
-    const prefix = '/';
+    const prefix = "/";
     // 移除 Prefix 後取得第一層路徑
-    const normalizedPath = location.pathname.replace(prefix, '').split('/')[0] || 'index';
+    const normalizedPath = location.pathname.replace(prefix, "").split("/")[0] || "index";
 
     // 3. 使用 Object.hasOwn 進行精簡的安全檢查
     // 確保路徑 Key 存在於 PAGE_MAP 自有屬性中，且不是 __proto__ 等原型屬性
     const isValidKey = Object.hasOwn(PAGE_MAP, normalizedPath);
 
     // 4. 取得正確的配置，若無效則回退至 index
-    const activeKey = isValidKey ? (normalizedPath as TPageKey) : 'index';
+    const activeKey = isValidKey ? (normalizedPath as TPageKey) : "index";
     const config: IPageInfo = PAGE_MAP[activeKey];
 
     // 5. 更新 DOM 資訊

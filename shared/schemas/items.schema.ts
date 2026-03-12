@@ -1,5 +1,5 @@
 // shared/schemas/items.schema.ts
-import * as v from 'valibot';
+import * as v from "valibot";
 
 export const ItemSchema = v.object({
   type: v.number(),
@@ -16,4 +16,3 @@ export const ItemSchema = v.object({
 
 // 使用 InferOutput 獲取轉換後的型別
 export type TItem = v.InferOutput<typeof ItemSchema>;
-

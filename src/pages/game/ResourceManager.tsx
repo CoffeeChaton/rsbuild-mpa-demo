@@ -1,5 +1,5 @@
 // ResourceManager.tsx
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAccountManager } from "./AccountLogic";
 import { DashboardHeader } from "./components/DashboardHeader";
 import { GroupRow } from "./components/GroupRow";
@@ -14,7 +14,7 @@ export function ResourceManager() {
 
   useEffect(() => {
     import("./material.json")
-      .then((json) => setMaterialMap(json.default))
+      .then((json) => setMaterialMap(json.default));
     // fetch(process.env.ASSET_PREFIX + '/locales/tw/material.json')
     //   .then(res => res.json())
     //   .then(data => setMaterialMap(data as Record<string, string>))
@@ -35,8 +35,12 @@ export function ResourceManager() {
 
   const handleAddProject = () => {
     account.updateConfigs([...safeConfigs, {
-      id: crypto.randomUUID(), isEnabled: true, isCollapsed: false,
-      listName: '新組項目', description: '', materials: []
+      id: crypto.randomUUID(),
+      isEnabled: true,
+      isCollapsed: false,
+      listName: "新組項目",
+      description: "",
+      materials: [],
     }]);
   };
 

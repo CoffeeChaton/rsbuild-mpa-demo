@@ -1,13 +1,13 @@
 // AccountLogic.ts
-import { useState, useMemo, useEffect } from 'react';
-import type { IAccountProfile, TAccountId, IConfigGroup } from './types';
+import { useEffect, useMemo, useState } from "react";
+import type { IAccountProfile, IConfigGroup, TAccountId } from "./types";
 
-const STORAGE_KEY = 'ARK_RESOURCE_DATA';
+const STORAGE_KEY = "ARK_RESOURCE_DATA";
 const INITIAL_ACCOUNT: IAccountProfile = {
-  id: 'default',
-  accountName: '預設帳號',
-  server: 'TW',
-  configs: []
+  id: "default",
+  accountName: "預設帳號",
+  server: "TW",
+  configs: [],
 };
 
 /**
@@ -42,7 +42,7 @@ export interface IAccountManager {
 
 export function useAccountManager(): IAccountManager {
   const [profiles, setProfiles] = useState<IAccountProfile[]>([]);
-  const [activeId, setActiveId] = useState<TAccountId>('default');
+  const [activeId, setActiveId] = useState<TAccountId>("default");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -76,17 +76,15 @@ export function useAccountManager(): IAccountManager {
   }, [profiles, activeId]);
 
   const updateConfigs = (newConfigs: IConfigGroup[]) => {
-    setProfiles(prev => prev.map(p =>
-      p.id === currentAccount.id ? { ...p, configs: newConfigs } : p
-    ));
+    setProfiles(prev => prev.map(p => p.id === currentAccount.id ? { ...p, configs: newConfigs } : p));
   };
 
-  const addAccount = (name: string, server: string = 'CN') => {
+  const addAccount = (name: string, server: string = "CN") => {
     setProfiles(prev => [...prev, {
       id: crypto.randomUUID(),
       accountName: name,
       server,
-      configs: []
+      configs: [],
     }]);
   };
 
@@ -111,6 +109,6 @@ export function useAccountManager(): IAccountManager {
     addAccount,
     deleteAccount,
     updateAccountInfo,
-    updateConfigs
+    updateConfigs,
   };
 }

@@ -1,5 +1,5 @@
-import { CopyIcon, SymbolIcon } from '@radix-ui/react-icons';
-import React from 'react';
+import { CopyIcon, SymbolIcon } from "@radix-ui/react-icons";
+import React from "react";
 
 /**
  * 需求：
@@ -8,7 +8,7 @@ import React from 'react';
  */
 interface ISummaryProps {
   summary: Record<string, number>;
-  materialMap: Record<string, string>
+  materialMap: Record<string, string>;
 }
 
 export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }) => {
@@ -28,9 +28,9 @@ export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }
   };
 
   const copyAsJSON = () => {
-    navigator.clipboard.writeText(JSON.stringify(summary, null, 2))
+    navigator.clipboard.writeText(JSON.stringify(summary, null, 2));
     alert("已複製為 JSON");
-  }
+  };
 
   return (
     <section className="bg-white border border-slate-200 p-6 rounded-[2.5rem] shadow-sm">
