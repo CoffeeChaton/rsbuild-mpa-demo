@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, memo, type SetStateAction } from "react";
 import type { IItemRow, TEditor, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
@@ -20,7 +20,7 @@ export interface IToolbarAreaProp {
   setFilter: Dispatch<SetStateAction<TFilter>>;
 }
 
-export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
+export const ToolbarArea = memo<IToolbarAreaProp>(({
   rows,
   setImportOpen,
   setEditor,
@@ -62,4 +62,4 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
       </Flex>
     </Box>
   );
-};
+});

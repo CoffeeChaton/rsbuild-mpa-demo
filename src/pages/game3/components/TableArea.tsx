@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import {
   Box,
@@ -12,7 +12,7 @@ export interface ITableAreaParam {
   groupedRows: Record<number, IItemRow[]>;
 }
 
-export const TableArea: React.FC<ITableAreaParam> = ({ groupedRows }) => {
+export const TableArea: React.FC<ITableAreaParam> = memo<ITableAreaParam>(({ groupedRows }) => {
   return (
     <Box flexGrow="1" p="3" className="overflow-hidden">
       <Card className="h-full p-0 overflow-hidden bg-white border-slate-200">
@@ -64,4 +64,4 @@ export const TableArea: React.FC<ITableAreaParam> = ({ groupedRows }) => {
       </Card>
     </Box>
   );
-};
+});
