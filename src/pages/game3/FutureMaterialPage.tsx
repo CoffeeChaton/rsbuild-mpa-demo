@@ -118,6 +118,7 @@ export function FutureMaterialPage() {
 
       {/* Import Dialog */}
       <ImportDialog
+        key={importOpen ? "open" : "closed"} // 透過 key 強制 Dialog 開啟時重新初始化 state
         importOpen={importOpen}
         setImportOpen={setImportOpen}
         jsonA={jsonA}
