@@ -8,9 +8,9 @@ export const PlanSwitcher: React.FC = () => {
     planName,
     setPlanName,
     customPlans,
-    setCustomPlans,
     tsvB,
     setEditorOpen,
+    deletePlan,
   } = usePlanContext();
 
   return (
@@ -38,10 +38,7 @@ export const PlanSwitcher: React.FC = () => {
                 color="red"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const n = { ...customPlans };
-                  delete n[p];
-                  setCustomPlans(n);
-                  if (planName === p) setPlanName("plan_a");
+                  deletePlan(p); // 簡化為單一調用
                 }}
               >
                 <TrashIcon />

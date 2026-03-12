@@ -21,12 +21,20 @@ export function usePlanManager() {
     setPlanName(finalTitle); // 存檔後自動切換到該方案
   };
 
+  // 新增：刪除邏輯收攏
+  const deletePlan = (name: string) => {
+    const next = { ...customPlans };
+    delete next[name];
+    setCustomPlans(next);
+    if (planName === name) setPlanName("plan_a");
+  };
+
   // 載入 TSV
   useEffect(() => {
     const fetchTsv = async () => {
       if (customPlans[planName] !== undefined) {
         setTsvB(customPlans[planName]);
-      } else if (planName.startsWith("plan_")) {
+      } else {
         try {
           const m = await import(`../assets/${planName}.tsv?raw`);
           setTsvB(m.default);
@@ -46,5 +54,6 @@ export function usePlanManager() {
     setCustomPlans,
     tsvB,
     updateCustomPlan,
+    deletePlan,
   };
 }

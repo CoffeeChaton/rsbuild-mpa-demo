@@ -8,6 +8,7 @@ interface IPlanContext {
   setCustomPlans: (v: Record<string, string>) => void;
   tsvB: string;
   setEditorOpen: (open: boolean, data?: Partial<TEditor>) => void;
+  deletePlan: (name: string) => void;
 }
 
 export const PlanContext = createContext<IPlanContext | null>(null);

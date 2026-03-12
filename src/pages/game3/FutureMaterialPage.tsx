@@ -28,6 +28,7 @@ export function FutureMaterialPage() {
     setCustomPlans,
     tsvB,
     updateCustomPlan,
+    deletePlan,
   } = usePlanManager();
 
   const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
@@ -67,6 +68,7 @@ export function FutureMaterialPage() {
           setCustomPlans,
           tsvB,
           setEditorOpen,
+          deletePlan,
         }}
       >
         <ToolbarArea

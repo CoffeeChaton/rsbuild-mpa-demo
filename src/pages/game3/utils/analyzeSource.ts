@@ -13,16 +13,17 @@ export function analyzeSource(
   const map = new Map<string, number>();
   if (!content || !bundle) return map;
 
-  const typedBundle = bundle;
-
   if (isJson) {
     try {
-      const data = JSON.parse(content) as Record<string, number>;
-      Object.entries(data).forEach(([k, v]) => map.set(k, v));
+      const data = JSON.parse(content);
+      return new Map(Object.entries(data)); 
     } catch {
-      console.error("analyzeSource has error");
+      return map;
     }
   } else {
+    // TSV 處理
+
+    const typedBundle = bundle;
     content.trim().split("\n").forEach(l => {
       const c = l.split("\t");
       if (c.length < 3) return;
