@@ -7,7 +7,7 @@ import { ImportDialog } from "./components/ImportDialog";
 import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
-import type { TEditor } from "./type";
+import type { TEditor, TFilter } from "./type";
 
 const NAVBAR_HEIGHT = 70; // px
 interface IItemRow {
@@ -57,8 +57,14 @@ export function FutureMaterialPage() {
   });
 
   const [tsvB, setTsvB] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
-  const [hideEmpty, setHideEmpty] = useState<boolean>(true);
+
+  // const [search, setSearch] = useState<string>("");
+  // const [hideEmpty, setHideEmpty] = useState<boolean>(true);
+
+  const [filter, setFilter] = useState<TFilter>({
+    search: "",
+    hideEmpty: true,
+  });
 
   // 簡化為 editor
   // const [editorOpen, setEditorOpen] = useState(false);
@@ -121,12 +127,12 @@ export function FutureMaterialPage() {
       };
     })
       .filter(r => {
-        const matchSearch = r.name.toLowerCase().includes(search.toLowerCase());
+        const matchSearch = r.name.toLowerCase().includes(filter.search.toLowerCase());
         const hasData = r.stock !== 0 || r.need !== 0;
-        return hideEmpty ? (matchSearch && hasData) : matchSearch;
+        return filter.hideEmpty ? (matchSearch && hasData) : matchSearch;
       })
       .sort((a, b) => b.rare - a.rare || a.id.localeCompare(b.id));
-  }, [dataA, dataB, bundle, search, hideEmpty]);
+  }, [dataA, dataB, bundle, filter]);
 
   const groupedRows = useMemo(() => {
     const groups: Record<number, IItemRow[]> = { 5: [], 4: [], 3: [], 2: [], 1: [] };
@@ -146,37 +152,32 @@ export function FutureMaterialPage() {
     next[title] = editor.content;
     setCustomPlans(next);
     setPlanName(title);
-    setEditor({ ...editor, open: false })
+    setEditor({ ...editor, open: false });
   };
-
 
   const loadDefaultToEditor = async (p: string) => {
     try {
       const m = await import(`./assets/${p}.tsv?raw`);
-      setEditor({ ...editor, content: m.default })
+      setEditor({ ...editor, content: m.default });
     } catch (error) {
-      console.error("loadDefaultToEditor error", error)
+      console.error("loadDefaultToEditor error", error);
     }
   };
-
 
   return (
     <Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
       {/* ToolbarArea */}
       <ToolbarArea
-        search={search}
-        setSearch={setSearch}
         rows={rows}
-        hideEmpty={hideEmpty}
-        setHideEmpty={setHideEmpty}
         planName={planName}
         setPlanName={setPlanName}
         customPlans={customPlans}
         setCustomPlans={setCustomPlans}
         tsvB={tsvB}
         setImportOpen={setImportOpen}
-
         setEditor={setEditor}
+        filter={filter}
+        setFilter={setFilter}
       />
 
       {/* TableArea */}

@@ -11,7 +11,7 @@ interface IPlanSwitcher {
   setCustomPlans: Dispatch<SetStateAction<Record<string, string>>>;
   tsvB: string;
 
-  setEditor: Dispatch<SetStateAction<TEditor>>,
+  setEditor: Dispatch<SetStateAction<TEditor>>;
 }
 
 export const PlanSwitcher: React.FC<IPlanSwitcher> = ({

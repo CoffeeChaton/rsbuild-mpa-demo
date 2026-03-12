@@ -15,8 +15,8 @@ import {
 import type { TEditor } from "../type";
 
 export interface IEditorDialogParam {
-  editor: TEditor,
-  setEditor: Dispatch<SetStateAction<TEditor>>,
+  editor: TEditor;
+  setEditor: Dispatch<SetStateAction<TEditor>>;
   loadDefaultToEditor: (p: string) => Promise<void>;
   handleSavePlan: () => void;
 }
@@ -54,10 +54,7 @@ export const EditorDialog: React.FC<IEditorDialogParam> = ({
           <Flex direction="column" gap="3">
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">方案名稱</Text>
-              <TextField.Root placeholder="輸入方案標題..."
-                value={editor.title}
-                onChange={e => setEditor(s => ({ ...s, title: e.target.value }))}
-                className="bg-slate-100 border-none" />
+              <TextField.Root placeholder="輸入方案標題..." value={editor.title} onChange={e => setEditor(s => ({ ...s, title: e.target.value }))} className="bg-slate-100 border-none" />
             </Box>
             <Box>
               <Text as="label" size="1" weight="bold" color="gray" mb="1">TSV 數據內容</Text>

@@ -8,8 +8,13 @@ export interface IItemRow {
 }
 
 export type TEditor = {
-  open: boolean;
-  targetId: string | null;
-  title: string;
-  content: string;
-}
+  open: boolean,
+  targetId: string | null,
+  title: string,
+  content: string,
+};
+
+export type TFilter = {
+  search: string,
+  hideEmpty: boolean,
+};

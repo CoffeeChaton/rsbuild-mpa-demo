@@ -10,14 +10,10 @@ import {
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
 import type { Dispatch, SetStateAction } from "react";
-import type { IItemRow, TEditor } from "../type";
+import type { IItemRow, TEditor, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
   rows: IItemRow[];
-  hideEmpty: boolean;
-  setHideEmpty: Dispatch<SetStateAction<boolean>>;
   planName: string;
   setPlanName: Dispatch<SetStateAction<string>>;
   customPlans: Record<string, string>;
@@ -28,22 +24,23 @@ export interface IToolbarAreaProp {
   setImportOpen: Dispatch<SetStateAction<boolean>>;
 
   // 重構
-  setEditor: Dispatch<SetStateAction<TEditor>>,
+  setEditor: Dispatch<SetStateAction<TEditor>>;
+  filter: TFilter;
+  setFilter: Dispatch<SetStateAction<TFilter>>;
 }
 
 export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
-  search,
-  setSearch,
   rows,
-  hideEmpty,
-  setHideEmpty,
   planName,
   setPlanName,
   customPlans,
   setCustomPlans,
   tsvB,
   setImportOpen,
+  //
   setEditor,
+  filter,
+  setFilter,
 }) => {
   return (
     <Box p="3" className="bg-white border-b shadow-sm z-20">
@@ -61,7 +58,6 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
               customPlans={customPlans}
               setCustomPlans={setCustomPlans}
               tsvB={tsvB}
-
               setEditor={setEditor}
             />
 
@@ -79,11 +75,9 @@ export const ToolbarArea: React.FC<IToolbarAreaProp> = ({
 
         {/* 第二列：左側對齊搜尋與工具 */}
         <MaterialToolbar
-          search={search}
-          setSearch={setSearch}
           rows={rows}
-          hideEmpty={hideEmpty}
-          setHideEmpty={setHideEmpty}
+          filter={filter}
+          setFilter={setFilter}
         />
       </Flex>
     </Box>

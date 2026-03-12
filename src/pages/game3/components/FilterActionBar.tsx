@@ -1,26 +1,23 @@
 import { Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
 import { CopyIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import type { Dispatch, SetStateAction } from "react";
-import type { IItemRow } from "../type";
+import type { IItemRow, TFilter } from "../type";
 
 export interface IMaterialToolbarProps {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
   rows: IItemRow[];
-  hideEmpty: boolean;
-  setHideEmpty: Dispatch<SetStateAction<boolean>>;
+
+  filter: TFilter;
+  setFilter: Dispatch<SetStateAction<TFilter>>;
 }
 
 export const MaterialToolbar: React.FC<IMaterialToolbarProps> = ({
-  search,
-  setSearch,
   rows,
-  hideEmpty,
-  setHideEmpty,
+  filter,
+  setFilter,
 }) => {
   return (
     <Flex align="center" gap="3">
-      <TextField.Root size="2" placeholder="搜尋項目..." className="w-56 bg-slate-50" value={search} onChange={e => setSearch(e.target.value)}>
+      <TextField.Root size="2" placeholder="搜尋項目..." className="w-56 bg-slate-50" value={filter.search} onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}>
         <TextField.Slot>
           <MagnifyingGlassIcon />
         </TextField.Slot>
@@ -41,7 +38,7 @@ export const MaterialToolbar: React.FC<IMaterialToolbarProps> = ({
 
       <Text as="label" size="2">
         <Flex gap="2">
-          <Switch size="1" checked={hideEmpty} onCheckedChange={setHideEmpty} />
+          <Switch size="1" checked={filter.hideEmpty} onCheckedChange={(v) => setFilter(f => ({ ...f, hideEmpty: v }))} />
           隱藏無關數據
         </Flex>
       </Text>
