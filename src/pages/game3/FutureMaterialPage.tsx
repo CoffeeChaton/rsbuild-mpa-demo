@@ -7,23 +7,20 @@ import { ImportDialog } from "./components/ImportDialog";
 import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";
 import { ToolbarArea } from "./components/ToolbarArea";
-import type { TEditor, TFilter } from "./type";
+import type { TFilter } from "./type";
 import { usePlanManager } from "./hooks/usePlanManager";
 import { useMaterialRows } from "./hooks/useMaterialRows";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
 import { PlanContext } from "./context/PlanContext";
+import { useEditor } from "./hooks/useEditor";
 
 const NAVBAR_HEIGHT = 70; // px
 
 export function FutureMaterialPage() {
   const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
 
-  const [jsonA, setJsonA] = useLocalStorageState<string>(
-    "fm_a_v5",
-    "{}",
-  );
+  const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
 
-  const planOps = usePlanManager();
   const {
     planName,
     setPlanName,
@@ -31,31 +28,18 @@ export function FutureMaterialPage() {
     setCustomPlans,
     tsvB,
     updateCustomPlan,
-  } = planOps;
+  } = usePlanManager();
 
-  // 當點擊「確認保存」時
+  const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
+
+  const { editor, setEditorOpen } = useEditor();
+
+  /** 當點擊「確認保存」時 */
   const onEditorSave = (title: string, content: string, targetId: string | null) => {
     updateCustomPlan(title, content, targetId);
-    setEditor(prev => ({ ...prev, open: false }));
+    // 用統一方法關閉 Editor
+    setEditorOpen(false);
   };
-
-  const loadAsset = async (p: string) => {
-    const m = await import(`./assets/${p}.tsv?raw`);
-    return m.default as string;
-  };
-
-  const [filter, setFilter] = useState<TFilter>({
-    search: "",
-    hideEmpty: true,
-  });
-
-  // Editor States
-  const [editor, setEditor] = useState<TEditor>({
-    open: false,
-    targetId: null as string | null,
-    title: "",
-    content: "",
-  });
 
   const [importOpen, setImportOpen] = useState(false);
   const { rows, groupedRows } = useMaterialRows(jsonA, tsvB, filter, bundle);
@@ -82,12 +66,12 @@ export function FutureMaterialPage() {
           customPlans,
           setCustomPlans,
           tsvB,
+          setEditorOpen,
         }}
       >
         <ToolbarArea
           rows={rows}
           setImportOpen={setImportOpen}
-          setEditor={setEditor}
           filter={filter}
           setFilter={setFilter}
           copyResult={copyResult}
@@ -101,14 +85,17 @@ export function FutureMaterialPage() {
       <EditorDialog
         key={editor.open ? `edit-${editor.targetId}-${Date.now()}` : "edit-closed"}
         open={editor.open}
-        onOpenChange={(v) => setEditor(e => ({ ...e, open: v }))}
+        onOpenChange={(v) => setEditorOpen(v)}
         initialData={{
           targetId: editor.targetId,
           title: editor.title,
           content: editor.content,
         }}
         onSave={onEditorSave}
-        loadDefault={loadAsset}
+        loadDefault={async (p: string) => {
+          const m = await import(`./assets/${p}.tsv?raw`);
+          return m.default as string;
+        }}
       />
 
       {/* Import Dialog */}

@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import type { TEditor } from "../type";
 
 interface IPlanContext {
   planName: string;
@@ -6,6 +7,7 @@ interface IPlanContext {
   customPlans: Record<string, string>;
   setCustomPlans: (v: Record<string, string>) => void;
   tsvB: string;
+  setEditorOpen: (open: boolean, data?: Partial<TEditor>) => void;
 }
 
 export const PlanContext = createContext<IPlanContext | null>(null);

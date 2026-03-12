@@ -1,23 +1,16 @@
 import React from "react";
 import { Button, DropdownMenu, Flex, IconButton, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import type { Dispatch, SetStateAction } from "react";
-import type { TEditor } from "../type";
 import { usePlanContext } from "../context/PlanContext";
 
-interface IPlanSwitcher {
-  setEditor: Dispatch<SetStateAction<TEditor>>;
-}
-
-export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
-  setEditor,
-}) => {
+export const PlanSwitcher: React.FC = () => {
   const {
     planName,
     setPlanName,
     customPlans,
     setCustomPlans,
     tsvB,
+    setEditorOpen,
   } = usePlanContext();
 
   return (
@@ -60,12 +53,8 @@ export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
         <DropdownMenu.Item
           color="indigo"
           onClick={() => {
-            setEditor({
-              open: true,
-              targetId: null,
-              title: `USR_${Date.now()}`,
-              content: "",
-            });
+            // 打開新方案
+            setEditorOpen(true, { targetId: null, title: `USR_${Date.now()}`, content: "" });
           }}
         >
           <PlusIcon /> 新增方案...
@@ -73,12 +62,8 @@ export const PlanSwitcher: React.FC<IPlanSwitcher> = ({
         {customPlans[planName] !== undefined && (
           <DropdownMenu.Item
             onClick={() => {
-              setEditor({
-                open: true,
-                targetId: planName,
-                title: planName,
-                content: tsvB,
-              });
+              // 編輯現有方案
+              setEditorOpen(true, { targetId: planName, title: planName, content: tsvB });
             }}
           >
             <GearIcon /> 編輯方案名稱/內容...

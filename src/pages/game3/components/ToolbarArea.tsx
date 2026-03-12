@@ -10,12 +10,11 @@ import {
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
 import { type Dispatch, memo, type SetStateAction } from "react";
-import type { IItemRow, TEditor, TFilter } from "../type";
+import type { IItemRow, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
   rows: IItemRow[];
   setImportOpen: Dispatch<SetStateAction<boolean>>;
-  setEditor: Dispatch<SetStateAction<TEditor>>;
   filter: TFilter;
   setFilter: Dispatch<SetStateAction<TFilter>>;
   copyResult: () => void;
@@ -24,7 +23,6 @@ export interface IToolbarAreaProp {
 export const ToolbarArea = memo<IToolbarAreaProp>(({
   rows,
   setImportOpen,
-  setEditor,
   filter,
   setFilter,
   copyResult,
@@ -39,9 +37,7 @@ export const ToolbarArea = memo<IToolbarAreaProp>(({
               <ClipboardIcon /> 導入原有
             </Button>
 
-            <PlanSwitcher
-              setEditor={setEditor}
-            />
+            <PlanSwitcher />
 
             <Button
               variant="outline"
