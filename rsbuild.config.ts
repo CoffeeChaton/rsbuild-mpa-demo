@@ -1,6 +1,6 @@
 import { defineConfig, type RsbuildPlugin } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
-import { existsSync, readdirSync, readFileSync, renameSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, renameSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PAGE_MAP } from "./src/common/config/pages";
@@ -14,15 +14,16 @@ const repoName = pkg.name;
 const assetPrefix = `/${repoName}/`;
 
 const getEntries = () => {
-  const pagesDir = resolve(__dirname, "src/pages");
-  const folders = readdirSync(pagesDir);
   const entries: Record<string, string> = {};
-
-  folders.forEach(name => {
-    const key = name === "index" ? "" : name;
-    // 全部 Entry 共享 index/main.tsx 作為 CSR 超級入口
-    entries[key] = resolve(__dirname, "src/pages/index/main.tsx");
+  Object.keys(PAGE_MAP).forEach((key) => {
+    if (key === "404") return;
+    const entry = key === "index" ? "" : key;
+    entries[entry] = resolve(
+      __dirname,
+      "src/pages/index/main.tsx",
+    );
   });
+
   return entries;
 };
 

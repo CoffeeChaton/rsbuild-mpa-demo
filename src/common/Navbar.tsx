@@ -39,7 +39,8 @@ export const Navbar = () => {
           return (
             <Link
               key={item.key}
-              to={item.path} // React Router 會根據 basename 自動補上 /repo-name
+              to={item.path.endsWith("/") ? item.path : item.path + "/"}
+              // React Router 會根據 basename 自動補上 /repo-name
               className={`${isActive ? "text-blue-600 font-bold border-b-2 border-blue-600" : "text-gray-500"} hover:text-blue-500 transition-colors px-1 pb-1`}
             >
               {item.label}
