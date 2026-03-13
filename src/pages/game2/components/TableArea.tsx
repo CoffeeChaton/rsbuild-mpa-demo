@@ -5,6 +5,7 @@ import { Box, Button, Table } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { TableRowItem } from "./TableRowItem";
 import type { IItem, IRowResult } from "../type";
+import { useTableItems } from "../hooks/useTableItems";
 
 /**
  * TableArea
@@ -30,6 +31,12 @@ export const TableArea: React.FC<ITableAreaProps> = ({
   setItems,
   onMove,
 }) => {
+  const {
+    updateItem,
+    deleteItem,
+    createItem,
+  } = useTableItems(items, setItems);
+
   return (
     <Box
       className="border rounded-xl shadow-sm bg-white"
@@ -62,16 +69,9 @@ export const TableArea: React.FC<ITableAreaProps> = ({
               row={row}
               index={idx}
               isLast={idx === items.length - 1}
-              onUpdate={(id, f, v) =>
-                setItems(prev =>
-                  prev.map(i =>
-                    i.id === id
-                      ? { ...i, [f]: v }
-                      : i
-                  )
-                )}
+              onUpdate={updateItem}
               onMove={onMove}
-              onDelete={(id) => setItems(prev => prev.filter(i => i.id !== id))}
+              onDelete={deleteItem}
             />
           ))}
         </Table.Body>
@@ -81,24 +81,9 @@ export const TableArea: React.FC<ITableAreaProps> = ({
         <Button
           variant="ghost"
           size="3"
-          onClick={() =>
-            setItems([
-              ...items,
-              {
-                id: crypto.randomUUID(),
-                calculate: true,
-                name: "",
-                note: "",
-                moduleFrom: "0",
-                moduleTo: "3",
-                e1: 0,
-                l1: 1,
-                e2: 2,
-                l2: 1,
-              },
-            ])}
+          onClick={createItem}
         >
-          <PlusIcon /> 新增需求項目
+          <PlusIcon /> 新增需求列
         </Button>
       </Box>
     </Box>
