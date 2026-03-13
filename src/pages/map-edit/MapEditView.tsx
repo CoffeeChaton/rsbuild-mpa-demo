@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Navbar } from "../../common/Navbar";
 import { TILE_LAYERS, type TMapPreference } from "../../common/types/map";
 import { loadMapPreference, saveMapPreference } from "../../common/utils/mapStorage";
 import { MapViewer } from "./MapViewer";
@@ -18,7 +17,6 @@ export const MapEditView = () => {
 
   return (
     <>
-      <Navbar />
       <main className="p-8 max-w-6xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-black">GIS 地圖編輯器</h1>

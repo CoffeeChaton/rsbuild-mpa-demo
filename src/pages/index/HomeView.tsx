@@ -1,10 +1,8 @@
 // src/pages/index/HomeView.tsx
-import { Navbar } from "../../common/Navbar";
 
 export const HomeView = () => {
   return (
     <>
-      <Navbar />
       <main className="flex flex-col items-center justify-center min-h-[60vh] p-10">
         <div className="max-w-2xl text-center">
           <h1 className="text-5xl font-black text-gray-900 leading-tight">

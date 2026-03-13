@@ -1,3 +1,4 @@
+// src/pages/index/main.tsx
 import { canonicalUrl } from "../../common/router/canonical-url";
 import { App } from "./App";
 import "../../styles/globals.css";
