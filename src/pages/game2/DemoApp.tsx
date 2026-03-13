@@ -1,136 +1,146 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { 
   Box, Button, Checkbox, Container, Flex, Heading, 
-  IconButton, Table, Text, TextField, Tooltip, Card, Badge, Grid
+  IconButton, Table, Text, TextField, Card, Badge, Grid
 } from "@radix-ui/themes";
 import { 
   ArrowUpIcon, ArrowDownIcon, TrashIcon, 
-  ClipboardCopyIcon, DownloadIcon, PlusIcon, InfoCircledIcon
+  ClipboardCopyIcon, DownloadIcon, PlusIcon, InfoCircledIcon 
 } from "@radix-ui/react-icons";
 
-// --- Types & Interfaces ---
-
 /**
- * @interface IItem
- * @description 核心數據結構，對應 Excel 欄位
- * FROM/後來：對應模組等級 (0->3)
- * elite/level：對應精英階段與等級
+ * AI Context & User Intent:
+ * 1. 修復剪貼簿導入：精確對齊用戶提供的 Excel 欄位（是否計算, 稀有度, 角色...）。
+ * 2. 修復 localStorage：解決初始渲染時空數據覆蓋本地緩存的問題。
+ * 3. 布局優化：固定左側庫存 Card 寬度，確保 1080p 下操作按鈕不位移。
+ * 4. 程式規範：嚴禁 export default，使用 React.FC，自定義 Interface 以 I 開頭。
  */
+
 interface IItem {
   id: string;
-  calculate: boolean; // 是否參與計算
-  rarity: number;     // 稀有度
-  name: string;       // 角色資訊
-  note: string;       // 技能備註
-  moduleFrom: string; // 模組 FROM
-  moduleTo: string;   // 模組 後來
-  e1: number;         // FROM 精英階級
-  l1: number;         // FROM 等級
-  e2: number;         // TO 精英階級
-  l2: number;         // TO 等級
+  calculate: boolean;
+  name: string;
+  note: string;
+  moduleFrom: string; 
+  moduleTo: string;
+  e1: number; // 精英 FROM
+  l1: number; // 等級 FROM
+  e2: number; // 精英 TO
+  l2: number; // 等級 TO
 }
 
-/**
- * @interface IInventory
- * @description 用戶當前擁有的資源庫存
- */
 interface IInventory {
   money: number;
   books: number;
 }
 
-const STORAGE_KEY = "ark_arsenal_v2_data";
-const INV_STORAGE_KEY = "ark_arsenal_v2_inv";
-
-// --- Utils ---
-
-/**
- * @description 根據等級與精英階段計算消耗 (模擬 Excel 邏輯)
- * 實際邏輯需根據查表，此處為簡化公式
- */
-const calculateCost = (item: IItem) => {
-  if (!item.calculate) return { money: 0, books: 0 };
-  // 模擬消耗邏輯：基於等級差與精英階段加權
-  const levelDiff = (item.e2 * 100 + item.l2) - (item.e1 * 100 + item.l1);
-  const baseMoney = levelDiff > 0 ? levelDiff * 3500 : 0;
-  const baseBooks = levelDiff > 0 ? levelDiff * 2200 : 0;
-  return { money: Math.floor(baseMoney), books: Math.floor(baseBooks) };
-};
-
-// --- Main Component ---
+const ITEMS_KEY = "ark_arsenal_items_v3_fixed";
+const INV_KEY = "ark_arsenal_inv_v3_fixed";
 
 export const ArsenalCalculator: React.FC = () => {
   const [items, setItems] = useState<IItem[]>([]);
   const [inventory, setInventory] = useState<IInventory>({ money: 0, books: 0 });
+  const [isLoaded, setIsLoaded] = useState(false); // 防止初始空數據覆蓋緩存
 
-  // 1. 初始化資料與讀取緩存
+  // --- 1. 讀取緩存 (僅執行一次) ---
   useEffect(() => {
-    const savedItems = localStorage.getItem(STORAGE_KEY);
-    const savedInv = localStorage.getItem(INV_STORAGE_KEY);
-    if (savedItems) setItems(JSON.parse(savedItems));
-    if (savedInv) setInventory(JSON.parse(savedInv));
+    const sItems = localStorage.getItem(ITEMS_KEY);
+    const sInv = localStorage.getItem(INV_KEY);
+    if (sItems) {
+      try {
+        setItems(JSON.parse(sItems));
+      } catch (e) {
+        console.error("Failed to parse items", e);
+      }
+    }
+    if (sInv) {
+      try {
+        setInventory(JSON.parse(sInv));
+      } catch (e) {
+        console.error("Failed to parse inventory", e);
+      }
+    }
+    setIsLoaded(true);
   }, []);
 
-  // 2. 資料持久化
+  // --- 2. 保存緩存 (當 isLoaded 為 true 且數據變動時) ---
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    localStorage.setItem(INV_STORAGE_KEY, JSON.stringify(inventory));
-  }, [items, inventory]);
+    if (isLoaded) {
+      localStorage.setItem(ITEMS_KEY, JSON.stringify(items));
+      localStorage.setItem(INV_KEY, JSON.stringify(inventory));
+    }
+  }, [items, inventory, isLoaded]);
 
-  // 3. 計算累計需求與背景顏色
-  // 這一部分會跑一個 reduce，計算每一行結算時的「累計錢」與「累計書」
-  const rowsWithCumulative = useMemo(() => {
+  // --- 3. 計算邏輯 ---
+  const rows = useMemo(() => {
     let accMoney = 0;
     let accBooks = 0;
 
     return items.map((item) => {
-      const cost = calculateCost(item);
+      // 假設性消耗計算 (AI接手請根據 Excel 邏輯公式化)
+      const diff = (item.e2 * 100 + item.l2) - (item.e1 * 100 + item.l1);
+      const costMoney = item.calculate && diff > 0 ? diff * 4500 : 0;
+      const costBooks = item.calculate && diff > 0 ? diff * 2800 : 0;
+
       if (item.calculate) {
-        accMoney += cost.money;
-        accBooks += cost.books;
+        accMoney += costMoney;
+        accBooks += costBooks;
       }
 
-      // 判斷資源是否足夠
       const isAffordable = inventory.money >= accMoney && inventory.books >= accBooks;
-      
+
       return {
         ...item,
-        cost,
-        cumMoney: accMoney,
-        cumBooks: accBooks,
-        status: !item.calculate ? "disabled" : isAffordable ? "affordable" : "expensive",
+        costMoney, costBooks,
+        cumMoney: accMoney, cumBooks: accBooks,
+        status: !item.calculate ? "disabled" : isAffordable ? "safe" : "danger"
       };
     });
   }, [items, inventory]);
 
-  // --- Handlers ---
-
+  // --- 4. 剪貼簿讀取修復 ---
   const handleImport = async () => {
     try {
       const text = await navigator.clipboard.readText();
       const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
-      // 支援無標題解析
-      const isHeader = lines[0].includes("是否計算");
-      const data = isHeader ? lines.slice(1) : lines;
       
-      const newItems = data.map((line, idx) => {
+      // 判斷是否包含標題行（"是否計算" 或 "稀有度" 等字眼）
+      const hasHeader = lines[0].includes("計算") || lines[0].includes("稀有度");
+      const dataRows = hasHeader ? lines.slice(1) : lines;
+
+      const newItems: IItem[] = dataRows.map((line) => {
         const c = line.split("\t");
+        // 對齊截圖中的 TSV 順序: 
+        // 0:是否計算(O/X), 1:稀有度, 2:角色名, 3:技能備註, 
+        // 4:FROM模組, 5:TO模組, 6:FROM精英, 7:FROM等級, 8:TO精英, 9:TO等級
         return {
-          id: `${Date.now()}-${idx}`,
-          calculate: c[0] === "O",
-          rarity: parseInt(c[1]) || 6,
+          id: crypto.randomUUID(),
+          calculate: c[0] === "O", 
           name: c[2] || "",
           note: c[3] || "",
           moduleFrom: c[4] || "0",
-          moduleTo: c[5] || "0",
-          e1: parseInt(c[6]) || 0,
-          l1: parseInt(c[7]) || 1,
-          e2: parseInt(c[8]) || 0,
-          l2: parseInt(c[9]) || 1,
+          moduleTo: c[5] || "3",
+          e1: Number(c[6]) || 0,
+          l1: Number(c[7]) || 1,
+          e2: Number(c[8]) || 0,
+          l2: Number(c[9]) || 1,
         };
       });
-      setItems(newItems);
-    } catch (e) { alert("讀取剪貼簿失敗"); }
+
+      if (newItems.length > 0) {
+        setItems(newItems);
+      }
+    } catch (err) {
+      alert("讀取剪貼簿失敗，請確保已複製 Excel 的 TSV 數據。");
+    }
+  };
+
+  const moveRow = (idx: number, delta: number) => {
+    const next = idx + delta;
+    if (next < 0 || next >= items.length) return;
+    const newArr = [...items];
+    [newArr[idx], newArr[next]] = [newArr[next], newArr[idx]];
+    setItems(newArr);
   };
 
   const updateItem = (id: string, field: keyof IItem, value: any) => {
@@ -138,134 +148,108 @@ export const ArsenalCalculator: React.FC = () => {
   };
 
   return (
-    <Container size="4" p="4">
-      <Flex direction="column" gap="4">
-        {/* Header Section */}
+    <Container size="4" p="5" style={{ maxWidth: '1860px' }}>
+      <Flex direction="column" gap="5">
         <Flex justify="between" align="end">
           <Box>
-            <Heading size="7" mb="1">明日方舟工具箱</Heading>
-            <Text color="gray" size="2">精英材料 PLUS / 資源規劃控制台</Text>
+            <Heading size="8" weight="bold">Arsenal Calculator</Heading>
+            <Text color="gray" size="2">資源累計與庫存對照面板 (Fix: Storage & Import)</Text>
           </Box>
-          <Flex gap="2">
-            <Button variant="soft" color="indigo" onClick={handleImport}><DownloadIcon /> 從剪貼簿導入</Button>
-            <Button variant="solid" color="green" onClick={() => {/* 同前導出邏輯 */}}><ClipboardCopyIcon /> 導出 TSV</Button>
+          <Flex gap="3">
+            <Button variant="soft" color="indigo" size="3" onClick={handleImport}><DownloadIcon /> 從剪貼簿導入</Button>
+            <Button variant="solid" color="green" size="3"><ClipboardCopyIcon /> 導出 TSV</Button>
           </Flex>
         </Flex>
 
-        <Grid columns={{ initial: "1", md: "3" }} gap="4">
-          {/* 左側：資源庫存輸入卡片 (250px * 500px 比例調節) */}
-          <Box style={{ gridColumn: "span 1" }}>
-            <Card size="3" style={{ height: '100%' }}>
-              <Flex direction="column" gap="3">
-                <Text weight="bold" size="3"><InfoCircledIcon /> 當前物資庫存</Text>
+        <Grid columns="280px 1fr" gap="6" align="start">
+          <Box>
+            <Card size="3" style={{ position: 'sticky', top: '20px' }}>
+              <Flex direction="column" gap="4">
+                <Flex align="center" gap="2"><InfoCircledIcon /><Text weight="bold">物資庫存</Text></Flex>
                 <Box>
-                  <Text as="label" size="2" mb="1" weight="medium">現有龍門幣 (LMD)</Text>
-                  <TextField.Root 
-                    type="number"
-                    placeholder="輸入當前金額..." 
-                    value={inventory.money} 
-                    onChange={e => setInventory({...inventory, money: Number(e.target.value)})}
-                  />
+                  <Text as="div" size="2" weight="bold" mb="1" color="gray">龍門幣 (LMD)</Text>
+                  <TextField.Root type="number" size="3" value={inventory.money} onChange={e => setInventory(p => ({ ...p, money: Number(e.target.value) }))} />
                 </Box>
                 <Box>
-                  <Text as="label" size="2" mb="1" weight="medium">現有作戰記錄 (EXP)</Text>
-                  <TextField.Root 
-                    type="number"
-                    placeholder="輸入當前經驗..." 
-                    value={inventory.books} 
-                    onChange={e => setInventory({...inventory, books: Number(e.target.value)})}
-                  />
+                  <Text as="div" size="2" weight="bold" mb="1" color="gray">作戰記錄 (EXP)</Text>
+                  <TextField.Root type="number" size="3" value={inventory.books} onChange={e => setInventory(p => ({ ...p, books: Number(e.target.value) }))} />
                 </Box>
-                <Badge color="blue" variant="soft" size="2" style={{ padding: '8px' }}>
-                  系統將根據此庫存自動計算累計需求顏色
-                </Badge>
+                <Badge color="blue" variant="soft" style={{ padding: '12px' }}>數據已與 localStorage 同步。</Badge>
               </Flex>
             </Card>
           </Box>
 
-          {/* 右側：表格區域 */}
-          <Box style={{ gridColumn: "span 2" }}>
-            <Box className="border rounded-xl shadow-sm overflow-hidden bg-white">
-              <Table.Root variant="surface">
-                <Table.Header className="bg-slate-50">
-                  <Table.Row align="center">
-                    <Table.ColumnHeaderCell width="40px">算</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>角色資訊 / 備註</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>模組</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>等級 (FROM → TO)</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>預估消耗</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>累計需求</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell width="80px">操作</Table.ColumnHeaderCell>
-                  </Table.Row>
-                </Table.Header>
+          <Box className="bg-white border rounded-2xl shadow-sm overflow-hidden">
+            <Table.Root variant="surface">
+              <Table.Header className="bg-slate-50">
+                <Table.Row align="center">
+                  <Table.ColumnHeaderCell width="40px">算</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell minWidth="240px">角色與備註</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="110px">模組</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="180px">等級 (FROM → TO)</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="100px">預估錢</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="100px">預估書</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="120px">累計錢</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="120px">累計書</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell width="100px" align="center">操作</Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-                <Table.Body>
-                  {rowsWithCumulative.map((item, idx) => {
-                    // 根據狀態設定背景色
-                    const bgColor = item.status === "disabled" ? "#f1f3f5" : 
-                                    item.status === "affordable" ? "#ebfbee" : "#fff5f5";
-                    const opacity = item.status === "disabled" ? 0.6 : 1;
-
-                    return (
-                      <Table.Row key={item.id} align="center" style={{ backgroundColor: bgColor, opacity }}>
-                        <Table.Cell>
-                          <Checkbox checked={item.calculate} onCheckedChange={(v) => updateItem(item.id, "calculate", !!v)} />
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex align="center" gap="2">
-                            <TextField.Root size="1" placeholder="角色" value={item.name} onChange={e => updateItem(item.id, "name", e.target.value)} />
-                            <TextField.Root size="1" variant="soft" placeholder="備註" value={item.note} onChange={e => updateItem(item.id, "note", e.target.value)} />
-                          </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex align="center" gap="1">
-                            <TextField.Root size="1" style={{ width: 45 }} value={item.moduleFrom} onChange={e => updateItem(item.id, "moduleFrom", e.target.value)} />
-                            <Text size="1">→</Text>
-                            <TextField.Root size="1" style={{ width: 45 }} value={item.moduleTo} onChange={e => updateItem(item.id, "moduleTo", e.target.value)} />
-                          </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex align="center" gap="1">
-                            <Text size="1" color="gray">E{item.e1}</Text>
-                            <TextField.Root size="1" style={{ width: 35 }} value={item.l1} onChange={e => updateItem(item.id, "l1", Number(e.target.value))} />
-                            <Text size="1">→</Text>
-                            <Text size="1" color="gray">E{item.e2}</Text>
-                            <TextField.Root size="1" style={{ width: 35 }} value={item.l2} onChange={e => updateItem(item.id, "l2", Number(e.target.value))} />
-                          </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex direction="column">
-                            <Text size="1" weight="bold" color="amber">💲{item.cost.money.toLocaleString()}</Text>
-                            <Text size="1" weight="bold" color="blue">📘{item.cost.books.toLocaleString()}</Text>
-                          </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex direction="column">
-                            <Text size="1" weight="bold">Σ {item.cumMoney.toLocaleString()}</Text>
-                            <Text size="1" color="gray">Σ {item.cumBooks.toLocaleString()}</Text>
-                          </Flex>
-                        </Table.Cell>
-
-                        <Table.Cell>
-                          <Flex gap="1">
-                            <IconButton size="1" variant="ghost" onClick={() => {/* Move Up */}}><ArrowUpIcon /></IconButton>
-                            <IconButton size="1" variant="ghost" color="red" onClick={() => setItems(prev => prev.filter(i => i.id !== item.id))}><TrashIcon /></IconButton>
-                          </Flex>
-                        </Table.Cell>
-                      </Table.Row>
-                    );
-                  })}
-                </Table.Body>
-              </Table.Root>
+              <Table.Body>
+                {rows.map((item, idx) => {
+                  const isSafe = item.status === "safe";
+                  const isDisabled = item.status === "disabled";
+                  return (
+                    <Table.Row key={item.id} align="center" style={{ 
+                        backgroundColor: isDisabled ? "#f1f3f5" : isSafe ? "#f2fcf5" : "#fff5f5",
+                        opacity: isDisabled ? 0.7 : 1 
+                      }}>
+                      <Table.Cell>
+                        <Checkbox checked={item.calculate} onCheckedChange={(v) => updateItem(item.id, "calculate", !!v)} />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Flex gap="2">
+                          <TextField.Root size="1" style={{ flex: 1.5 }} value={item.name} onChange={e => updateItem(item.id, "name", e.target.value)} />
+                          <TextField.Root size="1" style={{ flex: 1 }} variant="soft" value={item.note} onChange={e => updateItem(item.id, "note", e.target.value)} />
+                        </Flex>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Flex align="center" gap="1">
+                          <TextField.Root size="1" style={{ width: 40 }} value={item.moduleFrom} onChange={e => updateItem(item.id, "moduleFrom", e.target.value)} />
+                          <Text size="1">→</Text>
+                          <TextField.Root size="1" style={{ width: 40 }} value={item.moduleTo} onChange={e => updateItem(item.id, "moduleTo", e.target.value)} />
+                        </Flex>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Flex align="center" gap="1">
+                          <TextField.Root type="number" size="1" style={{ width: 35 }} value={item.e1} onChange={e => updateItem(item.id, "e1", Number(e.target.value))} />
+                          <TextField.Root type="number" size="1" style={{ width: 42 }} value={item.l1} onChange={e => updateItem(item.id, "l1", Number(e.target.value))} />
+                          <Text size="1">→</Text>
+                          <TextField.Root type="number" size="1" style={{ width: 35 }} value={item.e2} onChange={e => updateItem(item.id, "e2", Number(e.target.value))} />
+                          <TextField.Root type="number" size="1" style={{ width: 42 }} value={item.l2} onChange={e => updateItem(item.id, "l2", Number(e.target.value))} />
+                        </Flex>
+                      </Table.Cell>
+                      <Table.Cell><Text size="1" weight="bold" color="amber">{item.costMoney.toLocaleString()}</Text></Table.Cell>
+                      <Table.Cell><Text size="1" weight="bold" color="blue">{item.costBooks.toLocaleString()}</Text></Table.Cell>
+                      <Table.Cell><Text size="2" weight="bold">Σ {item.cumMoney.toLocaleString()}</Text></Table.Cell>
+                      <Table.Cell><Text size="2" color="gray">Σ {item.cumBooks.toLocaleString()}</Text></Table.Cell>
+                      <Table.Cell>
+                        <Flex gap="1" justify="center">
+                          <IconButton size="1" variant="ghost" disabled={idx === 0} onClick={() => moveRow(idx, -1)}><ArrowUpIcon /></IconButton>
+                          <IconButton size="1" variant="ghost" disabled={idx === items.length - 1} onClick={() => moveRow(idx, 1)}><ArrowDownIcon /></IconButton>
+                          <IconButton size="1" variant="ghost" color="red" onClick={() => setItems(prev => prev.filter(i => i.id !== item.id))}><TrashIcon /></IconButton>
+                        </Flex>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table.Root>
+            <Box p="3" className="bg-slate-50">
+              <Button variant="ghost" onClick={() => setItems([...items, { id: crypto.randomUUID(), calculate: true, name: "", note: "", moduleFrom: "0", moduleTo: "3", e1: 0, l1: 1, e2: 2, l2: 1 }])}>
+                <PlusIcon /> 新增需求項目
+              </Button>
             </Box>
-            <Button variant="ghost" mt="3" onClick={() => setItems([...items, { id: Date.now().toString(), calculate: true, rarity: 6, name: "", note: "", moduleFrom: "0", moduleTo: "3", e1: 0, l1: 1, e2: 2, l2: 1 }])}>
-              <PlusIcon /> 新增需求項目
-            </Button>
           </Box>
         </Grid>
       </Flex>
