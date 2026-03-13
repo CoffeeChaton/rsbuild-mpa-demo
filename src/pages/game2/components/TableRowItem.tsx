@@ -1,9 +1,37 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
-import type { IItem, IRowResult } from "../types";
+import type { IItem, IRowResult, TRowStatus } from "../types";
 import { ModuleStageSelect } from "./ModuleStageSelect";
 import { RaritySelect } from "./RaritySelect";
+
+const getRowStyle = (status: TRowStatus): React.CSSProperties => {
+  // 基礎樣式（所有狀態共有）
+  const style: React.CSSProperties = {
+    transition: "all 0.1s ease",
+  };
+
+  // 處理 Disabled 狀態 (最優先，因為它會覆蓋其他屬性)
+  if (status === "disabled") {
+    return {
+      ...style,
+      backgroundColor: "var(--gray-2)",
+      opacity: 0.5,
+      color: "var(--gray-9)",
+    };
+  }
+
+  // 處理活動中的狀態 (Safe / Danger)
+  const isSafe = status === "safe";
+
+  return {
+    ...style,
+    backgroundColor: isSafe ? "var(--green-3)" : "var(--red-2)",
+    color: isSafe ? undefined : "var(--red-11)",
+    boxShadow: `inset 4px 0 0 0 ${isSafe ? "var(--green-7)" : "var(--red-7)"}`,
+    opacity: 1,
+  };
+};
 
 interface ITableRowItemProps {
   row: IRowResult;
@@ -22,11 +50,14 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
   onMove,
   onDelete,
 }) => {
-  const bgColor = row.status === "disabled" ? "#f9f9f9" : row.status === "safe" ? "#f2fcf5" : "#fff5f5";
   const numStyle: React.CSSProperties = { whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums", fontSize: "13px" };
+  const rowStyle = useMemo(() => getRowStyle(row.status), [row.status]);
 
   return (
-    <Table.Row align="center" style={{ backgroundColor: bgColor }}>
+    <Table.Row
+      align="center"
+      style={rowStyle}
+    >
       <Table.Cell>
         <Checkbox
           checked={row.calculate}
@@ -64,7 +95,7 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
         <Flex align="center" gap="1">
           <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e1} onChange={e => onUpdate(row.id, "e1", Number(e.target.value))} />
           <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l1} onChange={e => onUpdate(row.id, "l1", Number(e.target.value))} />
-          <Text size="1">→</Text>
+          <Text size="1" color="gray">→</Text>
           <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e2} onChange={e => onUpdate(row.id, "e2", Number(e.target.value))} />
           <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l2} onChange={e => onUpdate(row.id, "l2", Number(e.target.value))} />
         </Flex>
@@ -79,7 +110,7 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
         <Text weight="bold" style={numStyle}>Σ {row.cumMoney.toLocaleString()}</Text>
       </Table.Cell>
       <Table.Cell>
-        <Text color="gray" style={numStyle}>Σ {row.cumBooks.toLocaleString()}</Text>
+        <Text weight="bold" style={numStyle}>Σ {row.cumBooks.toLocaleString()}</Text>
       </Table.Cell>
       <Table.Cell>
         <Flex gap="1" justify="center">
