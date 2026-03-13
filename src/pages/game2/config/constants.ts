@@ -30,7 +30,7 @@ export const COST_PER_LEVEL = {
  *
  * Excel compatible
  */
-export const TSV_HEADER = "是否計算\t稀有度\t角色名\t技能備註\tFROM\tTO\t精1\t等1\t精2\t等2\t預估錢\t預估書\t累計錢\t累計書";
+export const TSV_HEADER = "是否計算\t星級\t角色名\t技能備註\tFROM\tTO\t精1\t等1\t精2\t等2\t預估錢\t預估書\t累計錢\t累計書";
 
 /**
  * Default item template

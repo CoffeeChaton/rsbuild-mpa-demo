@@ -63,7 +63,7 @@ export const useArsenalCalculator = () => {
         return {
           id: crypto.randomUUID(),
           calculate: c[0]?.trim() === "O",
-          rarity: Number(c[1]) || 5, // <- 新增
+          rarity: Number(c[1]) || NaN, // <- 新增
           name: c[2] || "",
           note: c[3] || "",
           moduleFrom: c[4] || "0",

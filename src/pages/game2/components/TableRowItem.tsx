@@ -2,6 +2,8 @@ import React from "react";
 import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
+import { ModuleStageSelect } from "./ModuleStageSelect";
+import { RaritySelect } from "./RaritySelect";
 
 interface ITableRowItemProps {
   row: IRowResult;
@@ -32,12 +34,10 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
         />
       </Table.Cell>
       <Table.Cell>
-        <TextField.Root
-          type="number"
-          size="1"
-          style={{ width: 32 }}
+        {/* 選擇 星級 / 稀有度 */}
+        <RaritySelect
           value={row.rarity}
-          onChange={e => onUpdate(row.id, "rarity", Number(e.target.value))}
+          onValueChange={(val) => onUpdate(row.id, "rarity", Number(val))}
         />
       </Table.Cell>
       <Table.Cell>
@@ -47,10 +47,17 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
         <TextField.Root size="1" variant="soft" value={row.note} onChange={e => onUpdate(row.id, "note", e.target.value)} />
       </Table.Cell>
       <Table.Cell>
+        {/* 模組 */}
         <Flex align="center" gap="1">
-          <TextField.Root size="1" style={{ width: 40 }} value={row.moduleFrom} onChange={e => onUpdate(row.id, "moduleFrom", e.target.value)} />
-          <Text size="1">→</Text>
-          <TextField.Root size="1" style={{ width: 40 }} value={row.moduleTo} onChange={e => onUpdate(row.id, "moduleTo", e.target.value)} />
+          <ModuleStageSelect
+            value={row.moduleFrom}
+            onValueChange={(val) => onUpdate(row.id, "moduleFrom", val)}
+          />
+          <Text size="1" color="gray">→</Text>
+          <ModuleStageSelect
+            value={row.moduleTo}
+            onValueChange={(val) => onUpdate(row.id, "moduleTo", val)}
+          />
         </Flex>
       </Table.Cell>
       <Table.Cell>
