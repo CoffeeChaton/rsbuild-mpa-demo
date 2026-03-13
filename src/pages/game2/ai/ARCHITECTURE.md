@@ -44,9 +44,9 @@ ArsenalLayout.tsx
 
 Responsibilities:
 
-* Compose page UI
-* Connect hooks to UI
-* No business logic
+- Compose page UI
+- Connect hooks to UI
+- No business logic
 
 ---
 
@@ -62,8 +62,8 @@ Toolbar.tsx
 
 Responsibilities:
 
-* Import / Export actions
-* Page controls
+- Import / Export actions
+- Page controls
 
 ---
 
@@ -81,9 +81,9 @@ TableRowItem.tsx
 
 Responsibilities:
 
-* Render UI
-* Forward events to hooks
-* No global state logic
+- Render UI
+- Forward events to hooks
+- No global state logic
 
 ---
 
@@ -100,9 +100,9 @@ useTableItems.ts
 
 Responsibilities:
 
-* State management
-* Persistence
-* Event handlers
+- State management
+- Persistence
+- Event handlers
 
 ---
 
@@ -118,9 +118,9 @@ calcArsenalRows.ts
 
 Rules:
 
-* No React
-* No UI
-* Deterministic pure functions
+- No React
+- No UI
+- Deterministic pure functions
 
 ---
 
@@ -136,9 +136,9 @@ constants.ts
 
 Contains:
 
-* cost constants
-* TSV format
-* UI constants
+- cost constants
+- TSV format
+- UI constants
 
 ---
 
@@ -188,9 +188,9 @@ core/
 
 State such as:
 
-* items
-* inventory
-* persistence
+- items
+- inventory
+- persistence
 
 must live inside hooks.
 
@@ -200,9 +200,9 @@ must live inside hooks.
 
 Changing types may break:
 
-* TSV import
-* cost calculations
-* UI bindings
+- TSV import
+- cost calculations
+- UI bindings
 
 ---
 

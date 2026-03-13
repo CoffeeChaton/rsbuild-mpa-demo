@@ -83,9 +83,9 @@ export const useArsenalCalculator = () => {
   // --- 導出 TSV ---
   const handleExport = () => {
     const header = TSV_HEADER;
-const body = rows.map(r =>
-  `${r.calculate ? "O" : "X"}\t${r.rarity}\t${r.name}\t${r.note}\t${r.moduleFrom}\t${r.moduleTo}\t${r.e1}\t${r.l1}\t${r.e2}\t${r.l2}\t${r.costMoney}\t${r.costBooks}\t${r.cumMoney}\t${r.cumBooks}`
-).join("\n");
+    const body = rows.map(r =>
+      `${r.calculate ? "O" : "X"}\t${r.rarity}\t${r.name}\t${r.note}\t${r.moduleFrom}\t${r.moduleTo}\t${r.e1}\t${r.l1}\t${r.e2}\t${r.l2}\t${r.costMoney}\t${r.costBooks}\t${r.cumMoney}\t${r.cumBooks}`
+    ).join("\n");
     navigator.clipboard.writeText(header + "\n" + body);
     alert("TSV 已複製到剪貼簿");
   };

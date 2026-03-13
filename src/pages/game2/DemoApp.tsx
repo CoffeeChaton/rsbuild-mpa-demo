@@ -1,7 +1,6 @@
 import React from "react";
 import { ArsenalLayout } from "./layout/ArsenalLayout";
 
-
 /**
  * ============================================================
  * AI HANDOVER PROTOCOL / I/O SPECIFICATION
@@ -16,6 +15,5 @@ import { ArsenalLayout } from "./layout/ArsenalLayout";
  */
 
 export const ArsenalCalculator: React.FC = () => {
-
   return <ArsenalLayout />;
 };

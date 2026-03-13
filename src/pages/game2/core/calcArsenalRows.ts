@@ -66,8 +66,8 @@ export const calcArsenalRows = (
       status: !item.calculate
         ? "disabled"
         : isAffordable
-          ? "safe"
-          : "danger",
+        ? "safe"
+        : "danger",
     };
   });
 };

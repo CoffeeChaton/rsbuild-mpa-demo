@@ -53,9 +53,7 @@ export const ArsenalLayout: React.FC = () => {
       >
         <InventoryCard
           inventory={inventory}
-          onUpdate={(field, val) =>
-            setInventory(p => ({ ...p, [field]: val }))
-          }
+          onUpdate={(field, val) => setInventory(p => ({ ...p, [field]: val }))}
         />
 
         <Flex direction="column" gap="3" style={{ overflow: "hidden" }}>
