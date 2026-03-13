@@ -1,11 +1,11 @@
 import { Navbar } from "../../common/Navbar";
-import { DataEditorPage } from "./DataEditorPage";
+import { ArsenalCalculator } from "./DemoApp";
 
 export const App = () => {
   return (
     <>
       <Navbar />
-      <DataEditorPage />
+      <ArsenalCalculator />
     </>
   );
 };
