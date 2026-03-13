@@ -51,11 +51,13 @@ export const ArsenalLayout: React.FC = () => {
         gap="4"
         style={{ flex: 1, overflow: "hidden" }}
       >
+        {/* 左側卡片/上面卡片 */}
         <InventoryCard
           inventory={inventory}
           onUpdate={(field, val) => setInventory(p => ({ ...p, [field]: val }))}
         />
 
+        {/* 主要表格 */}
         <Flex direction="column" gap="3" style={{ overflow: "hidden" }}>
           <TableArea
             rows={rows}
