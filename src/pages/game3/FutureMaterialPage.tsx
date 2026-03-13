@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
-import { ITEM_DATA_KEY, itemFetcher } from "../game2/services/itemFetcher";
+import { ITEM_DATA_KEY, itemFetcher } from "./services/itemFetcher";
 import { ImportDialog } from "./components/ImportDialog";
 import { EditorDialog } from "./components/EditorDialog";
 import { TableArea } from "./components/TableArea";

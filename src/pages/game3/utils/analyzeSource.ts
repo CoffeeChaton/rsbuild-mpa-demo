@@ -1,4 +1,4 @@
-import type { IItemDataBundle } from "../../game2/services/itemFetcher";
+import type { IItemDataBundle } from "../services/itemFetcher";
 
 export interface IItemBundle {
   items: Record<string, { name: { tw: string }, rare: number }>;

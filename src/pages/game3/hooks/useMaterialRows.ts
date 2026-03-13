@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { analyzeSource } from "../utils/analyzeSource";
 import { RARE_LEVELS } from "../shared/constants/material";
 import type { IItemRow, TFilter } from "../type";
-import type { IItemDataBundle } from "../../game2/services/itemFetcher";
+import type { IItemDataBundle } from "../services/itemFetcher";
 
 interface IItemBundle {
   items: Record<string, { name: { tw: string }, rare: number }>;
