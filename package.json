@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "format": "dprint fmt",
     "toAI": "pnpm dlx repomix src/pages/game2",
+    "test": "vitest",
     "preview": "rsbuild preview",
     "watch:tsc": "tsc -b -w"
   },
@@ -57,6 +58,7 @@
     "globals": "^16.5.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0"
+    "typescript-eslint": "^8.48.0",
+    "vitest": "^4.1.0"
   }
 }

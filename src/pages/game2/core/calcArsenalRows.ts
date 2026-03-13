@@ -4,23 +4,7 @@ import { COST_PER_LEVEL } from "../config/constants";
 import type { IInventory, IItem, IRowResult } from "../types";
 
 /**
- * Arsenal Cost Engine
- *
- * 純函數計算：
- * - 每行消耗
- * - 累計消耗
- * - 狀態
- *
- * 不依賴 React
- * 不依賴 UI
- *
- * 可在：
- * - React
- * - Node
- * - CLI
- * - tests
- * - AI agents
- * 重用
+ * AI 亂寫的，後面要替換掉
  */
 
 export const calcArsenalRows = (
