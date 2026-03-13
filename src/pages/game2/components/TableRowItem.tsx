@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult, TRowStatus } from "../types";
@@ -32,6 +32,7 @@ const getRowStyle = (status: TRowStatus): React.CSSProperties => {
     opacity: 1,
   };
 };
+const numStyle: React.CSSProperties = { whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums", fontSize: "13px" };
 
 interface ITableRowItemProps {
   row: IRowResult;
@@ -42,16 +43,19 @@ interface ITableRowItemProps {
   onDelete: (id: string) => void;
 }
 
-export const TableRowItem: React.FC<ITableRowItemProps> = ({
-  row,
-  index,
-  isLast,
-  onUpdate,
-  onMove,
-  onDelete,
-}) => {
-  const numStyle: React.CSSProperties = { whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums", fontSize: "13px" };
+const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ row, index, isLast, onUpdate, onMove, onDelete }) => {
   const rowStyle = useMemo(() => getRowStyle(row.status), [row.status]);
+
+  const handleUpdate = useCallback(
+    (field: keyof IItem, value: unknown) => {
+      onUpdate(row.id, field, value);
+    },
+    [row.id, onUpdate],
+  );
+
+  const handleMoveUp = useCallback(() => onMove(index, -1), [index, onMove]);
+  const handleMoveDown = useCallback(() => onMove(index, 1), [index, onMove]);
+  const handleDelete = useCallback(() => onDelete(row.id), [row.id, onDelete]);
 
   return (
     <Table.Row
@@ -61,43 +65,52 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
       <Table.Cell>
         <Checkbox
           checked={row.calculate}
-          onCheckedChange={(v) => onUpdate(row.id, "calculate", !!v)}
+          onCheckedChange={v => handleUpdate("calculate", !!v)}
         />
       </Table.Cell>
       <Table.Cell>
         {/* 選擇 星級 / 稀有度 */}
         <RaritySelect
           value={row.rarity}
-          onValueChange={(val) => onUpdate(row.id, "rarity", Number(val))}
+          onValueChange={val => handleUpdate("rarity", Number(val))}
         />
       </Table.Cell>
       <Table.Cell>
-        <TextField.Root size="1" value={row.name} onChange={e => onUpdate(row.id, "name", e.target.value)} />
+        <TextField.Root
+          size="1"
+          value={row.name}
+          onChange={e => handleUpdate("name", e.currentTarget.value)}
+        />
       </Table.Cell>
       <Table.Cell>
-        <TextField.Root size="1" variant="soft" value={row.note} onChange={e => onUpdate(row.id, "note", e.target.value)} />
+        <TextField.Root
+          size="1"
+          variant="soft"
+          value={row.note}
+          onChange={e => handleUpdate("note", e.target.value)}
+        />
       </Table.Cell>
       <Table.Cell>
         {/* 模組 */}
         <Flex align="center" gap="1">
           <ModuleStageSelect
             value={row.moduleFrom}
-            onValueChange={(val) => onUpdate(row.id, "moduleFrom", val)}
+            onValueChange={val => handleUpdate("moduleFrom", val)}
           />
           <Text size="1" color="gray">→</Text>
           <ModuleStageSelect
             value={row.moduleTo}
-            onValueChange={(val) => onUpdate(row.id, "moduleTo", val)}
+            onValueChange={val => handleUpdate("moduleTo", val)}
           />
         </Flex>
       </Table.Cell>
       <Table.Cell>
         <Flex align="center" gap="1">
-          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e1} onChange={e => onUpdate(row.id, "e1", Number(e.target.value))} />
-          <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l1} onChange={e => onUpdate(row.id, "l1", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e1} onChange={e => handleUpdate("e1", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l1} onChange={e => handleUpdate("l1", Number(e.target.value))} />
           <Text size="1" color="gray">→</Text>
-          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e2} onChange={e => onUpdate(row.id, "e2", Number(e.target.value))} />
-          <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l2} onChange={e => onUpdate(row.id, "l2", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.e2} onChange={e => handleUpdate("e2", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 42 }} value={row.l2} onChange={e => handleUpdate("l2", Number(e.target.value))} />
         </Flex>
       </Table.Cell>
       <Table.Cell>
@@ -112,15 +125,17 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
       <Table.Cell>
         <Text weight="bold" style={numStyle}>Σ {row.cumBooks.toLocaleString()}</Text>
       </Table.Cell>
+
+      {/* 尾部操作區域 */}
       <Table.Cell>
         <Flex gap="1" justify="center">
-          <IconButton size="1" variant="ghost" disabled={index === 0} onClick={() => onMove(index, -1)}>
+          <IconButton size="1" variant="ghost" disabled={index === 0} onClick={handleMoveUp}>
             <ArrowUpIcon />
           </IconButton>
-          <IconButton size="1" variant="ghost" disabled={isLast} onClick={() => onMove(index, 1)}>
+          <IconButton size="1" variant="ghost" disabled={isLast} onClick={handleMoveDown}>
             <ArrowDownIcon />
           </IconButton>
-          <IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(row.id)}>
+          <IconButton size="1" variant="ghost" color="red" onClick={handleDelete}>
             <TrashIcon />
           </IconButton>
         </Flex>
@@ -128,3 +143,6 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
     </Table.Row>
   );
 };
+
+// React.memo 包裝，避免無謂重渲染
+export const TableRowItem = memo(TableRowItemComponent, (prev, next) => prev.row === next.row && prev.isLast === next.isLast);
