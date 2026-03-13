@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { type FC, Fragment, memo } from "react";
 import { RARE_LEVELS } from "../shared/constants/material";
 import {
   Box,
@@ -12,7 +12,7 @@ export interface ITableAreaParam {
   groupedRows: Record<number, IItemRow[]>;
 }
 
-export const TableArea: React.FC<ITableAreaParam> = memo<ITableAreaParam>(({ groupedRows }) => {
+export const TableArea: FC<ITableAreaParam> = memo<ITableAreaParam>(({ groupedRows }) => {
   return (
     <Box flexGrow="1" p="3" className="overflow-hidden">
       <Card className="h-full p-0 overflow-hidden bg-white border-slate-200">
@@ -29,7 +29,7 @@ export const TableArea: React.FC<ITableAreaParam> = memo<ITableAreaParam>(({ gro
             </Table.Header>
             <Table.Body>
               {RARE_LEVELS.map((rare) => (
-                <React.Fragment key={rare}>
+                <Fragment key={rare}>
                   {(groupedRows[rare] ?? []).length > 0 && (
                     <Table.Row className="bg-slate-50/50">
                       <Table.RowHeaderCell colSpan={5} className="py-1 px-4">
@@ -56,7 +56,7 @@ export const TableArea: React.FC<ITableAreaParam> = memo<ITableAreaParam>(({ gro
                       </Table.Cell>
                     </Table.Row>
                   ))}
-                </React.Fragment>
+                </Fragment>
               ))}
             </Table.Body>
           </Table.Root>

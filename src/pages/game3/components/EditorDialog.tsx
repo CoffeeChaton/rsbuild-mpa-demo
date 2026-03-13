@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import { type FC, memo, useState } from "react";
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ export interface IEditorDialogParam {
   initialData: TEditor;
 }
 
-export const EditorDialog: React.FC<IEditorDialogParam> = memo(({
+export const EditorDialog: FC<IEditorDialogParam> = memo(({
   open,
   onOpenChange,
   initialData,

@@ -1,5 +1,5 @@
 import { CopyIcon, SymbolIcon } from "@radix-ui/react-icons";
-import React from "react";
+import { type FC } from "react";
 
 /**
  * 需求：
@@ -11,7 +11,7 @@ interface ISummaryProps {
   materialMap: Record<string, string>;
 }
 
-export const SummarySection: React.FC<ISummaryProps> = ({ summary, materialMap }) => {
+export const SummarySection: FC<ISummaryProps> = ({ summary, materialMap }) => {
   const copyAsExcelTSV = () => {
     // Excel 剪貼簿最愛的是 \t (Tab)
     const header = "材料\t數量\n";

@@ -1,8 +1,8 @@
 // components/DashboardHeader.tsx
-import React from "react";
 import { AccountSwitcher } from "./AccountSwitcher";
 import type { IAccountProfile, TAccountId } from "../types";
 import { SymbolIcon } from "@radix-ui/react-icons";
+import type { FC } from "react";
 
 interface IDashboardHeaderProps {
   profiles: IAccountProfile[];
@@ -16,7 +16,7 @@ interface IDashboardHeaderProps {
   onImport: () => void;
 }
 
-export const DashboardHeader: React.FC<IDashboardHeaderProps> = (props) => (
+export const DashboardHeader: FC<IDashboardHeaderProps> = (props) => (
   <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100/50 transition-all">
     <div className="space-y-1">
       <h1 className="text-2xl font-black text-slate-900 tracking-tight">資源計畫器</h1>

@@ -1,5 +1,5 @@
 // src/pages/game2/DataEditorPage.tsx
-import React, { useMemo, useState } from "react";
+import { type ClipboardEvent, useMemo, useState } from "react";
 import useSWR from "swr";
 import {
   CopyIcon,
@@ -17,7 +17,7 @@ export function DataEditorPage() {
   const [rows, setRows] = useState<TRows[]>([]);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
 
-  const handlePaste = (e: React.ClipboardEvent) => {
+  const handlePaste = (e: ClipboardEvent) => {
     const text = e.clipboardData.getData("text");
     if (!text.includes("\t")) return;
     const newRows: TRows[] = text.split("\n").filter(line => line.trim()).map((line) => {
@@ -227,7 +227,7 @@ export function DataEditorPage() {
         </div>
         <div className="bg-slate-900 rounded-[2rem] p-8 shadow-2xl">
           <pre className="text-slate-300 font-mono text-xs leading-relaxed whitespace-pre overflow-x-auto custom-scrollbar">
-                        {settlementTsv}
+            {settlementTsv}
           </pre>
         </div>
       </section>

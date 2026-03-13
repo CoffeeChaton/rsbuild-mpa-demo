@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { type FC, useState } from "react";
 import { CheckIcon, ChevronDownIcon, GearIcon } from "@radix-ui/react-icons";
 import type { IAccountProfile, TAccountId } from "../types";
 import { AccountManagerModal } from "./AccountManagerModal";
@@ -20,7 +20,7 @@ interface IAccountSwitcherProps {
  * @description 實現多帳號切換與齒輪管理入口
  * @requirement 支援下拉快速切換，窄螢幕適配
  */
-export const AccountSwitcher: React.FC<IAccountSwitcherProps> = (props) => {
+export const AccountSwitcher: FC<IAccountSwitcherProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const currentAcc = props.profiles.find(p => p.id === props.currentId);

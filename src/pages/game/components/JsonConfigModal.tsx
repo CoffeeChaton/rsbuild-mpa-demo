@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { type FC, useRef, useState } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.main.js";
 import { CheckIcon, Cross1Icon, SymbolIcon } from "@radix-ui/react-icons";
@@ -51,7 +51,7 @@ interface IProps {
   onApply: (data: IConfigGroup[]) => void;
 }
 
-export const JsonConfigModal: React.FC<IProps> = ({
+export const JsonConfigModal: FC<IProps> = ({
   initialValue,
   materialMap,
   onClose,

@@ -1,12 +1,12 @@
 // src/pages/index/main.tsx
-import React from "react";
+import { type ComponentType, StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { canonicalUrl } from "../../common/router/canonical-url";
 import { applyCanonicalTag } from "../../common/router/canonical-seo";
 import "../../styles/globals.css";
 
-const bootstrap = (App: React.ComponentType) => {
+const bootstrap = (App: ComponentType) => {
   if (canonicalUrl()) return; // 自動 redirect 到 /game3/
 
   applyCanonicalTag(); // SEO <link rel="canonical">
@@ -15,9 +15,9 @@ const bootstrap = (App: React.ComponentType) => {
   if (!container) return console.error("[Bootstrap] Root element not found");
 
   const content = (
-    <React.StrictMode>
+    <StrictMode>
       <App />
-    </React.StrictMode>
+    </StrictMode>
   );
 
   const isHydration = container.innerHTML.trim().length > 0;

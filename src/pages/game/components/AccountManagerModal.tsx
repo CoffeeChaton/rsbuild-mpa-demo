@@ -1,8 +1,8 @@
-import React from "react";
+import { type FC } from "react";
 import { Cross1Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { IAccountProfile, TAccountId } from "../types";
 
-export const AccountManagerModal: React.FC<{
+export const AccountManagerModal: FC<{
   profiles: IAccountProfile[],
   onClose: () => void,
   onAdd: (name: string) => void,

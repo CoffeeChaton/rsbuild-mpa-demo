@@ -1,9 +1,9 @@
-import React from "react";
+import { type FC } from "react";
 import { Button, DropdownMenu, Flex, IconButton, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { usePlanContext } from "../context/PlanContext";
 
-export const PlanSwitcher: React.FC = () => {
+export const PlanSwitcher: FC = () => {
   const {
     planName,
     setPlanName,

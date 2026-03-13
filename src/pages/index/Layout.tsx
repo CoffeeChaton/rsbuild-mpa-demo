@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pages";
-import { useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 
@@ -39,7 +39,7 @@ const MetaUpdater = () => {
   return null;
 };
 
-export const Layout = ({ children }: { children: React.ReactNode }) => (
+export const Layout = ({ children }: { children: ReactNode }) => (
   <Theme>
     <MetaUpdater />
     {children}

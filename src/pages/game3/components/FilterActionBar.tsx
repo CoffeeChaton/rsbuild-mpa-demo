@@ -1,6 +1,6 @@
 import { Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
 import { CopyIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import type { IItemRow, TFilter } from "../type";
 
 export interface IMaterialToolbarProps {
@@ -10,7 +10,7 @@ export interface IMaterialToolbarProps {
   setFilter: Dispatch<SetStateAction<TFilter>>;
 }
 
-export const MaterialToolbar: React.FC<IMaterialToolbarProps> = ({
+export const MaterialToolbar: FC<IMaterialToolbarProps> = ({
   rows,
   filter,
   setFilter,

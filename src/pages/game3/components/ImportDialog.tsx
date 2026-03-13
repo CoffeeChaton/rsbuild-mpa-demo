@@ -1,5 +1,5 @@
 // src/pages/game3/components/ImportDialog.tsx
-import React, { useState } from "react";
+import { type Dispatch, type FC, type SetStateAction, useState } from "react";
 import {
   Button,
   Dialog,
@@ -8,12 +8,12 @@ import {
 
 export interface IImportDialogParam {
   importOpen: boolean;
-  setImportOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setImportOpen: Dispatch<SetStateAction<boolean>>;
   jsonA: string;
-  setJsonA: React.Dispatch<React.SetStateAction<string>>;
+  setJsonA: Dispatch<SetStateAction<string>>;
 }
 
-export const ImportDialog: React.FC<IImportDialogParam> = ({
+export const ImportDialog: FC<IImportDialogParam> = ({
   importOpen,
   setImportOpen,
   jsonA,

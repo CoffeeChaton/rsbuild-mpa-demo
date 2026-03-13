@@ -1,1 +1,11 @@
-export { DataEditorPage as App } from "./DataEditorPage";
+import { Navbar } from "../../common/Navbar";
+import { DataEditorPage } from "./DataEditorPage";
+
+export const App = () => {
+  return (
+    <>
+      <Navbar />
+      <DataEditorPage />
+    </>
+  );
+};
