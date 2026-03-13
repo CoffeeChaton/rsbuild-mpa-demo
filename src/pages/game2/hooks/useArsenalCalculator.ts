@@ -19,6 +19,7 @@ export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   l1: 1,
   e2: 2,
   l2: 1,
+  rarity: 6,
 };
 
 export const useArsenalCalculator = () => {
