@@ -18,7 +18,7 @@ export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   e1: 0,
   l1: 1,
   e2: 2,
-  l2: 1,
+  l2: 90,
   rarity: 6,
 };
 
