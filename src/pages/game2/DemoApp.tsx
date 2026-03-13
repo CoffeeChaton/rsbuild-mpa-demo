@@ -1,449 +1,256 @@
-import { useState, useEffect, type ChangeEvent } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { 
+  Box, Button, Checkbox, Container, Flex, Heading, 
+  IconButton, Table, Text, TextField, Tooltip, Callout 
+} from "@radix-ui/themes";
+import { 
+  ArrowUpIcon, ArrowDownIcon, TrashIcon, 
+  ClipboardCopyIcon, DownloadIcon, PlusIcon 
+} from "@radix-ui/react-icons";
 
-type Item = {
-  id: number;
-  calculate: boolean; // 是否計算
-  rarity: number; // 稀有度
-  sixStar: string; // 六星名稱
-  skillNote: string; // 技能備註
-  from1: number; // FROM
-  later: number; // 後來
-  elite1: number; // 精英階級(0/1/2)
-  level1: number; // 等級1-90
-  elite2: number; // 精英階級(0/1/2)
-  level2: number; // 等級1-90
-  money: number; // 錢 (計算)
-  books: number; // 書 (計算)
-};
+// --- Types & Constants ---
 
-const LOCAL_STORAGE_KEY = "arsenal-calculator-data3";
-
-// 假設計算邏輯 (示意，請依需求改)
-const calculateMoneyBooks = (item: Item) => {
-  // 這裡簡單用 level2-level1 計算範圍 (可根據精英階級調整)
-  const count = Math.max(0, item.level2 - item.level1 + 1);
-  const money = 370000 * count;
-  const books = 239400 * count;
-  return { money, books };
-};
-
-// 解析 TSV (新結構)
-// 標題需與格式對應，缺值或錯誤跳過
-function parseTSV(tsv: string): Item[] {
-  const lines = tsv.trim().split("\n");
-  const header = lines[0].split("\t").map((h) => h.trim());
-  const items: Item[] = [];
-
-  const mapIndex = (name: string) => header.findIndex((h) => h === name);
-
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split("\t");
-    if (cols.length < header.length) continue;
-
-    items.push({
-      id: i,
-      calculate: cols[mapIndex("是否計算")].trim() === "O",
-      rarity: Number(cols[mapIndex("稀有度")]) || 5,
-      sixStar: cols[mapIndex("六星")].trim(),
-      skillNote: cols[mapIndex("技能備註")].trim(),
-      from1: Number(cols[mapIndex("FROM")]) || 0,
-      later: Number(cols[mapIndex("後來")]) || 0,
-      elite1: Number(cols[mapIndex("精英階級(0/1/2 enum)")]) || 0,
-      level1: Number(cols[mapIndex("等級1-90")]) || 1,
-      elite2: Number(cols[mapIndex("精英階級(0/1/2 enum)1")]) || 0,
-      level2: Number(cols[mapIndex("等級1-901")] || cols[mapIndex("等級1-90")]) || 1,
-      money: 0,
-      books: 0,
-    });
-  }
-  return items;
+/**
+ * @description 核心數據結構
+ * 從 TSV 導入的數據會被轉化為此結構。
+ * FROM/後來 目前作為字串處理，以支援 "0->3" 這種輸入。
+ */
+interface IItem {
+  id: string; // 使用 nanoid 或 Date.now 作為唯一識別碼
+  calculate: boolean; 
+  rarity: number; 
+  sixStar: string; 
+  skillNote: string; 
+  from1: string; 
+  later: string; 
+  elite1: number; 
+  level1: number; 
+  elite2: number; 
+  level2: number;
 }
 
-// 將資料轉回 TSV
-function serializeTSV(items: Item[]): string {
-  const header = [
-    "是否計算",
-    "稀有度",
-    "六星",
-    "技能備註",
-    "FROM",
-    "後來",
-    "精英階級(0/1/2 enum)",
-    "等級1-90",
-    "精英階級(0/1/2 enum)1",
-    "等級1-901",
-    "錢",
-    "書",
-  ];
-  const rows = items.map((i) => [
-    i.calculate ? "O" : "X",
-    i.rarity.toString(),
-    i.sixStar,
-    i.skillNote,
-    i.from1.toString(),
-    i.later.toString(),
-    i.elite1.toString(),
-    i.level1.toString(),
-    i.elite2.toString(),
-    i.level2.toString(),
-    i.money.toLocaleString(),
-    i.books.toLocaleString(),
-  ]);
-  return [header.join("\t"), ...rows.map((r) => r.join("\t"))].join("\n");
+const STORAGE_KEY = "ark_arsenal_calc_v1";
+
+// --- Logic Functions ---
+
+/**
+ * @description 計算錢與書的消耗
+ * TODO: 目前為範例公式，未來 AI 接入時可根據精英階段與等級進行精確查表
+ */
+function calculateCost(item: IItem) {
+  if (!item.calculate) return { money: 0, books: 0 };
+  const diff = Math.max(0, item.level2 - item.level1);
+  const multiplier = item.rarity === 6 ? 1.5 : 1.0;
+  return {
+    money: Math.floor(diff * 5000 * multiplier),
+    books: Math.floor(diff * 10 * multiplier),
+  };
 }
 
-export function ArsenalCalculator() {
-  const [items, setItems] = useState<Item[]>([]);
-  const [tsvInput, setTsvInput] = useState("");
-  const [exportText, setExportText] = useState("");
-  const [inputVisible, setInputVisible] = useState(false);
-  const [outputVisible, setOutputVisible] = useState(false);
+/**
+ * @description 強大的 TSV 解析器
+ * 支援有無標題行的情況。如果第一行不是數字或 O/X，則視為標題並跳過。
+ */
+function parseTsvToItems(tsv: string): IItem[] {
+  const lines = tsv.trim().split(/\r?\n/).filter(line => line.trim());
+  if (lines.length === 0) return [];
 
-  // 讀本地緩存
+  const firstLine = lines[0].split("\t");
+  const hasHeader = firstLine.some(cell => ["是否計算", "六星", "稀有度"].includes(cell.trim()));
+  const dataLines = hasHeader ? lines.slice(1) : lines;
+
+  return dataLines.map((line, idx) => {
+    const cols = line.split("\t");
+    return {
+      id: `${Date.now()}-${idx}`,
+      calculate: cols[0]?.trim().toUpperCase() === "O",
+      rarity: parseInt(cols[1]) || 6,
+      sixStar: cols[2] || "",
+      skillNote: cols[3] || "",
+      from1: cols[4] || "0",
+      later: cols[5] || "0",
+      elite1: parseInt(cols[6]) || 0,
+      level1: parseInt(cols[7]) || 1,
+      elite2: parseInt(cols[8]) || 0,
+      level2: parseInt(cols[9]) || 1,
+    };
+  });
+}
+
+// --- Main Component ---
+
+export const ArsenalCalculator: React.FC = () => {
+  const [items, setItems] = useState<IItem[]>([]);
+
+  // 1. 初始化與緩存讀取
   useEffect(() => {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (raw) {
-      setItems(JSON.parse(raw));
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { setItems(JSON.parse(saved)); } catch (e) { console.error("Cache corrupted"); }
     }
   }, []);
 
-  // 計算並存localStorage
+  // 2. 持久化保存
   useEffect(() => {
-    const newItems = items.map((item) => {
-      if (!item.calculate) return { ...item, money: 0, books: 0 };
-      const { money, books } = calculateMoneyBooks(item);
-      return { ...item, money, books };
-    });
-    setItems(newItems);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newItems));
-  }, [items.length, JSON.stringify(items.map(i => [i.calculate, i.from1, i.level1, i.level2]))]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
 
-  function updateField(id: number, field: keyof Item, value: any) {
-    setItems((old) =>
-      old.map((item) => (item.id === id ? { ...item, [field]: value } : item))
-    );
-  }
+  // 3. 計算總計
+  const totals = useMemo(() => {
+    return items.reduce((acc, item) => {
+      const { money, books } = calculateCost(item);
+      acc.money += money;
+      acc.books += books;
+      return acc;
+    }, { money: 0, books: 0 });
+  }, [items]);
 
-  function addRow() {
-    const newId = items.length ? Math.max(...items.map((i) => i.id)) + 1 : 1;
-    setItems([
-      ...items,
-      {
-        id: newId,
-        calculate: false,
-        rarity: 5,
-        sixStar: "",
-        skillNote: "",
-        from1: 0,
-        later: 0,
-        elite1: 0,
-        level1: 1,
-        elite2: 0,
-        level2: 1,
-        money: 0,
-        books: 0,
-      },
-    ]);
-  }
-  function deleteRow(id: number) {
-    setItems(items.filter((i) => i.id !== id));
-  }
-  function moveUp(id: number) {
-    const idx = items.findIndex((i) => i.id === id);
-    if (idx <= 0) return;
-    const newItems = [...items];
-    [newItems[idx - 1], newItems[idx]] = [newItems[idx], newItems[idx - 1]];
-    setItems(newItems);
-  }
-  function moveDown(id: number) {
-    const idx = items.findIndex((i) => i.id === id);
-    if (idx === -1 || idx === items.length - 1) return;
-    const newItems = [...items];
-    [newItems[idx], newItems[idx + 1]] = [newItems[idx + 1], newItems[idx]];
-    setItems(newItems);
-  }
-
-  // TSV 輸入框變更
-  function handleTsvInputChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    setTsvInput(e.target.value);
-  }
-
-  // 從貼上板讀取文字並顯示到輸入框
-  async function pasteFromClipboard() {
+  // 4. 操作行為
+  const handleImport = useCallback(async () => {
     try {
       const text = await navigator.clipboard.readText();
-      setTsvInput(text);
-    } catch {
-      alert("讀取剪貼簿失敗，請手動貼上。");
+      const newItems = parseTsvToItems(text);
+      if (newItems.length > 0) setItems(newItems);
+    } catch (err) {
+      alert("無法讀取剪貼簿，請確保已授權權限");
     }
-  }
+  }, []);
 
-  function importFromTsv() {
-    try {
-      const imported = parseTSV(tsvInput);
-      setItems(imported);
-      setTsvInput("");
-    } catch (e) {
-      alert("TSV 解析失敗，請確認格式");
-    }
-  }
+  const handleExport = useCallback(() => {
+    const header = "是否計算\t稀有度\t六星\t技能備註\tFROM\t後來\t精英1\t等級1\t精英2\t等級2\n";
+    const body = items.map(i => 
+      `${i.calculate ? 'O' : 'X'}\t${i.rarity}\t${i.sixStar}\t${i.skillNote}\t${i.from1}\t${i.later}\t${i.elite1}\t${i.level1}\t${i.elite2}\t${i.level2}`
+    ).join("\n");
+    navigator.clipboard.writeText(header + body);
+    alert("已將 TSV 數據複製到剪貼簿");
+  }, [items]);
 
-  // 輸出 TSV
-  function exportToTsv() {
-    setExportText(serializeTSV(items));
-  }
+  const updateItem = (id: string, field: keyof IItem, value: unknown) => {
+    setItems(prev => prev.map(item => item.id === id ? { ...item, [field]: value } : item));
+  };
 
-  // 一鍵複製輸出
-  async function copyOutput() {
-    try {
-      await navigator.clipboard.writeText(exportText);
-      alert("複製成功！");
-    } catch {
-      alert("複製失敗，請手動複製。");
-    }
-  }
+  const moveRow = (index: number, direction: 'up' | 'down') => {
+    const nextIndex = direction === 'up' ? index - 1 : index + 1;
+    if (nextIndex < 0 || nextIndex >= items.length) return;
+    const newItems = [...items];
+    [newItems[index], newItems[nextIndex]] = [newItems[nextIndex], newItems[index]];
+    setItems(newItems);
+  };
 
   return (
-    <div className="p-4 max-w-7xl mx-auto font-sans text-gray-900">
-      <h1 className="text-3xl font-bold mb-6">Arsenal Calculator</h1>
+    <Container size="4" p="4">
+      <Flex direction="column" gap="4">
+        <Flex justify="between" align="center">
+          <Heading size="6">Arsenal Calculator PLUS</Heading>
+          <Flex gap="2">
+            <Button variant="soft" color="indigo" onClick={handleImport}>
+              <DownloadIcon /> 從剪貼簿導入
+            </Button>
+            <Button variant="soft" color="green" onClick={handleExport}>
+              <ClipboardCopyIcon /> 導出 TSV
+            </Button>
+          </Flex>
+        </Flex>
 
-      {/* 輸入區摺疊 */}
-      <button
-        className="mb-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        onClick={() => setInputVisible(!inputVisible)}
-      >
-        {inputVisible ? "隱藏輸入區" : "顯示輸入區（貼上 TSV）"}
-      </button>
-      {inputVisible && (
-        <div className="mb-4">
-          <textarea
-            rows={8}
-            value={tsvInput}
-            onChange={handleTsvInputChange}
-            className="w-full p-2 border rounded resize-y font-mono"
-            placeholder="請貼上 TSV 原始資料"
-          />
-          <div className="flex space-x-2 mt-2">
-            <button
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              onClick={pasteFromClipboard}
-            >
-              一鍵從剪貼簿讀取
-            </button>
-            <button
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-              onClick={importFromTsv}
-              disabled={!tsvInput.trim()}
-            >
-              匯入資料
-            </button>
-          </div>
-        </div>
-      )}
+        <Box className="overflow-x-auto border rounded-xl shadow-sm">
+          <Table.Root variant="surface">
+            <Table.Header className="bg-slate-50">
+              <Table.Row>
+                <Table.ColumnHeaderCell width="40px">算</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>角色資訊</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>進度 (FROM/後來)</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>目標 (精英/等級)</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>預估消耗</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell width="120px">操作</Table.ColumnHeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-      {/* 表格 */}
-      <table className="w-full border-collapse border border-gray-300 mb-4 text-center">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-1">計算</th>
-            <th className="border border-gray-300 p-1">稀有度</th>
-            <th className="border border-gray-300 p-1">六星</th>
-            <th className="border border-gray-300 p-1">技能備註</th>
-            <th className="border border-gray-300 p-1">模組(初值)</th>
-            <th className="border border-gray-300 p-1">模組(目標)</th>
-            <th className="border border-gray-300 p-1">精英階級(0/1/2)</th>
-            <th className="border border-gray-300 p-1">等級1-90</th>
-            <th className="border border-gray-300 p-1">精英階級(0/1/2)1</th>
-            <th className="border border-gray-300 p-1">等級1-901</th>
-            <th className="border border-gray-300 p-1">錢</th>
-            <th className="border border-gray-300 p-1">書</th>
-            <th className="border border-gray-300 p-1">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map(
-            (
-              {
-                id,
-                calculate,
-                rarity,
-                sixStar,
-                skillNote,
-                from1,
-                later,
-                elite1,
-                level1,
-                elite2,
-                level2,
-                money,
-                books,
-              },
-              idx
-            ) => (
-              <tr key={id}>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="checkbox"
-                    checked={calculate}
-                    onChange={(e) => updateField(id, "calculate", e.target.checked)}
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    min={1}
-                    max={6}
-                    value={rarity}
-                    onChange={(e) => updateField(id, "rarity", Number(e.target.value))}
-                    className="w-12 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="text"
-                    value={sixStar}
-                    onChange={(e) => updateField(id, "sixStar", e.target.value)}
-                    className="w-full"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="text"
-                    value={skillNote}
-                    onChange={(e) => updateField(id, "skillNote", e.target.value)}
-                    className="w-full"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    value={from1}
-                    min={0}
-                    onChange={(e) => updateField(id, "from1", Number(e.target.value))}
-                    className="w-20 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    value={later}
-                    min={0}
-                    onChange={(e) => updateField(id, "later", Number(e.target.value))}
-                    className="w-20 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    min={0}
-                    max={2}
-                    value={elite1}
-                    onChange={(e) => updateField(id, "elite1", Number(e.target.value))}
-                    className="w-16 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    min={1}
-                    max={90}
-                    value={level1}
-                    onChange={(e) => updateField(id, "level1", Number(e.target.value))}
-                    className="w-20 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    min={0}
-                    max={2}
-                    value={elite2}
-                    onChange={(e) => updateField(id, "elite2", Number(e.target.value))}
-                    className="w-16 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">
-                  <input
-                    type="number"
-                    min={1}
-                    max={90}
-                    value={level2}
-                    onChange={(e) => updateField(id, "level2", Number(e.target.value))}
-                    className="w-20 text-center"
-                  />
-                </td>
-                <td className="border border-gray-300 p-1">{money.toLocaleString()}</td>
-                <td className="border border-gray-300 p-1">{books.toLocaleString()}</td>
-                <td className="border border-gray-300 p-1 space-x-1">
-                  <button
-                    className="px-2 py-0.5 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-                    onClick={() => moveUp(id)}
-                    disabled={idx === 0}
-                    title="上移"
-                  >
-                    ↑
-                  </button>
-                  <button
-                    className="px-2 py-0.5 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-                    onClick={() => moveDown(id)}
-                    disabled={idx === items.length - 1}
-                    title="下移"
-                  >
-                    ↓
-                  </button>
-                  <button
-                    className="px-2 py-0.5 bg-red-600 text-white rounded hover:bg-red-700"
-                    onClick={() => deleteRow(id)}
-                    title="刪除"
-                  >
-                    ×
-                  </button>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+            <Table.Body>
+              {items.map((item, idx) => {
+                const costs = calculateCost(item);
+                return (
+                  <Table.Row key={item.id} align="center">
+                    <Table.Cell>
+                      <Checkbox 
+                        checked={item.calculate} 
+                        onCheckedChange={(v) => updateItem(item.id, "calculate", !!v)} 
+                      />
+                    </Table.Cell>
+                    
+                    <Table.Cell>
+                      <Flex direction="column" gap="1">
+                        <TextField.Root 
+                          size="1" 
+                          placeholder="角色名" 
+                          value={item.sixStar} 
+                          onChange={e => updateItem(item.id, "sixStar", e.target.value)}
+                        />
+                        <TextField.Root 
+                          size="1" 
+                          variant="soft"
+                          placeholder="備註" 
+                          value={item.skillNote} 
+                          onChange={e => updateItem(item.id, "skillNote", e.target.value)}
+                        />
+                      </Flex>
+                    </Table.Cell>
 
-      {/* 新增行 */}
-      <button
-        onClick={addRow}
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        新增行
-      </button>
+                    <Table.Cell>
+                      <Flex gap="2">
+                        <TextField.Root size="1" value={item.from1} onChange={e => updateItem(item.id, "from1", e.target.value)} style={{ width: 60 }} />
+                        <Text size="1" color="gray">→</Text>
+                        <TextField.Root size="1" value={item.later} onChange={e => updateItem(item.id, "later", e.target.value)} style={{ width: 60 }} />
+                      </Flex>
+                    </Table.Cell>
 
-      {/* 輸出區摺疊 */}
-      <button
-        className="mb-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        onClick={() => setOutputVisible(!outputVisible)}
-        disabled={items.length === 0}
-      >
-        {outputVisible ? "隱藏輸出區" : "顯示輸出區 (可複製 TSV)"}
-      </button>
-      {outputVisible && (
-        <div className="mb-4 relative">
-          <textarea
-            rows={8}
-            readOnly
-            className="w-full p-2 border rounded resize-y font-mono"
-            value={exportText}
-            placeholder="請先按產生按鈕"
-          />
-          <button
-            onClick={copyOutput}
-            className="absolute top-2 right-2 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700"
-          >
-            一鍵複製
-          </button>
-          <button
-            onClick={exportToTsv}
-            className="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-          >
-            產生 TSV
-          </button>
-        </div>
-      )}
-    </div>
+                    <Table.Cell>
+                      <Flex gap="2" align="center">
+                        <TextField.Root type="number" size="1" value={item.elite2} onChange={e => updateItem(item.id, "elite2", Number(e.target.value))} style={{ width: 40 }} />
+                        <Text size="1" color="gray">E / Lv</Text>
+                        <TextField.Root type="number" size="1" value={item.level2} onChange={e => updateItem(item.id, "level2", Number(e.target.value))} style={{ width: 50 }} />
+                      </Flex>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Flex direction="column">
+                        <Text size="1" color="gold" weight="bold">LMD: {costs.money.toLocaleString()}</Text>
+                        <Text size="1" color="blue">EXP: {costs.books.toLocaleString()}</Text>
+                      </Flex>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Flex gap="1">
+                        <Tooltip content="上移">
+                          <IconButton size="1" variant="ghost" disabled={idx === 0} onClick={() => moveRow(idx, 'up')}><ArrowUpIcon /></IconButton>
+                        </Tooltip>
+                        <Tooltip content="下移">
+                          <IconButton size="1" variant="ghost" disabled={idx === items.length - 1} onClick={() => moveRow(idx, 'down')}><ArrowDownIcon /></IconButton>
+                        </Tooltip>
+                        <Tooltip content="刪除">
+                          <IconButton size="1" variant="ghost" color="red" onClick={() => setItems(prev => prev.filter(i => i.id !== item.id))}><TrashIcon /></IconButton>
+                        </Tooltip>
+                      </Flex>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table.Root>
+        </Box>
+
+        <Button variant="ghost" onClick={() => setItems(prev => [...prev, {
+          id: Date.now().toString(), calculate: true, rarity: 6, sixStar: "", skillNote: "", from1: "0", later: "3", elite1: 0, level1: 1, elite2: 2, level2: 1
+        }])}>
+          <PlusIcon /> 新增行
+        </Button>
+
+        <Callout.Root color="blue" size="1">
+          <Callout.Icon>ℹ️</Callout.Icon>
+          <Callout.Text>
+            總計需求：<strong>{totals.money.toLocaleString()} LMD</strong> (龍門幣) | <strong>{totals.books.toLocaleString()} EXP</strong> (作戰記錄)
+          </Callout.Text>
+        </Callout.Root>
+      </Flex>
+    </Container>
   );
-}
+};
