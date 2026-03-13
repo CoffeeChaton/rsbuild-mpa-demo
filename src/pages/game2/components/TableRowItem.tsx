@@ -1,7 +1,7 @@
 import React from "react";
 import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
-import type { IItem, IRowResult } from "../type";
+import type { IItem, IRowResult } from "../types";
 
 interface ITableRowItemProps {
   row: IRowResult;

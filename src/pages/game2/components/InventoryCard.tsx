@@ -3,7 +3,7 @@
 import React from "react";
 import { Box, Card, Flex, Text, TextField } from "@radix-ui/themes";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import type { IInventory } from "../type";
+import type { IInventory } from "../types";
 
 interface IInventoryCardProps {
   inventory: IInventory;

@@ -1,6 +1,7 @@
 // src/pages/game2/core/calcArsenalRows.ts
 
-import type { IInventory, IItem, IRowResult } from "../type";
+import { COST_PER_LEVEL } from "../config/constants";
+import type { IInventory, IItem, IRowResult } from "../types";
 
 /**
  * Arsenal Cost Engine
@@ -42,11 +43,11 @@ export const calcArsenalRows = (
       - (item.e1 * 100 + item.l1);
 
     const costMoney = item.calculate && diff > 0
-      ? diff * 4800
+      ? diff * COST_PER_LEVEL.money
       : 0;
 
     const costBooks = item.calculate && diff > 0
-      ? diff * 3200
+      ? diff * COST_PER_LEVEL.money
       : 0;
 
     if (item.calculate) {
@@ -65,8 +66,8 @@ export const calcArsenalRows = (
       status: !item.calculate
         ? "disabled"
         : isAffordable
-          ? "safe"
-          : "danger",
+        ? "safe"
+        : "danger",
     };
   });
 };

@@ -8,9 +8,9 @@ import {
 } from "@radix-ui/themes";
 import { ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { InventoryCard } from "./components/InventoryCard";
-import { NAV_BAR_HEIGHT } from "./type";
 import { useArsenalCalculator } from "./hooks/useArsenalCalculator";
 import { TableArea } from "./components/TableArea";
+import { NAV_BAR_HEIGHT } from "./config/constants";
 
 /**
  * ============================================================

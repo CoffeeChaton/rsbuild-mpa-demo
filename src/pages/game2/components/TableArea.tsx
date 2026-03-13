@@ -4,8 +4,8 @@ import React from "react";
 import { Box, Button, Table } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { TableRowItem } from "./TableRowItem";
-import type { IItem, IRowResult } from "../type";
 import { useTableItems } from "../hooks/useTableItems";
+import type { IItem, IRowResult } from "../types";
 
 /**
  * TableArea

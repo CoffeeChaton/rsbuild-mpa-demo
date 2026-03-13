@@ -1,7 +1,13 @@
 // src/pages/game2/hooks/useArsenalCalculator.ts
 
 import { useEffect, useMemo, useState } from "react";
-import { type IInventory, type IItem, type IRowResult, STORAGE_KEY } from "../type";
+import { calcArsenalRows } from "../core/calcArsenalRows";
+import {
+  STORAGE_KEY,
+  TSV_HEADER,
+  TSV_HEADER_KEYWORDS,
+} from "../config/constants";
+import type { IInventory, IItem } from "../types";
 
 export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   calculate: true,
@@ -25,6 +31,7 @@ export const useArsenalCalculator = () => {
     if (saved) {
       try {
         const { items: sItems, inv: sInv } = JSON.parse(saved);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (sItems) setItems(sItems);
         if (sInv) setInventory(sInv);
       } catch (e) {
@@ -39,28 +46,17 @@ export const useArsenalCalculator = () => {
   }, [items, inventory, isLoaded]);
 
   // --- 計算累計 ---
-  const rows: IRowResult[] = useMemo(() => {
-    let accMoney = 0, accBooks = 0;
-    return items.map(item => {
-      const diff = (item.e2 * 100 + item.l2) - (item.e1 * 100 + item.l1);
-      const costMoney = item.calculate && diff > 0 ? diff * 4800 : 0;
-      const costBooks = item.calculate && diff > 0 ? diff * 3200 : 0;
-      if (item.calculate) {
-        // eslint-disable-next-line react-hooks/immutability
-        accMoney += costMoney;
-        accBooks += costBooks;
-      }
-      const status = !item.calculate ? "disabled" : (inventory.money >= accMoney && inventory.books >= accBooks ? "safe" : "danger");
-      return { ...item, costMoney, costBooks, cumMoney: accMoney, cumBooks: accBooks, status };
-    });
-  }, [items, inventory]);
+  const rows = useMemo(
+    () => calcArsenalRows(items, inventory),
+    [items, inventory],
+  );
 
   // --- 導入 TSV ---
   const handleImport = async () => {
     try {
       const text = await navigator.clipboard.readText();
       const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
-      const dataLines = (lines[0].includes("計算") || lines[0].includes("角色")) ? lines.slice(1) : lines;
+      const dataLines = TSV_HEADER_KEYWORDS.some(k => lines[0].includes(k)) ? lines.slice(1) : lines;
       const newItems: IItem[] = dataLines.map(line => {
         const c = line.split("\t");
         return {
@@ -85,7 +81,7 @@ export const useArsenalCalculator = () => {
 
   // --- 導出 TSV ---
   const handleExport = () => {
-    const header = "是否計算\t稀有度\t角色名\t技能備註\tFROM\tTO\t精1\t等1\t精2\t等2\t預估錢\t預估書\t累計錢\t累計書";
+    const header = TSV_HEADER;
     const body = rows.map(r =>
       `${r.calculate ? "O" : "X"}\t6\t${r.name}\t${r.note}\t${r.moduleFrom}\t${r.moduleTo}\t${r.e1}\t${r.l1}\t${r.e2}\t${r.l2}\t${r.costMoney}\t${r.costBooks}\t${r.cumMoney}\t${r.cumBooks}`
     ).join("\n");
