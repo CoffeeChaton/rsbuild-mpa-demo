@@ -4,6 +4,7 @@ import { existsSync, readFileSync, renameSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PAGE_MAP } from "./src/common/config/pages";
+import { pluginSSG } from "./scripts/ssg";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync("./package.json", "utf-8"));
@@ -37,7 +38,7 @@ const pluginFixPath = (): RsbuildPlugin => ({
 });
 
 export default defineConfig({
-  plugins: [pluginReact(), pluginFixPath()],
+  plugins: [pluginReact(), pluginFixPath(), pluginSSG()],
   source: {
     entry: getEntries(),
     assetsInclude: [/\.tsv$/],
