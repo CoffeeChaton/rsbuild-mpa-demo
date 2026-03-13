@@ -13,7 +13,7 @@
     "dev": "rsbuild dev --open",
     "lint": "eslint .",
     "format": "dprint fmt",
-    "toAI": "pnpm dlx repomix src/pages/game3",
+    "toAI": "pnpm dlx repomix src/pages/game2",
     "preview": "rsbuild preview",
     "watch:tsc": "tsc -b -w"
   },
