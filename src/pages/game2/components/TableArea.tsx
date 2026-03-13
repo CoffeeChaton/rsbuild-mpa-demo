@@ -50,6 +50,7 @@ export const TableArea: React.FC<ITableAreaProps> = ({
         <Table.Header className="bg-slate-50">
           <Table.Row>
             <Table.ColumnHeaderCell width="40px">算</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell width="60px">稀有度</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="150px">角色</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="150px">備註</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="100px">模組</Table.ColumnHeaderCell>

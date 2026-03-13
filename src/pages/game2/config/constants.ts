@@ -51,6 +51,7 @@ export const DEFAULT_ITEM_TEMPLATE = {
 
   e2: 2,
   l2: 1,
+  rarity: 6, // 預設稀有度
 };
 
 /**

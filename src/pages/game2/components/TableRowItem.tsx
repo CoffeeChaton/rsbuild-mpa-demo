@@ -32,6 +32,15 @@ export const TableRowItem: React.FC<ITableRowItemProps> = ({
         />
       </Table.Cell>
       <Table.Cell>
+        <TextField.Root
+          type="number"
+          size="1"
+          style={{ width: 32 }}
+          value={row.rarity}
+          onChange={e => onUpdate(row.id, "rarity", Number(e.target.value))}
+        />
+      </Table.Cell>
+      <Table.Cell>
         <TextField.Root size="1" value={row.name} onChange={e => onUpdate(row.id, "name", e.target.value)} />
       </Table.Cell>
       <Table.Cell>

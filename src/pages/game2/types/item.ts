@@ -40,4 +40,7 @@ export interface IItem {
    */
   e2: number;
   l2: number;
+
+  /** 稀有度 1~6 */
+  rarity: number;
 }

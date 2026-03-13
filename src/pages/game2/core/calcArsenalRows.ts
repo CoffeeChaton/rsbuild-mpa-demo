@@ -47,7 +47,7 @@ export const calcArsenalRows = (
       : 0;
 
     const costBooks = item.calculate && diff > 0
-      ? diff * COST_PER_LEVEL.money
+      ? diff * COST_PER_LEVEL.books
       : 0;
 
     if (item.calculate) {
@@ -66,8 +66,8 @@ export const calcArsenalRows = (
       status: !item.calculate
         ? "disabled"
         : isAffordable
-        ? "safe"
-        : "danger",
+          ? "safe"
+          : "danger",
     };
   });
 };
