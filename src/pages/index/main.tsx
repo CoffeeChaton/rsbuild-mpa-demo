@@ -1,24 +1,18 @@
 // src/pages/index/main.tsx
-import { canonicalUrl } from "../../common/router/canonical-url";
-import { App } from "./App";
-import "../../styles/globals.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { App } from "./App";
+import { canonicalUrl } from "../../common/router/canonical-url";
 import { applyCanonicalTag } from "../../common/router/canonical-seo";
+import "../../styles/globals.css";
 
 const bootstrap = (App: React.ComponentType) => {
-  // canonical redirect
-  if (canonicalUrl()) return;
+  if (canonicalUrl()) return; // 自動 redirect 到 /game3/
 
-  // SEO canonical tag
-  applyCanonicalTag();
+  applyCanonicalTag(); // SEO <link rel="canonical">
 
   const container = document.getElementById("root");
-
-  if (!container) {
-    console.error("[Bootstrap] Root element not found");
-    return;
-  }
+  if (!container) return console.error("[Bootstrap] Root element not found");
 
   const content = (
     <React.StrictMode>

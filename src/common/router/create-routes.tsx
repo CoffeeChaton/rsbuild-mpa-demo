@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import { Layout } from "../../pages/index/Layout";
 import { VIEW_MAP } from "./view-map";
+import type { RouteObject } from "react-router-dom";
 
-export function createRoutes() {
+export function createRoutes(): RouteObject[] {
   return Object
     .keys(VIEW_MAP)
     .map((key) => {
@@ -15,7 +16,7 @@ export function createRoutes() {
         path,
         element: (
           <Layout>
-            <Suspense fallback={<div className="createRoutes_fallback"/>}>
+            <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
               <View />
             </Suspense>
           </Layout>
