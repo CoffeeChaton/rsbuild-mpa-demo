@@ -1,6 +1,7 @@
 // src/pages/game2/hooks/useArsenalCalculator.ts
 
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import useSWR from "swr";
 import { calcArsenalRows } from "../core/calcArsenalRows";
 import {
   STORAGE_KEY,
@@ -8,6 +9,7 @@ import {
   TSV_HEADER_KEYWORDS,
 } from "../config/constants";
 import type { IInventory, IItem } from "../types";
+import { LEVEL_DATA_URL, levelDataFetcher, type ILevelData } from "../core/data";
 
 export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   calculate: true,
@@ -47,9 +49,17 @@ export const useArsenalCalculator = () => {
   }, [items, inventory, isLoaded]);
 
   // --- 計算累計 ---
+  const { data: levelData, error: levelDataError } = useSWR<ILevelData>(LEVEL_DATA_URL, levelDataFetcher, {
+    revalidateOnFocus: false,
+  });
+
+  const deferredItems = useDeferredValue(items);
+  const deferredInventory = useDeferredValue(inventory);
   const rows = useMemo(
-    () => calcArsenalRows(items, inventory),
-    [items, inventory],
+    () => (levelData
+      ? calcArsenalRows(deferredItems, deferredInventory, levelData)
+      : []),
+    [deferredItems, deferredInventory, levelData],
   );
 
   // --- 導入 TSV ---
@@ -91,14 +101,15 @@ export const useArsenalCalculator = () => {
     alert("TSV 已複製到剪貼簿");
   };
 
-  // --- 上下移動 ---
-  const moveRow = (idx: number, delta: number) => {
-    const next = idx + delta;
-    if (next < 0 || next >= items.length) return;
-    const list = [...items];
-    [list[idx], list[next]] = [list[next], list[idx]];
-    setItems(list);
+  return {
+    items,
+    setItems,
+    inventory,
+    setInventory,
+    rows,
+    handleImport,
+    handleExport,
+    levelDataLoading: !levelData && !levelDataError,
+    levelDataError,
   };
-
-  return { items, setItems, inventory, setInventory, rows, handleImport, handleExport, moveRow };
 };

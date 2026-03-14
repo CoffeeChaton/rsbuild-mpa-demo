@@ -1,4 +1,4 @@
-import { data } from "./data";
+import type { ILevelData } from "./data";
 
 // 定義等級數據結構
 
@@ -16,10 +16,13 @@ interface ICalcResult {
 /**
  * 計算幹員升級所需消耗
  */
-export const calculateArknightsLevel = (props: ICalcLevelProps): ICalcResult => {
+export const calculateArknightsLevel = (
+  props: ICalcLevelProps,
+  levelData: ILevelData,
+): ICalcResult => {
   const { star, current, target } = props;
 
-  const { maxLevel, characterExp, characterUpgradeCost, eliteCost } = data;
+  const { maxLevel, characterExp, characterUpgradeCost, eliteCost } = levelData;
 
   let expNeed = 0;
   let lmdNeed = 0;

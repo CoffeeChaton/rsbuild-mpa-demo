@@ -1,6 +1,6 @@
 // src/pages/game2/components/TableArea.tsx
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Button, Table } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { TableRowItem } from "./TableRowItem";
@@ -22,20 +22,25 @@ interface ITableAreaProps {
   rows: IRowResult[];
   items: IItem[];
   setItems: React.Dispatch<React.SetStateAction<IItem[]>>;
-  onMove: (idx: number, delta: number) => void;
 }
 
 export const TableArea: React.FC<ITableAreaProps> = ({
   rows,
   items,
   setItems,
-  onMove,
 }) => {
   const {
     updateItem,
     deleteItem,
     createItem,
-  } = useTableItems(items, setItems);
+    moveItem,
+  } = useTableItems(setItems);
+
+  const itemIndexMap = useMemo(() => {
+    const map = new Map<string, { item: IItem; index: number }>();
+    items.forEach((item, index) => map.set(item.id, { item, index }));
+    return map;
+  }, [items]);
 
   return (
     <Box
@@ -64,17 +69,24 @@ export const TableArea: React.FC<ITableAreaProps> = ({
         </Table.Header>
 
         <Table.Body>
-          {rows.map((row, idx) => (
-            <TableRowItem
-              key={row.id}
-              row={row}
-              index={idx}
-              isLast={idx === items.length - 1}
-              onUpdate={updateItem}
-              onMove={onMove}
-              onDelete={deleteItem}
-            />
-          ))}
+          {rows.map((row) => {
+            const entry = itemIndexMap.get(row.id);
+            if (!entry) return null;
+
+            const { item, index } = entry;
+            return (
+              <TableRowItem
+                key={row.id}
+                item={item}
+                row={row}
+                index={index}
+                isLast={index === items.length - 1}
+                onUpdate={updateItem}
+                onMove={moveItem}
+                onDelete={deleteItem}
+              />
+            );
+          })}
         </Table.Body>
       </Table.Root>
 

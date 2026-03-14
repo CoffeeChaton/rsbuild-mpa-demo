@@ -13,4 +13,6 @@ export interface IRowResult extends IItem {
   cumMoney: number;
   cumBooks: number;
   status: TRowStatus;
+  moneyStatus: TRowStatus;
+  booksStatus: TRowStatus;
 }

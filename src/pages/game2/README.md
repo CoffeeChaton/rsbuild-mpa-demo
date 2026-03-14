@@ -14,9 +14,3 @@ Architecture:
 ```
 layout → features → components → hooks → core → types
 ```
-
-For system design details see:
-
-```
-ai/ARCHITECTURE.md
-```

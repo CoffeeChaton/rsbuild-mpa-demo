@@ -27,7 +27,6 @@ export const ArsenalLayout: React.FC = () => {
     rows,
     handleImport,
     handleExport,
-    moveRow,
   } = useArsenalCalculator();
 
   return (
@@ -63,7 +62,6 @@ export const ArsenalLayout: React.FC = () => {
             rows={rows}
             items={items}
             setItems={setItems}
-            onMove={moveRow}
           />
         </Flex>
       </Grid>

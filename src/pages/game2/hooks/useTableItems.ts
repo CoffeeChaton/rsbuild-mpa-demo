@@ -1,5 +1,6 @@
 // src/pages/game2/hooks/useTableItems.ts
 
+import { useCallback, useMemo } from "react";
 import { DEFAULT_ITEM_TEMPLATE } from "../config/constants";
 import type { IItem } from "../types";
 /**
@@ -17,13 +18,12 @@ import type { IItem } from "../types";
  */
 
 export const useTableItems = (
-  items: IItem[],
   setItems: React.Dispatch<React.SetStateAction<IItem[]>>,
 ) => {
   /**
    * 更新欄位
    */
-  const updateItem = (
+  const updateItem = useCallback((
     id: string,
     field: keyof IItem,
     value: unknown,
@@ -35,19 +35,19 @@ export const useTableItems = (
           : item
       )
     );
-  };
+  }, [setItems]);
 
   /**
    * 刪除行
    */
-  const deleteItem = (id: string) => {
+  const deleteItem = useCallback((id: string) => {
     setItems(prev => prev.filter(item => item.id !== id));
-  };
+  }, [setItems]);
 
   /**
    * 新增行
    */
-  const createItem = () => {
+  const createItem = useCallback(() => {
     setItems(prev => [
       ...prev,
       {
@@ -55,26 +55,28 @@ export const useTableItems = (
         id: crypto.randomUUID(),
       },
     ]);
-  };
+  }, [setItems]);
 
   /**
    * 上下移動
    */
-  const moveItem = (
+  const moveItem = useCallback((
     idx: number,
     delta: number,
   ) => {
-    const next = idx + delta;
-    if (next < 0 || next >= items.length) return;
-    const list = [...items];
-    [list[idx], list[next]] = [list[next], list[idx]];
-    setItems(list);
-  };
+    const target = idx + delta;
+    setItems(prev => {
+      if (target < 0 || target >= prev.length) return prev;
+      const list = [...prev];
+      [list[idx], list[target]] = [list[target], list[idx]];
+      return list;
+    });
+  }, [setItems]);
 
-  return {
+  return useMemo(() => ({
     updateItem,
     deleteItem,
     createItem,
     moveItem,
-  };
+  }), [updateItem, deleteItem, createItem, moveItem]);
 };
