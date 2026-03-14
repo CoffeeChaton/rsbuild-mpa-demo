@@ -30,7 +30,10 @@ export const COST_PER_LEVEL = {
  *
  * Excel compatible
  */
-export const TSV_HEADER = "是否計算\t星級\t角色名\t技能備註\tFROM\tTO\t精1\t等1\t精2\t等2\t預估錢\t預估書\t累計錢\t累計書";
+export const TSV_HEADER = [
+  ["", "", "", "", "模組", "", "初始練度", "", "", "", "自動估算"].join("\t"),
+  ["是否計算", "星級", "角色名", "技能備註", "FROM", "TO", "精英化", "等級", "精英化", "等級", "預估錢", "預估書", "累計錢", "累計書"].join("\t"),
+].join("\n");
 
 /**
  * Default item template
@@ -63,6 +66,6 @@ export const TSV_HEADER_KEYWORDS = [
 ];
 
 /** 預留導航欄高度常數 */
-export const NAV_BAR_HEIGHT = 70;
+export const NAV_BAR_HEIGHT = 100;
 
 export const STORAGE_KEY = "ark_arsenal_v6_final";

@@ -47,14 +47,14 @@ export const TableArea: React.FC<ITableAreaProps> = ({
       }}
     >
       <Table.Root variant="surface">
-        <Table.Header className="bg-slate-50">
+        <Table.Header >
           <Table.Row>
-            <Table.ColumnHeaderCell width="40px">算</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell width="60px">星級</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell width="150px">角色</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell width="150px">備註</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell width="100px">模組</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell width="180px">等級提升</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell ></Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell width="28px">星級</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell minWidth="100px">角色</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell minWidth="140px">備註</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell >模組</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell >等級提升</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="100px">預估錢</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="100px">預估書</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell width="130px">累計錢</Table.ColumnHeaderCell>

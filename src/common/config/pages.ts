@@ -22,17 +22,17 @@ export const PAGE_MAP = {
     label: "地圖編輯",
   },
   "game": {
-    title: "明日方舟工具箱 精英材料PLUS",
+    title: "明日方舟 精英材料PLUS",
     description: "計算材料 PLUS",
     label: "工具箱PLUS",
   },
   "game2": {
-    title: "明日方舟工具箱 材料未來視",
-    description: "材料未來視",
-    label: "材料未來視",
+    title: "明日方舟 練度規劃表",
+    description: "練度規劃表",
+    label: "練度規劃表",
   },
   "game3": {
-    title: "明日方舟工具箱 材料未來視 計算器",
+    title: "明日方舟 材料未來視",
     description: "材料未來視 計算器",
     label: "材料未來視 計算器",
   },
