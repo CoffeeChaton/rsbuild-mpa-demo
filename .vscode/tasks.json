@@ -1,0 +1,30 @@
+{
+  // https://go.microsoft.com/fwlink/?LinkId=733558
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "tsgo",
+      "type": "npm",
+      "script": "watch:tsgo",
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+    },
+    {
+      "label": "dev",
+      "type": "npm",
+      "script": "dev",
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+    },
+    {
+      "label": "test",
+      "type": "npm",
+      "script": "test",
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+    },
+  ],
+}

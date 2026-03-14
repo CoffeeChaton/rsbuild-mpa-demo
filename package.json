@@ -7,16 +7,27 @@
     "node": ">=23.0.0",
     "pnpm": ">=10.0.0"
   },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,json,md}": [
+      "dprint fmt",
+      "eslint --cache"
+    ]
+  },
   "scripts": {
-    "compile-materials": "tsx scripts/compile-materials.ts",
-    "build": "pnpm rsbuild build",
-    "dev": "rsbuild dev --open",
-    "lint": "eslint .",
+    "scripts:compile-materials": "tsx scripts/compile-materials.ts",
+    "build": "rsbuild build",
+    "dev": "rsbuild dev",
+    "lint": "TIMING=1 eslint . --cache",
     "format": "dprint fmt",
-    "toAI": "pnpm dlx repomix src/pages/game2",
+    "typecheck": "tsgo -b",
+    "toAI": "dlx repomix src/pages/game2",
     "test": "vitest",
     "preview": "rsbuild preview",
-    "watch:tsc": "tsc -b -w"
+    "watch:tsgo": "tsgo -b -w",
+    "commit:typecheck": "tsgo -b",
+    "commit:test": "vitest",
+    "pre-commit": "lint-staged && pnpm run \"/^commit:.*/\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -51,13 +62,15 @@
     "@types/node": "^25.3.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@typescript/native-preview": "7.0.0-dev.20260314.1",
     "dprint": "^0.52.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
     "vitest": "^4.1.0"
   }

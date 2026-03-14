@@ -2,8 +2,8 @@ import type { ILevelData } from "./data";
 
 interface ICalcLevelProps {
   star: number;
-  current: { elite: number; level: number };
-  target: { elite: number; level: number };
+  current: { elite: number, level: number };
+  target: { elite: number, level: number };
 }
 
 interface ICalcResult {
@@ -16,7 +16,7 @@ interface ICalcResult {
  */
 export const calculateArknightsLevel = (
   props: ICalcLevelProps,
-  levelData: ILevelData
+  levelData: ILevelData,
 ): ICalcResult => {
   const { star, current, target } = props;
 
