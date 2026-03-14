@@ -28,10 +28,17 @@ export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   rarity: 6,
 };
 
+const toPositiveNumber = (value: unknown) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
+};
+
 const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
-  money: Number.isFinite(Number(inv?.money)) ? Number(inv?.money) : 0,
-  books: Number.isFinite(Number(inv?.books)) ? Number(inv?.books) : 0,
+  money: toPositiveNumber(inv?.money),
+  books: toPositiveNumber(inv?.books),
   bookStacks: sanitizeBookStacks(inv?.bookStacks),
+  avgMoneyProduction: toPositiveNumber(inv?.avgMoneyProduction),
+  avgBookProduction: toPositiveNumber(inv?.avgBookProduction),
 });
 
 export const useArsenalCalculator = () => {

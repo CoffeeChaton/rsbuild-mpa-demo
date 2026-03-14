@@ -1,62 +1,35 @@
 // src/pages/game2/types/inventory.ts
 
-/**
- * 不同等級的作戰記錄冊
+/** * 經驗書配置：按 [高級, 中級, 初級, 基礎] 順序排列
+ * 只存元數據，不存狀態
  */
-export type BookTier = "advanced" | "intermediate" | "primary" | "basic";
+export const BOOK_CONFIG = [
+  { label: "高級作戰紀錄", value: 2000 },
+  { label: "中級作戰紀錄", value: 1000 },
+  { label: "初級作戰紀錄", value: 400 },
+  { label: "基礎作戰紀錄", value: 200 },
+] as const;
 
-export interface IBookStacks {
-  advanced: number;
-  intermediate: number;
-  primary: number;
-  basic: number;
-}
+/** 經驗書數量狀態：固定長度為 4 的陣列 [count, count, count, count] */
+export type IBookStacks = [number, number, number, number];
 
-export const DEFAULT_BOOK_STACKS: IBookStacks = {
-  advanced: 0,
-  intermediate: 0,
-  primary: 0,
-  basic: 0,
+/** 初始狀態：全 0 */
+export const DEFAULT_BOOK_STACKS: IBookStacks = [0, 0, 0, 0];
+
+/** * 計算總經驗值
+ * 直接用 index 對應 CONFIG 的 value
+ */
+export const calculateBookStacksValue = (stacks: IBookStacks): number => stacks.reduce((acc, count, i) => acc + (Number(count) || 0) * BOOK_CONFIG[i].value, 0);
+
+/** 數據清洗：確保長度為 4 且皆為數字 */
+export const sanitizeBookStacks = (stacks?: IBookStacks): IBookStacks => {
+  const base = Array.isArray(stacks) ? stacks : DEFAULT_BOOK_STACKS;
+  return BOOK_CONFIG.map((_, i) => {
+    const val = Number(base[i]);
+    return Number.isFinite(val) ? val : 0;
+  }) as IBookStacks;
 };
 
-export const BOOK_TIER_META = {
-  advanced: {
-    label: "高級作戰紀錄",
-    value: 2000,
-  },
-  intermediate: {
-    label: "中級作戰紀錄",
-    value: 1000,
-  },
-  primary: {
-    label: "初級作戰紀錄",
-    value: 400,
-  },
-  basic: {
-    label: "基礎作戰紀錄",
-    value: 200,
-  },
-} satisfies Record<BookTier, { label: string, value: number }>;
-
-export type BookTierMeta = typeof BOOK_TIER_META;
-export const BOOK_TIER_ORDER: BookTier[] = ["advanced", "intermediate", "primary", "basic"];
-
-export const calculateBookStacksValue = (stacks: IBookStacks): number =>
-  BOOK_TIER_ORDER.reduce((acc, tier) => {
-    const count = Number(stacks?.[tier]) || 0;
-    return acc + count * BOOK_TIER_META[tier].value;
-  }, 0);
-
-export const sanitizeBookStacks = (stacks?: Partial<IBookStacks>): IBookStacks => ({
-  advanced: Number.isFinite(Number(stacks?.advanced)) ? Number(stacks?.advanced) : 0,
-  intermediate: Number.isFinite(Number(stacks?.intermediate)) ? Number(stacks?.intermediate) : 0,
-  primary: Number.isFinite(Number(stacks?.primary)) ? Number(stacks?.primary) : 0,
-  basic: Number.isFinite(Number(stacks?.basic)) ? Number(stacks?.basic) : 0,
-});
-
-/**
- * 玩家目前擁有資源
- */
 export interface IInventory {
   money: number;
   /**
@@ -67,4 +40,12 @@ export interface IInventory {
    * 各等級作戰記錄冊的数量
    */
   bookStacks: IBookStacks;
+  /**
+   * 平均獲得龍門幣（例如日產）
+   */
+  avgMoneyProduction: number;
+  /**
+   * 平均獲得經驗書（折算 EXP）
+   */
+  avgBookProduction: number;
 }
