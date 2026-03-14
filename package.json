@@ -20,7 +20,7 @@
     "lint": "TIMING=1 eslint . --cache",
     "format": "dprint fmt",
     "typecheck": "tsgo -b",
-    "toAI": "pnpm dlx repomix src/pages/game2",
+    "toAI": "pnpm dlx repomix src/pages/game2  --compress",
     "test": "vitest",
     "preview": "rsbuild preview",
     "watch:tsgo": "tsgo -b -w",

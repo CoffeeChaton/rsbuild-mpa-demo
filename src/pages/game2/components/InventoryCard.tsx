@@ -79,8 +79,11 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
         <Accordion type="multiple">
           <AccordionItem value="exp">
             <AccordionTrigger>
-              <Text size="2" weight="bold" color="gray">
-                填寫作戰經驗
+              <Text size="2" color="gray" weight="bold">
+                {"EXP 總計 "}
+                <Text color="blue">
+                  {totalExpValue.toLocaleString()}
+                </Text>
               </Text>
             </AccordionTrigger>
 
@@ -117,21 +120,6 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-
-        {/* Total */}
-        <Flex
-          justify="between"
-          align="center"
-          className="mt-auto border-t border-dashed border-slate-300/70 pt-3"
-        >
-          <Text size="1" color="gray" weight="bold">
-            總計 EXP
-          </Text>
-
-          <Text size="5" weight="bold" color="blue" className="tabular-nums">
-            {totalExpValue.toLocaleString()}
-          </Text>
-        </Flex>
       </Flex>
     </Card>
   );

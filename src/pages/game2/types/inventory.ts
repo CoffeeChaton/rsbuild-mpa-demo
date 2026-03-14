@@ -23,24 +23,20 @@ export const BOOK_TIER_META = {
   advanced: {
     label: "高級作戰紀錄",
     value: 2000,
-    image: import.meta.env.BASE_URL + "/img/game/item/2004.png",
   },
   intermediate: {
     label: "中級作戰紀錄",
     value: 1000,
-    image: import.meta.env.BASE_URL + "/img/game/item/2003.png",
   },
   primary: {
     label: "初級作戰紀錄",
     value: 400,
-    image: import.meta.env.BASE_URL + "/img/game/item/2002.png",
   },
   basic: {
     label: "基礎作戰紀錄",
     value: 200,
-    image: import.meta.env.BASE_URL + "/img/game/item/2001.png",
   },
-} satisfies Record<BookTier, { label: string, value: number, image: string }>;
+} satisfies Record<BookTier, { label: string, value: number }>;
 
 export type BookTierMeta = typeof BOOK_TIER_META;
 export const BOOK_TIER_ORDER: BookTier[] = ["advanced", "intermediate", "primary", "basic"];

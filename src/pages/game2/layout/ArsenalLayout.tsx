@@ -7,6 +7,7 @@ import { Toolbar } from "../features/Toolbar";
 
 import { useArsenalCalculator } from "../hooks/useArsenalCalculator";
 import { NAV_BAR_HEIGHT } from "../config/constants";
+import { DiagnosticPanel } from "../components/DiagnosticPanel";
 
 /**
  * ArsenalLayout
@@ -65,6 +66,9 @@ export const ArsenalLayout: React.FC = () => {
           />
         </Flex>
       </Grid>
+
+      {/* 診斷列放置於此 */}
+      <DiagnosticPanel rows={rows} />
     </Box>
   );
 };
