@@ -8,8 +8,12 @@ import {
   TSV_HEADER,
   TSV_HEADER_KEYWORDS,
 } from "../config/constants";
-import type { IInventory, IItem } from "../types";
-import { LEVEL_DATA_URL, levelDataFetcher, type ILevelData } from "../core/data";
+import {
+  type IInventory,
+  type IItem,
+  sanitizeBookStacks,
+} from "../types";
+import { type ILevelData, LEVEL_DATA_URL, levelDataFetcher } from "../core/data";
 
 export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   calculate: true,
@@ -24,9 +28,15 @@ export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   rarity: 6,
 };
 
+const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
+  money: Number.isFinite(Number(inv?.money)) ? Number(inv?.money) : 0,
+  books: Number.isFinite(Number(inv?.books)) ? Number(inv?.books) : 0,
+  bookStacks: sanitizeBookStacks(inv?.bookStacks),
+});
+
 export const useArsenalCalculator = () => {
   const [items, setItems] = useState<IItem[]>([]);
-  const [inventory, setInventory] = useState<IInventory>({ money: 0, books: 0 });
+  const [inventory, setInventory] = useState<IInventory>(() => createInventoryState());
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -36,7 +46,7 @@ export const useArsenalCalculator = () => {
         const { items: sItems, inv: sInv } = JSON.parse(saved);
         // eslint-disable-next-line react-hooks/set-state-in-effect
         if (sItems) setItems(sItems);
-        if (sInv) setInventory(sInv);
+        if (sInv) setInventory(createInventoryState(sInv));
       } catch (e) {
         console.error("Restore failed", e);
       }

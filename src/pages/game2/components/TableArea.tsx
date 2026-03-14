@@ -37,7 +37,7 @@ export const TableArea: React.FC<ITableAreaProps> = ({
   } = useTableItems(setItems);
 
   const itemIndexMap = useMemo(() => {
-    const map = new Map<string, { item: IItem; index: number }>();
+    const map = new Map<string, { item: IItem, index: number }>();
     items.forEach((item, index) => map.set(item.id, { item, index }));
     return map;
   }, [items]);

@@ -38,7 +38,7 @@ const toneColorMap: Record<TStatTone, React.ComponentProps<typeof Text>["color"]
   books: "blue",
 };
 
-const cumStatusStyle: Record<TRowStatus, { backgroundColor: string; textColor: React.ComponentProps<typeof Text>["color"] }> = {
+const cumStatusStyle: Record<TRowStatus, { backgroundColor: string, textColor: React.ComponentProps<typeof Text>["color"] }> = {
   safe: { backgroundColor: "var(--green-3)", textColor: "green" },
   danger: { backgroundColor: "var(--red-3)", textColor: "red" },
   disabled: { backgroundColor: "transparent", textColor: "gray" },

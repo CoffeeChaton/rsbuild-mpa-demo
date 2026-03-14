@@ -22,9 +22,9 @@ export const PAGE_MAP = {
     label: "地圖編輯",
   },
   "game": {
-    title: "明日方舟 精英材料PLUS",
-    description: "計算材料 PLUS",
-    label: "工具箱PLUS",
+    title: "明日方舟 資源計畫器",
+    description: "資源計畫器",
+    label: "資源計畫器(預計刪除)",
   },
   "game2": {
     title: "明日方舟 練度規劃表",

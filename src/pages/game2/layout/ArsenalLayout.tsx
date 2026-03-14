@@ -53,7 +53,7 @@ export const ArsenalLayout: React.FC = () => {
         {/* 左側卡片/上面卡片 */}
         <InventoryCard
           inventory={inventory}
-          onUpdate={(field, val) => setInventory(p => ({ ...p, [field]: val }))}
+          onUpdate={update => setInventory(p => ({ ...p, ...update }))}
         />
 
         {/* 主要表格 */}
