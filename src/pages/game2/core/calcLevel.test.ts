@@ -9,15 +9,14 @@ describe("明日方舟練度計算驗證 (對標 Excel 數據)", () => {
     ({ star, fE, fL, tE, tL, exp, lmd }) => {
       const result = calculateArknightsLevel({
         star,
-        current: { elite: fE, level: fL, exp: 0 },
+        current: { elite: fE, level: fL },
         target: { elite: tE, level: tL },
       }, levelDataFixture);
 
-      // 1. 驗證經驗值
-      expect(result.expNeed).toBe(exp);
-
-      // 2. 驗證龍門幣
-      expect(result.lmdNeed).toBe(lmd);
+      expect(result).toEqual({
+        expNeed: exp, // 1. 驗證經驗值
+        lmdNeed: lmd, // 2. 驗證龍門幣
+      });
     },
   );
 });

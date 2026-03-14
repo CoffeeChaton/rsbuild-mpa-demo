@@ -39,7 +39,6 @@ export const calcArsenalRows = (
       current: {
         elite: currentElite,
         level: currentLevel,
-        exp: 0,
       },
       target: {
         elite: targetElite,

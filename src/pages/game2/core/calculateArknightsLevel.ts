@@ -1,11 +1,9 @@
 import type { ILevelData } from "./data";
 
-// 定義等級數據結構
-
 interface ICalcLevelProps {
   star: number;
-  current: { elite: number, level: number, exp: number };
-  target: { elite: number, level: number };
+  current: { elite: number; level: number };
+  target: { elite: number; level: number };
 }
 
 interface ICalcResult {
@@ -18,50 +16,41 @@ interface ICalcResult {
  */
 export const calculateArknightsLevel = (
   props: ICalcLevelProps,
-  levelData: ILevelData,
+  levelData: ILevelData
 ): ICalcResult => {
   const { star, current, target } = props;
 
+  // --- 相同等級 ---
+  if (current.elite === target.elite && current.level === target.level) {
+    return { expNeed: 0, lmdNeed: 0 };
+  }
+
+  // --- 非法輸入 ---
+  if (current.elite > target.elite || (current.elite === target.elite && current.level > target.level)) {
+    return { expNeed: 0, lmdNeed: 0 };
+  }
+
   const { maxLevel, characterExp, characterUpgradeCost, eliteCost } = levelData;
+
+  const starIdx = star - 1;
+  const maxLevelByElite = maxLevel[starIdx];
 
   let expNeed = 0;
   let lmdNeed = 0;
 
-  // 1. 驗證星級索引 (star 1-6 對應索引 0-5)
-  const starIdx = star - 1;
-  const curMaxLevelByElite = maxLevel[starIdx];
-
-  // 2. 處理當前等級到當前階段上限的剩餘部分
-  if (current.level < curMaxLevelByElite[current.elite]) {
-    // 獲取升下一級所需的總經驗
-    const nextLevelExp = characterExp[current.elite][current.level - 1];
-    if (nextLevelExp) {
-      const remainingExp = nextLevelExp - current.exp;
-      // 龍門幣按比例計算（公式：(剩餘經驗/總經驗) * 該級總消耗）
-      const remainingLmd = (remainingExp / nextLevelExp) * characterUpgradeCost[current.elite][current.level - 1];
-
-      expNeed += remainingExp;
-      lmdNeed += remainingLmd;
-    }
-  }
-
-  // 3. 跨階段循環計算
-  for (let e = current.elite; e <= target.elite; e++) {
-    // 如果發生精英化，加上精英化成本
-    if (e > current.elite) {
-      lmdNeed += eliteCost[starIdx][e - 1];
+  for (let elite = current.elite; elite <= target.elite; elite++) {
+    // --- 精英化成本 ---
+    if (elite > current.elite) {
+      lmdNeed += eliteCost[starIdx][elite - 1];
     }
 
-    // 確定當前階段要算到哪一級
-    // 如果是目標階段，算到 target.level；否則算到該階段滿級
-    const limitLevel = e === target.elite ? target.level : curMaxLevelByElite[e];
+    const startLevel = elite === current.elite ? current.level : 1;
 
-    // 起始等級：如果是當前階段，從 current.level + 1 開始；否則從 1 級開始
-    const startLevel = e === current.elite ? current.level + 1 : 1;
+    const endLevel = elite === target.elite ? target.level : maxLevelByElite[elite];
 
-    for (let l = startLevel; l < limitLevel; l++) {
-      expNeed += characterExp[e][l - 1];
-      lmdNeed += characterUpgradeCost[e][l - 1];
+    for (let lvl = startLevel; lvl < endLevel; lvl++) {
+      expNeed += characterExp[elite][lvl - 1];
+      lmdNeed += characterUpgradeCost[elite][lvl - 1];
     }
   }
 

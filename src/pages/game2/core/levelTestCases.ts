@@ -70,4 +70,7 @@ export const levelTestCases: ITestCase[] = [
   // --- 特殊案例：3星極限 ---
   // 3星：精 0 1級 -> 精 0 40級 (3星精 0 上限)
   { star: 3, fE: 0, fL: 1, tE: 0, tL: 40, lmd: 13947, exp: 16400 },
+
+  // 特殊案例：
+  { star: 5, fE: 0, fL: 1, tE: 0, tL: 1, lmd: 0, exp: 0 },
 ];
