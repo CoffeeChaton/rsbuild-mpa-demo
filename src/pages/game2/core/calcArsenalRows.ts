@@ -23,8 +23,8 @@ export const calcArsenalRows = (
      *
      * 轉換成線性數字
      */
-    const diff = (item.e2 * 100 + item.l2)
-      - (item.e1 * 100 + item.l1);
+    const diff = (Number(item.e2) * 100 + Number(item.l2))
+      - (Number(item.e1) * 100 + Number(item.l1));
 
     const costMoney = item.calculate && diff > 0
       ? diff * COST_PER_LEVEL.money

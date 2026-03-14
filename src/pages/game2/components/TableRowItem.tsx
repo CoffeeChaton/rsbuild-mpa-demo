@@ -92,18 +92,18 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ row, index, isLas
       <Table.Cell>
         {/* 模組 */}
         <Flex align="center" gap="1">
-          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.moduleFrom} onChange={e => handleUpdate("moduleFrom", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.moduleFrom} onChange={e => handleUpdate("moduleFrom", e.target.value)} />
           <Text size="1" color="gray">→</Text>
-          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.moduleTo} onChange={e => handleUpdate("moduleTo",  Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.moduleTo} onChange={e => handleUpdate("moduleTo", e.target.value)} />
         </Flex>
       </Table.Cell>
       <Table.Cell>
         <Flex align="center" gap="1">
-          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.e1} onChange={e => handleUpdate("e1", Number(e.target.value))} />
-          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.l1} onChange={e => handleUpdate("l1", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.e1} onChange={e => handleUpdate("e1", e.target.value)} />
+          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.l1} onChange={e => handleUpdate("l1", e.target.value)} />
           <Text size="1" color="gray">→</Text>
-          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.e2} onChange={e => handleUpdate("e2", Number(e.target.value))} />
-          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.l2} onChange={e => handleUpdate("l2", Number(e.target.value))} />
+          <TextField.Root type="number" size="1" style={{ width: 28 }} value={row.e2} onChange={e => handleUpdate("e2", e.target.value)} />
+          <TextField.Root type="number" size="1" style={{ width: 32 }} value={row.l2} onChange={e => handleUpdate("l2", e.target.value)} />
         </Flex>
       </Table.Cell>
       <Table.Cell>

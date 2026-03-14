@@ -15,10 +15,10 @@ export const DEFAULT_ITEM: Omit<IItem, "id"> = {
   note: "",
   moduleFrom: "0",
   moduleTo: "3",
-  e1: 0,
-  l1: 1,
-  e2: 2,
-  l2: 90,
+  e1: "0",
+  l1: "1",
+  e2: "2",
+  l2: "90",
   rarity: 6,
 };
 
@@ -63,15 +63,15 @@ export const useArsenalCalculator = () => {
         return {
           id: crypto.randomUUID(),
           calculate: c[0]?.trim() === "O",
-          rarity: Number(c[1]) || NaN, // <- 新增
+          rarity: Number(c[1]) || NaN,
           name: c[2] || "",
           note: c[3] || "",
           moduleFrom: c[4] || "0",
           moduleTo: c[5] || "3",
-          e1: Number(c[6]) || 0,
-          l1: Number(c[7]) || 1,
-          e2: Number(c[8]) || 0,
-          l2: Number(c[9]) || 1,
+          e1: c[6] || "0",
+          l1: c[7] || "1",
+          e2: c[8] || "0",
+          l2: c[9] || "1",
         };
       });
       setItems(newItems);

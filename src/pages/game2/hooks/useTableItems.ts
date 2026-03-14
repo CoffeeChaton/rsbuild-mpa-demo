@@ -51,8 +51,8 @@ export const useTableItems = (
     setItems(prev => [
       ...prev,
       {
-        id: crypto.randomUUID(),
         ...DEFAULT_ITEM_TEMPLATE,
+        id: crypto.randomUUID(),
       },
     ]);
   };

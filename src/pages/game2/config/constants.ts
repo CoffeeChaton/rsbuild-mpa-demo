@@ -1,5 +1,7 @@
 // src/pages/game2/config/constants.ts
 
+import type { IItem } from "../types/item";
+
 /**
  * ============================================================
  * Arsenal Calculator Configuration
@@ -40,8 +42,9 @@ export const TSV_HEADER = [
  *
  * 新增角色時使用
  */
-export const DEFAULT_ITEM_TEMPLATE = {
+export const DEFAULT_ITEM_TEMPLATE: Omit<IItem, "id"> = {
   calculate: true,
+  rarity: 6, // 預設稀有度
 
   name: "",
   note: "",
@@ -49,12 +52,11 @@ export const DEFAULT_ITEM_TEMPLATE = {
   moduleFrom: "0",
   moduleTo: "3",
 
-  e1: 0,
-  l1: 1,
+  e1: "0",
+  l1: "1",
 
-  e2: 2,
-  l2: 1,
-  rarity: 6, // 預設稀有度
+  e2: "2",
+  l2: "1",
 };
 
 /**

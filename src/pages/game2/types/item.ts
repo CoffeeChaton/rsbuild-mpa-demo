@@ -13,6 +13,9 @@ export interface IItem {
    */
   calculate: boolean;
 
+  /** 稀有度 1~6 */
+  rarity: number;
+
   /**
    * 角色名稱
    */
@@ -32,15 +35,12 @@ export interface IItem {
   /**
    * FROM 等級
    */
-  e1: number;
-  l1: number;
+  e1: string;
+  l1: string;
 
   /**
    * TO 等級
    */
-  e2: number;
-  l2: number;
-
-  /** 稀有度 1~6 */
-  rarity: number;
+  e2: string;
+  l2: string;
 }
