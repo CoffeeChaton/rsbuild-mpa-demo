@@ -82,7 +82,6 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 	);
 };
 
-// React.memo 包裝，避免無謂重渲染
 export const TableRowItem = memo(
 	TableRowItemComponent,
 	(prev, next) => (

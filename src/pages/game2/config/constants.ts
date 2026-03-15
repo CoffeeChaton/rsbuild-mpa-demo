@@ -44,7 +44,7 @@ export const TSV_HEADER = [
  */
 export const DEFAULT_ITEM_TEMPLATE: Omit<IItem, "id"> = {
 	calculate: true,
-	rarity: 6, // 預設稀有度
+	rarity: 6,
 
 	name: "",
 	note: "",

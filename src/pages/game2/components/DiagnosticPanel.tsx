@@ -10,10 +10,9 @@ const SummaryBar = ({ summary }: { summary: ReturnType<typeof getProductionSumma
 	<Flex
 		px="4"
 		pb="3"
-		direction="column" // 預設垂直排布
+		direction="column"
 		gap="2"
 	>
-		{/* 預估天數與數據標籤全部靠左 */}
 		<Flex gap="4" align="center">
 			<Box>
 				<Text size="1" color="gray" as="div">預估剩餘</Text>
@@ -22,7 +21,6 @@ const SummaryBar = ({ summary }: { summary: ReturnType<typeof getProductionSumma
 				</Text>
 			</Box>
 
-			{/* 垂直分割線感 (選用) */}
 			<Box style={{ width: 1, height: 24, backgroundColor: "var(--gray-5)" }} />
 
 			<Flex gap="1" wrap="wrap">

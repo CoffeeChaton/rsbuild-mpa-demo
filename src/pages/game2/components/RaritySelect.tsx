@@ -15,7 +15,6 @@ export const RaritySelect: React.FC<IRaritySelectProps> = ({
 	onValueChange,
 	disabled = false,
 }) => {
-	// 將數字轉為字串以符合 Select.Root 要求
 	const stringValue = String(value);
 
 	return (

@@ -22,7 +22,6 @@ export const getProductionSummary = (rows: IRowResult[], inventory: IInventory) 
 	};
 };
 
-// 診斷日誌生成規則
 export const generateLogs = (rows: IRowResult[], inventory: IInventory): IDiagnosticEntry[] => {
 	const logs: IDiagnosticEntry[] = [];
 	const { money, books, avgMoneyProduction, avgBookProduction } = inventory;
