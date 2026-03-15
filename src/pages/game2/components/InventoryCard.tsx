@@ -1,7 +1,7 @@
 // src/pages/game2/components/InventoryCard.tsx
 
 import React from "react";
-import { Button, Card, Flex, Grid, ScrollArea, Separator, Text, TextField, Tooltip } from "@radix-ui/themes";
+import { Button, Card, Flex, ScrollArea, Separator, Text, TextField, Tooltip } from "@radix-ui/themes";
 import {
   BOOK_CONFIG,
   calculateBookStacksValue,
@@ -58,10 +58,7 @@ const INVENTORY_CLIPBOARD_FIELDS = [
   { id: "avgBookProduction", label: "日產EXP", getter: (inv: IInventory) => inv.avgBookProduction },
 ] as const;
 
-export const InventoryCard: React.FC<IInventoryCardProps> = ({
-  inventory,
-  onUpdate,
-}) => {
+export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpdate }) => {
   const bookStacks = inventory.bookStacks ?? DEFAULT_BOOK_STACKS;
   const totalExpValue = calculateBookStacksValue(bookStacks);
 
@@ -167,7 +164,7 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
   };
 
   return (
-    <Card size="2" className="flex h-full flex-col overflow-hidden">
+    <Card size="2" className="flex h-full flex-col overflow-y-auto">
       <Flex direction="column" gap="4" className="flex-1 min-h-0">
         <Flex align="center" justify="between" className="flex-wrap gap-3">
           <Flex direction="column" gap="1">
@@ -189,8 +186,8 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
           <Separator size="4" />
         </Flex>
 
-        <Grid columns="140px 1fr" gap="3" align="center">
-          <Text size="1" weight="bold">龍門幣</Text>
+        <div className="grid gap-2 sm:[grid-template-columns:140px_minmax(0,1fr)]">
+          <Text size="1" weight="bold" className="shrink-0">龍門幣</Text>
           <TextField.Root
             size="1"
             variant="soft"
@@ -201,23 +198,32 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
             inputMode="numeric"
             value={inventory.money}
             onChange={(e) => onUpdate({ money: clampPositiveNumber(e.target.value) })}
-            className="tabular-nums"
+            className="tabular-nums w-full"
           />
-        </Grid>
+        </div>
 
         <Accordion type="multiple">
           <AccordionItem value="exp">
-            <AccordionTrigger>
-              <Flex gap="2" align="center">
+            <AccordionTrigger
+              className="rounded-xl border px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"
+              style={{
+                backgroundImage: "radial-gradient(circle at top, rgba(14,165,233,0.35), rgba(14,165,233,0.05))",
+                borderColor: "rgba(14,165,233,0.25)",
+              }}
+            >
+              <Flex gap="2" align="center" className="flex-wrap">
                 <Text size="2" weight="bold">作戰記錄</Text>
-                <Text size="1" color="gray">合計 {totalExpValue.toLocaleString()} EXP</Text>
+                <Text size="1" color="gray" className="tabular-nums">合計 {totalExpValue.toLocaleString()} EXP</Text>
               </Flex>
             </AccordionTrigger>
             <AccordionContent>
               <ScrollArea scrollbars="vertical" style={{ maxHeight: 220 }}>
                 <Flex direction="column" gap="2" pr="3" pt="1">
                   {BOOK_CONFIG.map((conf, i) => (
-                    <Grid key={conf.label} columns="140px 1fr" gap="3" align="center">
+                    <div
+                      key={conf.label}
+                      className="grid items-center gap-3 sm:[grid-template-columns:140px_minmax(0,1fr)]"
+                    >
                       <Tooltip content={`${conf.label}：每份 ${conf.value.toLocaleString()} EXP`}>
                         <Text size="1" color="gray" weight="bold" className="truncate">
                           • {conf.label}
@@ -232,9 +238,9 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
                         inputMode="numeric"
                         value={bookStacks[i] ?? 0}
                         onChange={(e) => handleStackChange(i, e.target.value)}
-                        className="tabular-nums"
+                        className="tabular-nums w-full"
                       />
-                    </Grid>
+                    </div>
                   ))}
                 </Flex>
               </ScrollArea>
@@ -249,10 +255,8 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
 
         <Flex direction="column" gap="3">
           {PRODUCTION_FIELDS.map(field => (
-            <Grid key={field.key} columns="140px 1fr" gap="3">
-              <Flex direction="column" gap="1">
-                <Text size="1" color="gray" weight="bold">{field.label}</Text>
-              </Flex>
+            <div key={field.key} className="grid gap-2 sm:[grid-template-columns:140px_minmax(0,1fr)]">
+              <Text size="1" color="gray" weight="bold" className="shrink-0">{field.label}</Text>
               <TextField.Root
                 size="1"
                 variant="soft"
@@ -263,9 +267,9 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
                 inputMode="numeric"
                 value={inventory[field.key] ?? 0}
                 onChange={(e) => handleProductionChange(field.key, e.target.value)}
-                className="tabular-nums"
+                className="tabular-nums w-full"
               />
-            </Grid>
+            </div>
           ))}
         </Flex>
       </Flex>

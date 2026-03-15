@@ -20,7 +20,7 @@ export const Navbar = () => {
 
   return (
     <nav className="flex items-center gap-6 p-4 border-b bg-white shadow-sm">
-      <div className="text-xl font-black text-blue-600">BRAND</div>
+      <div className="text-xl font-black text-blue-600">DEMO</div>
       <div className="flex gap-4">
         {navItems.map((item) => {
           const target = item.path.replace(/\/+$/, "") || "/";

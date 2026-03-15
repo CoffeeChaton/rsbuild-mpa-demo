@@ -3,6 +3,7 @@
 import { calculateArknightsLevel } from "./calculateArknightsLevel";
 import type { ILevelData } from "./data";
 import type { IInventory, IItem, IRowResult } from "../types";
+import { calculateModuleCost } from "./moduleCost";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 const parseNumber = (value: string | number | undefined, fallback: number) => {
@@ -46,7 +47,8 @@ export const calcArsenalRows = (
       },
     }, levelData);
 
-    const costMoney = lmdNeed;
+    const moduleCost = calculateModuleCost(rarity, parseNumber(item.moduleFrom, 0), parseNumber(item.moduleTo, 0));
+    const costMoney = lmdNeed + moduleCost;
     const costBooks = expNeed;
 
     let cumMoney = accMoney;

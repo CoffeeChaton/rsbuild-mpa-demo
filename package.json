@@ -24,8 +24,8 @@
     "test": "vitest",
     "preview": "rsbuild preview",
     "watch:tsgo": "tsgo -b -w",
-    "commit:typecheck": "tsgo -b",
-    "commit:test": "vitest",
+    "commit:typecheck": "pnpm typecheck",
+    "commit:test": "vitest run",
     "pre-commit": "lint-staged && pnpm run \"/^commit:.*/\"",
     "prepare": "husky"
   },
