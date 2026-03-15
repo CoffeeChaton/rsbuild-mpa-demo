@@ -1,25 +1,27 @@
 import * as v from "valibot";
+import type { TAssertEqual } from "../../../type";
+
+// 1. 定義基礎 類型
+type _expected = {
+	maxLevel: number[][],
+	characterExp: number[][],
+	characterUpgradeCost: number[][],
+	eliteCost: number[][],
+};
 
 const NumberListSchema = v.array(v.number());
 
-export const LevelDataSchema = v.object({
+// 2. 定義 Valibot Schema
+const _schema: v.GenericSchema<_expected> = v.object({
 	maxLevel: v.array(NumberListSchema),
 	characterExp: v.array(NumberListSchema),
 	characterUpgradeCost: v.array(NumberListSchema),
 	eliteCost: v.array(NumberListSchema),
 });
 
-export type ILevelData = v.InferOutput<typeof LevelDataSchema>;
+// 3. 高階型別鎖定 (靜態斷言)
+type _type = TAssertEqual<v.InferOutput<typeof _schema>, _expected>;
 
-export const LEVEL_DATA_URL: string = `${import.meta.env.BASE_URL}data/level.json`.replace(/\/+/g, "/");
-
-/**
- * 來源數據：https://github.com/arkntools/arknights-toolbox-data/blob/main/assets/data/level.json
- */
-export const levelDataFetcher = async (url: string = LEVEL_DATA_URL): Promise<ILevelData> => {
-	const response = await fetch(url);
-	if (!response.ok) throw new Error("Failed to fetch level data");
-
-	const rawData = await response.json();
-	return v.parse(LevelDataSchema, rawData);
-};
+// 4. export
+export { _schema as LevelDataSchema };
+export type { _type as ILevelData };

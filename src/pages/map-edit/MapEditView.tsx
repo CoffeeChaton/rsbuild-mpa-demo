@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { TILE_LAYERS, type TMapPreference } from "../../common/types/map";
-import { loadMapPreference, saveMapPreference } from "../../common/utils/mapStorage";
+import type { TMapPreference } from "./types/MapPreference";
+import { loadMapPreference, saveMapPreference } from "./utils/mapStorage";
 import { MapViewer } from "./MapViewer";
+import { TILE_LAYERS } from "./types/TILE_LAYERS";
 
 export const MapEditView: React.FC = () => {
 	const [pref, setPref] = useState<TMapPreference>(loadMapPreference());

@@ -5,9 +5,10 @@ import "leaflet/dist/leaflet.css";
 // 修正 Leaflet 預設 Icon 遺失問題
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import { TILE_LAYERS, type TMapPreference } from "../../common/types/map";
-import { loadMapPreference, saveMapPreference } from "../../common/utils/mapStorage";
-import { getInitialMapState, syncStateToUrl } from "../../common/utils/urlSync";
+import type { TMapPreference } from "./types/MapPreference";
+import { loadMapPreference, saveMapPreference } from "./utils/mapStorage";
+import { getInitialMapState, syncStateToUrl } from "./utils/urlSync";
+import { TILE_LAYERS } from "./types/TILE_LAYERS";
 
 const DefaultIcon = L.icon({
 	iconUrl: markerIcon,

@@ -1,6 +1,6 @@
 // src/pages/game2/hooks/useLevelData.ts
 import useSWR from "swr";
-import { LEVEL_DATA_URL, levelDataFetcher } from "../core/data";
+import { LEVEL_DATA_URL, levelDataFetcher } from "../core/levelDataFetcher";
 import type { ILevelData } from "../core/data";
 
 export type UseLevelData = () => {

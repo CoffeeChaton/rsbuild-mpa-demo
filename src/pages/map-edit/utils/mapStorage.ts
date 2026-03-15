@@ -1,5 +1,6 @@
 import * as v from "valibot";
-import { DEFAULT_MAP_CONFIG, MapPreferenceSchema, type TMapPreference } from "../types/map";
+import { MapPreferenceSchema, type TMapPreference } from "../types/MapPreference";
+import { DEFAULT_MAP_CONFIG } from "../types/MapUrl";
 
 const STORAGE_KEY = "APP_MAP_USER_PREF";
 

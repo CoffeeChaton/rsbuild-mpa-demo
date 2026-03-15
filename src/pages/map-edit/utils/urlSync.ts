@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { MapPreferenceSchema, type TMapPreference } from "../types/map";
+import { MapPreferenceSchema, type TMapPreference } from "../types/MapPreference";
 
 /**
  * @description 初始化地圖狀態：URL 優先於儲存
