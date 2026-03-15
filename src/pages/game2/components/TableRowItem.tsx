@@ -1,10 +1,9 @@
 import React, { memo, useCallback } from "react";
 import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
-import type { IItem, IRowResult, TRowStatus } from "../types";
+import type { IItem, IRowResult } from "../types";
 import { RaritySelect } from "./RaritySelect";
-
-const numStyle: React.CSSProperties = { whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums", fontSize: "13px" };
+import { StatCell } from "./TableRowItem/StatCell";
 
 const areRowValuesEqual = (prev: IRowResult, next: IRowResult): boolean => (
   prev.costMoney === next.costMoney
@@ -29,58 +28,6 @@ const areItemValuesEqual = (prev: IItem, next: IItem): boolean => (
   && prev.e2 === next.e2
   && prev.l2 === next.l2
 );
-
-type TStatTone = "money" | "books";
-type TStatVariant = "cost" | "cum";
-
-const toneColorMap: Record<TStatTone, React.ComponentProps<typeof Text>["color"]> = {
-  money: "amber",
-  books: "blue",
-};
-
-const cumStatusStyle: Record<TRowStatus, { backgroundColor: string, textColor: React.ComponentProps<typeof Text>["color"] }> = {
-  safe: { backgroundColor: "var(--green-3)", textColor: "green" },
-  danger: { backgroundColor: "var(--red-3)", textColor: "red" },
-  disabled: { backgroundColor: "transparent", textColor: "gray" },
-};
-
-interface IStatCellProps {
-  value: number;
-  tone: TStatTone;
-  variant: TStatVariant;
-  status?: TRowStatus;
-  showValue?: boolean;
-}
-
-const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, status, showValue = true }) => {
-  if (!showValue) {
-    return (
-      <Table.Cell>
-        <Text style={numStyle}>&nbsp;</Text>
-      </Table.Cell>
-    );
-  }
-
-  if (variant === "cost") {
-    return (
-      <Table.Cell>
-        <Text weight="bold" color={toneColorMap[tone]} style={numStyle}>
-          {value.toLocaleString()}
-        </Text>
-      </Table.Cell>
-    );
-  }
-
-  const { backgroundColor, textColor } = cumStatusStyle[status ?? "safe"];
-  return (
-    <Table.Cell style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
-      <Text weight="bold" color={textColor} style={numStyle}>
-        Σ {value.toLocaleString()}
-      </Text>
-    </Table.Cell>
-  );
-});
-StatCell.displayName = "StatCell";
 
 interface ITableRowItemProps {
   item: IItem;
