@@ -68,7 +68,10 @@ export const ArsenalLayout: React.FC = () => {
       </Grid>
 
       {/* 診斷列放置於此 */}
-      <DiagnosticPanel rows={rows} />
+      <DiagnosticPanel
+        rows={rows}
+        inventory={inventory}
+      />
     </Box>
   );
 };

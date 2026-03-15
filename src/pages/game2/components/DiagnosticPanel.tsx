@@ -2,11 +2,7 @@
 import React from "react";
 import { Badge, Box, Flex, IconButton, ScrollArea, Text } from "@radix-ui/themes";
 import { CheckCircledIcon, ChevronDownIcon, ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import type { IRowResult } from "../types";
-
-interface IDiagnosticPanelProps {
-  rows: IRowResult[];
-}
+import type { IInventory, IRowResult } from "../types";
 
 type DiagnosticTone = "error" | "info" | "success";
 type DiagnosticEmphasis = "quiet" | "normal" | "loud";
@@ -19,7 +15,18 @@ interface IDiagnosticEntry {
   meta?: string;
 }
 
-export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows }) => {
+interface IDiagnosticPanelProps {
+  rows: IRowResult[];
+  inventory: IInventory;
+}
+
+export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, inventory }) => {
+  const {
+    money,
+    books,
+    avgMoneyProduction,
+    avgBookProduction,
+  } = inventory;
   const diagnostics = React.useMemo<IDiagnosticEntry[]>(() => {
     const logs: IDiagnosticEntry[] = [];
 
@@ -39,11 +46,31 @@ export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows }) => {
       }
 
       if (row.status === "danger") {
+        const moneyGap = Math.max(0, row.cumMoney - money);
+        const booksGap = Math.max(0, row.cumBooks - books);
+        const moneyDays = moneyGap > 0 && avgMoneyProduction > 0 ? Math.ceil(moneyGap / avgMoneyProduction) : null;
+        const booksDays = booksGap > 0 && avgBookProduction > 0 ? Math.ceil(booksGap / avgBookProduction) : null;
+        const segments: string[] = [];
+        if (moneyGap > 0) {
+          segments.push(
+            moneyDays !== null
+              ? `LMD 還差 ${moneyGap.toLocaleString()}（約 ${moneyDays} 天）`
+              : `LMD 還差 ${moneyGap.toLocaleString()}`,
+          );
+        }
+        if (booksGap > 0) {
+          segments.push(
+            booksDays !== null
+              ? `EXP 還差 ${booksGap.toLocaleString()}（約 ${booksDays} 天）`
+              : `EXP 還差 ${booksGap.toLocaleString()}`,
+          );
+        }
+
         logs.push({
           id: `info-${row.id}-${index}`,
           type: "info",
-          message: `計畫 [${row.name || `第 ${index + 1} 行`}] 預計消耗較大，建議調整庫存或資源。`,
-          meta: undefined,
+          message: `計畫 [${row.name || `第 ${index + 1} 行`}] 仍需 ${segments.join("，")}，可調整庫存或提升產能。`,
+          meta: `累計需求 LMD ${row.cumMoney.toLocaleString()} / EXP ${row.cumBooks.toLocaleString()}`,
           emphasis: "loud",
         });
       }
@@ -60,7 +87,7 @@ export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows }) => {
     }
 
     return logs;
-  }, [rows]);
+  }, [avgBookProduction, avgMoneyProduction, books, money, rows]);
 
   const [isExpanded, setIsExpanded] = React.useState(true);
   const errorCount = diagnostics.filter(d => d.type === "error").length;

@@ -30,9 +30,9 @@ const clampPositiveNumber = (value: string) => {
 const sanitize = (val: string) => Math.max(0, Math.floor(Number(val)) || 0);
 type ProductionFieldKey = "avgMoneyProduction" | "avgBookProduction";
 
-const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, helper: string, unit: string }[] = [
-  { key: "avgMoneyProduction", label: "平均龍門幣產出", helper: "含基建、委託或日常收益", unit: "LMD" },
-  { key: "avgBookProduction", label: "平均經驗書產出 (換算 EXP)", helper: "折算成 EXP 更好估算", unit: "EXP" },
+const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, unit: string }[] = [
+  { key: "avgMoneyProduction", label: "平均龍門幣產出", unit: "LMD" },
+  { key: "avgBookProduction", label: "平均經驗書產出", unit: "EXP" },
 ];
 
 const STACK_FIELDS = [
@@ -171,7 +171,6 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
       <Flex direction="column" gap="4" className="flex-1 min-h-0">
         <Flex align="center" justify="between" className="flex-wrap gap-3">
           <Flex direction="column" gap="1">
-            <Text size="1" color="gray" weight="bold">物資庫存</Text>
             <Text size="3" weight="bold">更新你的龍門幣 / 作戰記錄</Text>
             <Text size="1" color="gray">調整數值會同步保存，其他區塊可直接使用。</Text>
           </Flex>
@@ -185,12 +184,15 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
           </Flex>
         </Flex>
 
-        <Separator size="4" />
+        <Flex align="center" gap="1" className="whitespace-nowrap">
+          <Text size="1" color="gray" weight="bold">庫存</Text>
+          <Separator size="4" />
+        </Flex>
 
         <Grid columns="140px 1fr" gap="3" align="center">
-          <Text size="2" weight="bold">龍門幣</Text>
+          <Text size="1" weight="bold">龍門幣</Text>
           <TextField.Root
-            size="2"
+            size="1"
             variant="soft"
             placeholder="輸入目前持有量"
             type="number"
@@ -222,7 +224,7 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
                         </Text>
                       </Tooltip>
                       <TextField.Root
-                        size="2"
+                        size="1"
                         variant="soft"
                         type="number"
                         min="0"
@@ -240,8 +242,8 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
           </AccordionItem>
         </Accordion>
 
-        <Flex align="center" gap="2">
-          <Text size="1" color="gray" weight="bold">平均產能</Text>
+        <Flex align="center" gap="1" className="whitespace-nowrap">
+          <Text size="1" color="gray" weight="bold">產能</Text>
           <Separator size="4" />
         </Flex>
 
@@ -250,11 +252,10 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({
             <Grid key={field.key} columns="140px 1fr" gap="3">
               <Flex direction="column" gap="1">
                 <Text size="1" color="gray" weight="bold">{field.label}</Text>
-                <Text size="1" color="gray">{field.helper}</Text>
               </Flex>
               <TextField.Root
-                size="2"
-                variant="surface"
+                size="1"
+                variant="soft"
                 placeholder={`0 ${field.unit}`}
                 type="number"
                 min="0"
