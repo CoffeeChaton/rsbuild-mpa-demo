@@ -24,6 +24,7 @@
 		"test": "vitest",
 		"preview": "rsbuild preview",
 		"watch:tsgo": "tsgo -b -w",
+		"watch:tsc": "tsc -b -w",
 		"commit:typecheck": "pnpm typecheck",
 		"commit:test": "vitest run",
 		"pre-commit": "lint-staged && pnpm run \"/^commit:.*/\"",
@@ -71,6 +72,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"tailwindcss": "^4.1.18",
+		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.48.0",
 		"vitest": "^4.1.0"
 	}

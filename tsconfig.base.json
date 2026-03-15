@@ -2,28 +2,29 @@
 	"compilerOptions": {
 		"target": "ES2023",
 		"jsx": "react-jsx",
-		// "baseUrl": ".",
-		// "paths": {
-		//   "@/*": [
-		//     "./src/*"
-		//   ],
-		//   "@shared/*": [
-		//     "./shared/*"
-		//   ] // 注意最後要加 /* 才能匹配子資料夾
-		// },
+
 		/* 嚴格規範 */
 		"strict": true,
 		"skipLibCheck": true,
+		"noImplicitThis": true, // 強制檢查 所有this.，避免重構/移植的時候，在意外的地方用了this
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-		"forceConsistentCasingInFileNames": true,
 		/* 模組處理 */
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
+		"useUnknownInCatchVariables": true,
+		"verbatimModuleSyntax": true, // swc/tc39 的人，建議TS項目都要開
+		"noFallthroughCasesInSwitch": true, // 避免 switch 的 case ，到下一個case中間，強制要有 break / return
+		"forceConsistentCasingInFileNames": true, // 強制檔案名稱大小寫一致 ...避免 windows 坑人
 		"useDefineForClassFields": true,
-		"verbatimModuleSyntax": true
+		//
+		"noImplicitOverride": true, // TypeScript 4.3 確保衍生類別中的重寫成員標有重寫修飾符。
+		"exactOptionalPropertyTypes": true, // 確切的可選屬性類型，備註
+		"noImplicitReturns": true, // 確保函數，標註了回傳值以後，忘了return
+		"noPropertyAccessFromIndexSignature": true, // 只允許 onj.xxx 不允許 obj['xxx'] 可能導致的潛在錯誤，請看ts範例
+		"declaration": true, // 配合下面這條
+		"isolatedDeclarations": true // 有性能要求再開，不然太煩，他要求所有的export 的東西，都把類型標上去
 	}
 }

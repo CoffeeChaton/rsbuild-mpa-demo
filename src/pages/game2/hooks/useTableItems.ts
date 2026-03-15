@@ -1,8 +1,9 @@
 // src/pages/game2/hooks/useTableItems.ts
 
-import { useCallback, useMemo } from "react";
+import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 import { DEFAULT_ITEM_TEMPLATE } from "../config/constants";
 import type { IItem } from "../types";
+
 /**
  * useTableItems
  *
@@ -17,7 +18,14 @@ import type { IItem } from "../types";
  * 讓 UI 不需要寫 setItems(prev => ...)
  */
 
-export const useTableItems = (
+export type TableItemActions = (setItems: Dispatch<SetStateAction<IItem[]>>) => {
+	updateItem: (id: string, field: keyof IItem, value: unknown) => void,
+	deleteItem: (id: string) => void,
+	createItem: () => void,
+	moveItem: (idx: number, delta: number) => void,
+};
+
+export const useTableItems: TableItemActions = (
 	setItems: React.Dispatch<React.SetStateAction<IItem[]>>,
 ) => {
 	/**

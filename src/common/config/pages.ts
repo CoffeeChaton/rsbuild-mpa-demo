@@ -42,7 +42,7 @@ export const PAGE_MAP = {
 		label: "404",
 		hidden: true,
 	},
-} as const satisfies Record<string, IPageInfo>;
+} as const as Record<"index" | "products" | "map-edit" | "game" | "game2" | "game3" | "404", IPageInfo>;
 
 // 定義導出的 Key 型別，供其他工具使用
 export type TPageKey = keyof typeof PAGE_MAP;

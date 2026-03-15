@@ -1,4 +1,4 @@
-import { defineConfig } from "@rsbuild/core";
+import { defineConfig, type RsbuildConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +19,7 @@ const getEntries = () => {
 	return entries;
 };
 
-export default defineConfig({
+const config: RsbuildConfig = defineConfig({
 	plugins: [pluginReact(), pluginSSG()],
 	source: {
 		entry: getEntries(),
@@ -44,8 +44,10 @@ export default defineConfig({
 		},
 	},
 	server: {
-		port: process.env.NODE_ENV === "development" ? 3055 : 8080,
+		port: process.env["NODE_ENV"] === "development" ? 3055 : 8080,
 		base: assetPrefix,
 		historyApiFallback: { index: `${assetPrefix}index.html` },
 	},
 });
+
+export default config;
