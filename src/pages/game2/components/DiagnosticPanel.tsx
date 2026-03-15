@@ -1,9 +1,10 @@
 // src/pages/game2/components/DiagnosticPanel.tsx
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Badge, Box, Callout, Flex, IconButton, ScrollArea, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { generateLogs, getProductionSummary } from "../core/Diagnostic.utils";
+import { getProductionSummary } from "../core/Diagnostic.utils";
 import type { IDiagnosticEntry, IDiagnosticPanelProps } from "../types";
+import { useDiagnostics } from "../hooks/useDiagnostics";
 
 const SummaryBar = ({ summary }: { summary: ReturnType<typeof getProductionSummary> }) => (
   <Flex
@@ -80,8 +81,7 @@ const DiagnosticList = ({ logs, isOpen }: { logs: IDiagnosticEntry[], isOpen: bo
 
 export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, inventory }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  const summary = useMemo(() => getProductionSummary(rows, inventory), [rows, inventory]);
-  const logs = useMemo(() => generateLogs(rows, inventory), [rows, inventory]);
+  const { logs, summary } = useDiagnostics(rows, inventory);
 
   const errorCount = logs.filter((d) => d.type === "error").length;
   const infoCount = logs.filter((d) => d.type === "info" && d.id !== "ok").length;
