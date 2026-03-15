@@ -1,19 +1,20 @@
+// src/pages/game2/components/DiagnosticPanel.tsx
 import React, { memo, useState } from "react";
 import { Badge, Box, Callout, Flex, IconButton, ScrollArea, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { getProductionSummary } from "../core/Diagnostic.utils";
-import type { IDiagnosticEntry, IDiagnosticPanelProps } from "../types";
+import type { IDiagnosticEntry } from "../types";
 import { useDiagnostics } from "../hooks/useDiagnostics";
+import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 
-// 使用 memo 封裝 SummaryBar
 const SummaryBar = memo(({ summary }: { summary: ReturnType<typeof getProductionSummary> }) => (
 	<Flex px="4" pb="3" direction="column" gap="2">
-		<Flex gap="4" align="center">
+		<Flex gap="4" align="center" className="flex-wrap">
 			<Box>
 				<Text size="1" color="gray" as="div">預估剩餘</Text>
 				<Text size="2" weight="bold">{summary.estimatedDays ?? "—"} 天</Text>
 			</Box>
-			<Box style={{ width: 1, height: 24, backgroundColor: "var(--gray-5)" }} />
+			<Box className="hidden sm:block" style={{ width: 1, height: 24, backgroundColor: "var(--gray-5)" }} />
 			<Flex gap="1" wrap="wrap">
 				{[
 					{ label: "LMD", gap: summary.moneyGap, days: summary.moneyDays, color: "amber" as const },
@@ -73,7 +74,9 @@ const DiagnosticList = memo(({ logs }: { logs: IDiagnosticEntry[] }) => {
 
 DiagnosticList.displayName = "DiagnosticList";
 
-export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, inventory }) => {
+export const DiagnosticPanel: React.FC = memo(() => {
+	const { rows } = useArsenalRows();
+	const { inventory } = useArsenalInventory();
 	const [isExpanded, setIsExpanded] = useState(true);
 	const { logs, summary } = useDiagnostics(rows, inventory);
 
@@ -87,7 +90,7 @@ export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, invento
 	}, [logs]);
 
 	return (
-		<Box mt="4" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }}>
+		<Box mt="4" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }} className="shrink-0 bg-white">
 			<Flex align="center" justify="between" p="4">
 				<Box>
 					<Text size="1" color="gray" weight="bold" style={{ letterSpacing: "0.05em" }}>
@@ -118,4 +121,4 @@ export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, invento
 			{isExpanded && <DiagnosticList logs={logs} />}
 		</Box>
 	);
-};
+});

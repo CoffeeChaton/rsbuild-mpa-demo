@@ -1,5 +1,6 @@
 // src/pages/game2/hooks/useArsenalStorage.ts
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
+import useSWR from "swr";
 import { STORAGE_KEY } from "../config/constants";
 import type { IInventory, IItem } from "../types";
 import { sanitizeBookStacks } from "../config/inventory";
@@ -17,37 +18,79 @@ const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
 	avgBookProduction: toPositiveNumber(inv?.avgBookProduction),
 });
 
-export const useArsenalStorage = (): {
+interface IArsenalData {
+	items: IItem[];
+	inv: IInventory;
+}
+
+const arsenalDataFetcher = (key: string): IArsenalData => {
+	const saved = localStorage.getItem(key);
+	const configId = key.replace(`${STORAGE_KEY}_data_`, "");
+
+	if (!saved) {
+		if (key === STORAGE_KEY || configId === "default") {
+			const oldSaved = localStorage.getItem(STORAGE_KEY);
+			if (oldSaved) {
+				try {
+					const parsed = JSON.parse(oldSaved);
+					return {
+						items: Array.isArray(parsed.items) ? parsed.items : [],
+						inv: parsed.inv ? createInventoryState(parsed.inv) : createInventoryState(),
+					};
+				} catch { /* ignore */ }
+			}
+		}
+		return { items: [], inv: createInventoryState() };
+	}
+	try {
+		const parsed = JSON.parse(saved);
+		return {
+			items: Array.isArray(parsed.items) ? parsed.items : [],
+			inv: parsed.inv ? createInventoryState(parsed.inv) : createInventoryState(),
+		};
+	} catch {
+		return { items: [], inv: createInventoryState() };
+	}
+};
+
+export type TUseArsenalStorage = (configId: string) => {
 	items: IItem[],
-	setItems: Dispatch<SetStateAction<IItem[]>>,
+	setItems: (value: IItem[] | ((prev: IItem[]) => IItem[])) => void,
 	inventory: IInventory,
-	setInventory: Dispatch<SetStateAction<IInventory>>,
-} => {
-	const [items, setItems] = useState<IItem[]>(() => {
-		const saved = localStorage.getItem(STORAGE_KEY);
-		if (!saved) return [];
-		try {
-			const parsed = JSON.parse(saved);
-			return Array.isArray(parsed.items) ? parsed.items : [];
-		} catch {
-			return [];
-		}
+	setInventory: (value: IInventory | ((prev: IInventory) => IInventory)) => void,
+};
+
+export const useArsenalStorage: TUseArsenalStorage = (configId) => {
+	const dataKey = useMemo(() => configId === "default" ? STORAGE_KEY : `${STORAGE_KEY}_data_${configId}`, [configId]);
+
+	const { data, mutate } = useSWR<IArsenalData>(dataKey, arsenalDataFetcher, {
+		revalidateOnFocus: false,
+		revalidateOnReconnect: false,
+		fallbackData: { items: [], inv: createInventoryState() },
 	});
 
-	const [inventory, setInventory] = useState<IInventory>(() => {
-		const saved = localStorage.getItem(STORAGE_KEY);
-		if (!saved) return createInventoryState();
-		try {
-			const parsed = JSON.parse(saved);
-			return parsed.inv ? createInventoryState(parsed.inv) : createInventoryState();
-		} catch {
-			return createInventoryState();
-		}
-	});
+	const items = data?.items || [];
+	const inventory = data?.inv || createInventoryState();
 
-	useEffect(() => {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, inv: inventory }));
-	}, [items, inventory]);
+	const setItems = useCallback((value: IItem[] | ((prev: IItem[]) => IItem[])) => {
+		mutate((prev) => {
+			const currentItems = prev?.items || [];
+			const nextItems = typeof value === "function" ? value(currentItems) : value;
+			const nextData = { items: nextItems, inv: prev?.inv || createInventoryState() };
+			localStorage.setItem(dataKey, JSON.stringify(nextData));
+			return nextData;
+		}, false);
+	}, [dataKey, mutate]);
+
+	const setInventory = useCallback((value: IInventory | ((prev: IInventory) => IInventory)) => {
+		mutate((prev) => {
+			const currentInv = prev?.inv || createInventoryState();
+			const nextInv = typeof value === "function" ? value(currentInv) : value;
+			const nextData = { items: prev?.items || [], inv: nextInv };
+			localStorage.setItem(dataKey, JSON.stringify(nextData));
+			return nextData;
+		}, false);
+	}, [dataKey, mutate]);
 
 	return { items, setItems, inventory, setInventory };
 };

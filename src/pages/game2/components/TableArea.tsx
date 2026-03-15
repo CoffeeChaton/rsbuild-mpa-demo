@@ -1,35 +1,25 @@
 // src/pages/game2/components/TableArea.tsx
 
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { Box, Button, Table } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { TableRowItem } from "./TableRowItem";
 import { useTableItems } from "../hooks/useTableItems";
-import type { IItem, IRowResult } from "../types";
+import type { IItem } from "../types";
 import { TableHeader } from "./TableHeader";
+import { useArsenalItems, useArsenalRows } from "../context/ArsenalContext";
 
 /**
  * TableArea
  *
  * 職責：
  * - 顯示角色需求表格
- * - 行編輯
- * - 行移動
- * - 行刪除
- * - 新增行
  */
 
-interface ITableAreaProps {
-	rows: IRowResult[];
-	items: IItem[];
-	setItems: React.Dispatch<React.SetStateAction<IItem[]>>;
-}
+export const TableArea: React.FC = memo(() => {
+	const { items, setItems } = useArsenalItems();
+	const { rows } = useArsenalRows();
 
-export const TableArea: React.FC<ITableAreaProps> = ({
-	rows,
-	items,
-	setItems,
-}) => {
 	const {
 		updateItem,
 		deleteItem,
@@ -88,4 +78,4 @@ export const TableArea: React.FC<ITableAreaProps> = ({
 			</Box>
 		</Box>
 	);
-};
+});

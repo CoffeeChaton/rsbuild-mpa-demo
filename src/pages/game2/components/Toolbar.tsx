@@ -1,29 +1,21 @@
+// src/pages/game2/components/Toolbar.tsx
 import React from "react";
-import { Button, Flex, Heading } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import { ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { useArsenalActions } from "../context/ArsenalContext";
 
-interface IToolbarProps {
-	onImport: () => void;
-	onExport: () => void;
-}
+export const Toolbar: React.FC = () => {
+	const { handleImport, handleExport } = useArsenalActions();
 
-export const Toolbar: React.FC<IToolbarProps> = ({
-	onImport,
-	onExport,
-}) => {
 	return (
-		<Flex justify="between" align="end" mb="4">
-			<Heading size="7">Arsenal Calculator</Heading>
+		<Flex gap="3" ml="auto">
+			<Button variant="soft" onClick={handleImport}>
+				<DownloadIcon /> 從剪貼簿導入
+			</Button>
 
-			<Flex gap="3">
-				<Button variant="soft" onClick={onImport}>
-					<DownloadIcon /> 從剪貼簿導入
-				</Button>
-
-				<Button variant="solid" color="green" onClick={onExport}>
-					<ClipboardCopyIcon /> 導出 TSV
-				</Button>
-			</Flex>
+			<Button variant="solid" color="green" onClick={handleExport}>
+				<ClipboardCopyIcon /> 導出 TSV
+			</Button>
 		</Flex>
 	);
 };

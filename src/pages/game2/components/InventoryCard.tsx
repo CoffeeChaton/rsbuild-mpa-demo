@@ -1,6 +1,6 @@
 // src/pages/game2/components/InventoryCard.tsx
 
-import React from "react";
+import React, { memo } from "react";
 import { Button, Card, Flex, ScrollArea, Separator, Text, TextField, Tooltip } from "@radix-ui/themes";
 import {
 	Accordion,
@@ -12,11 +12,7 @@ import { DownloadIcon, UploadIcon } from "@radix-ui/react-icons";
 import { useInventory } from "../hooks/useInventory";
 import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../config/inventory";
 import type { IInventory } from "../types";
-
-interface IInventoryCardProps {
-	inventory: IInventory;
-	onUpdate: (update: Partial<IInventory>) => void;
-}
+import { useArsenalInventory } from "../context/ArsenalContext";
 
 const clampPositiveNumber = (value: string) => {
 	const parsed = Number(value);
@@ -30,7 +26,13 @@ const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, unit: string 
 	{ key: "avgBookProduction", label: "平均經驗書產出", unit: "EXP" },
 ];
 
-export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpdate }) => {
+export const InventoryCard: React.FC = memo(() => {
+	const { inventory, setInventory } = useArsenalInventory();
+
+	const onUpdate = React.useCallback((update: Partial<IInventory>) => {
+		setInventory(prev => ({ ...prev, ...update }));
+	}, [setInventory]);
+
 	const {
 		handleStackChange,
 		handleProductionChange,
@@ -46,15 +48,15 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpda
 			<Flex direction="column" gap="4" className="flex-1 min-h-0">
 				<Flex align="center" justify="between" className="flex-wrap gap-3">
 					<Flex direction="column" gap="1">
-						<Text size="3" weight="bold">更新你的龍門幣 / 作戰記錄</Text>
-						<Text size="1" color="gray">調整數值會同步保存，其他區塊可直接使用。</Text>
+						<Text size="3" weight="bold">龍門幣 / 作戰記錄</Text>
+						<Text size="1" color="gray">調整數值會同步保存。</Text>
 					</Flex>
 					<Flex align="center" gap="2" className="flex-wrap">
-						<Button variant="soft" size="2" onClick={handleClipboardImport}>
-							<UploadIcon /> 從 Excel 導入
+						<Button variant="soft" size="1" onClick={handleClipboardImport}>
+							<UploadIcon /> 導入
 						</Button>
-						<Button variant="outline" size="2" onClick={handleClipboardExport}>
-							<DownloadIcon /> 匯出 TSV
+						<Button variant="outline" size="1" onClick={handleClipboardExport}>
+							<DownloadIcon /> 匯出
 						</Button>
 					</Flex>
 				</Flex>
@@ -64,7 +66,7 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpda
 					<Separator size="4" />
 				</Flex>
 
-				<div className="grid gap-2 sm:[grid-template-columns:140px_minmax(0,1fr)]">
+				<div className="grid gap-2 grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr]">
 					<Text size="1" weight="bold" className="shrink-0">龍門幣</Text>
 					<TextField.Root
 						size="1"
@@ -100,7 +102,7 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpda
 									{BOOK_CONFIG.map((conf, i) => (
 										<div
 											key={conf.label}
-											className="grid items-center gap-3 sm:[grid-template-columns:140px_minmax(0,1fr)]"
+											className="grid items-center gap-3 grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr]"
 										>
 											<Tooltip content={`${conf.label}：每份 ${conf.value.toLocaleString()} EXP`}>
 												<Text size="1" color="gray" weight="bold" className="truncate">
@@ -133,7 +135,7 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpda
 
 				<Flex direction="column" gap="3">
 					{PRODUCTION_FIELDS.map(field => (
-						<div key={field.key} className="grid gap-2 sm:[grid-template-columns:140px_minmax(0,1fr)]">
+						<div key={field.key} className="grid gap-2 grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr]">
 							<Text size="1" color="gray" weight="bold" className="shrink-0">{field.label}</Text>
 							<TextField.Root
 								size="1"
@@ -153,4 +155,4 @@ export const InventoryCard: React.FC<IInventoryCardProps> = ({ inventory, onUpda
 			</Flex>
 		</Card>
 	);
-};
+});
