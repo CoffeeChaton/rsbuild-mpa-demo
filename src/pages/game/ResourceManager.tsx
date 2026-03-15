@@ -1,6 +1,6 @@
 // ResourceManager.tsx
 import { useEffect, useMemo, useState } from "react";
-import { useAccountManager } from "./AccountLogic";
+import { useAccountManager } from "./hooks/useAccountManager";
 import { DashboardHeader } from "./components/DashboardHeader";
 import { GroupRow } from "./components/GroupRow";
 import { SummarySection } from "./components/SummarySection";

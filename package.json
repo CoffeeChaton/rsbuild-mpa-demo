@@ -28,7 +28,10 @@
 		"commit:typecheck": "pnpm typecheck",
 		"commit:test": "vitest run",
 		"pre-commit": "lint-staged && pnpm run \"/^commit:.*/\"",
-		"prepare": "husky"
+		"prepare": "husky",
+		"run_nolyfill": "nolyfill install",
+		"show_cycles": "skott -m file-tree -e .{ts,tsx} -s",
+		"get_slow_type": "tsc-shame"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",
@@ -49,6 +52,7 @@
 		"react-dom": "^19.2.3",
 		"react-router-dom": "^7.13.1",
 		"shadcn": "^4.0.4",
+		"skott": "^0.35.7",
 		"swr": "^2.4.1",
 		"tailwind-merge": "^3.5.0",
 		"tsx": "^4.21.0",
@@ -71,7 +75,10 @@
 		"globals": "^16.5.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
+		"nolyfill": "^1.0.44",
+		"repomix": "^1.12.0",
 		"tailwindcss": "^4.1.18",
+		"tsc-shame": "^0.2.14",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.48.0",
 		"vitest": "^4.1.0"
