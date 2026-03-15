@@ -67,7 +67,9 @@ export const InventoryCard: React.FC = memo(() => {
 				</Flex>
 
 				<div className="grid gap-2 grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr]">
-					<Text size="1" weight="bold" className="shrink-0">龍門幣</Text>
+					<Text size="1" weight="bold" className="shrink-0">
+						{`龍門幣(${Math.floor((inventory.money / 10000) * 10) / 10} 萬)`}
+					</Text>
 					<TextField.Root
 						size="1"
 						variant="soft"
