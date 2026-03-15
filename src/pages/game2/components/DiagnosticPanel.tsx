@@ -1,28 +1,19 @@
-// src/pages/game2/components/DiagnosticPanel.tsx
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Badge, Box, Callout, Flex, IconButton, ScrollArea, Text } from "@radix-ui/themes";
 import { ChevronDownIcon, ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { getProductionSummary } from "../core/Diagnostic.utils";
 import type { IDiagnosticEntry, IDiagnosticPanelProps } from "../types";
 import { useDiagnostics } from "../hooks/useDiagnostics";
 
-const SummaryBar = ({ summary }: { summary: ReturnType<typeof getProductionSummary> }) => (
-	<Flex
-		px="4"
-		pb="3"
-		direction="column"
-		gap="2"
-	>
+// 使用 memo 封裝 SummaryBar
+const SummaryBar = memo(({ summary }: { summary: ReturnType<typeof getProductionSummary> }) => (
+	<Flex px="4" pb="3" direction="column" gap="2">
 		<Flex gap="4" align="center">
 			<Box>
 				<Text size="1" color="gray" as="div">預估剩餘</Text>
-				<Text size="2" weight="bold">
-					{summary.estimatedDays ?? "—"} 天
-				</Text>
+				<Text size="2" weight="bold">{summary.estimatedDays ?? "—"} 天</Text>
 			</Box>
-
 			<Box style={{ width: 1, height: 24, backgroundColor: "var(--gray-5)" }} />
-
 			<Flex gap="1" wrap="wrap">
 				{[
 					{ label: "LMD", gap: summary.moneyGap, days: summary.moneyDays, color: "amber" as const },
@@ -43,10 +34,13 @@ const SummaryBar = ({ summary }: { summary: ReturnType<typeof getProductionSumma
 			</Flex>
 		</Flex>
 	</Flex>
-);
+));
 
-const DiagnosticList = ({ logs, isOpen }: { logs: IDiagnosticEntry[], isOpen: boolean }) => {
-	if (!isOpen) return null;
+SummaryBar.displayName = "SummaryBar";
+
+// 移除 isOpen，由父組件決定是否渲染
+const DiagnosticList = memo(({ logs }: { logs: IDiagnosticEntry[] }) => {
+	if (logs.length === 0) return null;
 
 	return (
 		<ScrollArea scrollbars="vertical" style={{ maxHeight: 200 }}>
@@ -75,35 +69,53 @@ const DiagnosticList = ({ logs, isOpen }: { logs: IDiagnosticEntry[], isOpen: bo
 			</Flex>
 		</ScrollArea>
 	);
-};
+});
+
+DiagnosticList.displayName = "DiagnosticList";
 
 export const DiagnosticPanel: React.FC<IDiagnosticPanelProps> = ({ rows, inventory }) => {
 	const [isExpanded, setIsExpanded] = useState(true);
 	const { logs, summary } = useDiagnostics(rows, inventory);
 
-	const errorCount = logs.filter((d) => d.type === "error").length;
-	const infoCount = logs.filter((d) => d.type === "info" && d.id !== "ok").length;
+	// 優化計數邏輯，避免重複 map/filter
+	const counts = React.useMemo(() => {
+		return logs.reduce((acc, log) => {
+			if (log.type === "error") acc.error++;
+			else if (log.type === "info" && log.id !== "ok") acc.info++;
+			return acc;
+		}, { error: 0, info: 0 });
+	}, [logs]);
 
 	return (
-		<Box mt="4" p="0" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }}>
+		<Box mt="4" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }}>
 			<Flex align="center" justify="between" p="4">
 				<Box>
-					<Text size="1" color="gray" weight="bold" style={{ letterSpacing: "0.05em" }}>DIAGNOSTIC / 診斷</Text>
+					<Text size="1" color="gray" weight="bold" style={{ letterSpacing: "0.05em" }}>
+						DIAGNOSTIC / 診斷
+					</Text>
 					<Text as="div" size="3" weight="bold">
-						{errorCount > 0 ? `發現 ${errorCount} 處需要修正` : "數據校驗通過"}
+						{counts.error > 0 ? `發現 ${counts.error} 處需要修正` : "數據校驗通過"}
 					</Text>
 				</Box>
 				<Flex align="center" gap="1">
-					<Badge color={errorCount ? "red" : "green"} variant={errorCount ? "solid" : "soft"}>{errorCount} Errors</Badge>
-					{infoCount > 0 && <Badge color="blue" variant="soft">{infoCount} Notes</Badge>}
+					<Badge color={counts.error ? "red" : "green"} variant={counts.error ? "solid" : "soft"}>
+						{counts.error} Errors
+					</Badge>
+					{counts.info > 0 && <Badge color="blue" variant="soft">{counts.info} Notes</Badge>}
 					<IconButton variant="ghost" onClick={() => setIsExpanded(!isExpanded)}>
-						<ChevronDownIcon style={{ transform: isExpanded ? "rotate(180deg)" : "none", transition: "transform 200ms" }} />
+						<ChevronDownIcon
+							style={{
+								transform: isExpanded ? "rotate(180deg)" : "none",
+								transition: "transform 200ms cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
+						/>
 					</IconButton>
 				</Flex>
 			</Flex>
 
 			<SummaryBar summary={summary} />
-			<DiagnosticList logs={logs} isOpen={isExpanded} />
+
+			{isExpanded && <DiagnosticList logs={logs} />}
 		</Box>
 	);
 };
