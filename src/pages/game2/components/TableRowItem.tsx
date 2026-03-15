@@ -1,9 +1,9 @@
 import React, { memo, useCallback } from "react";
-import { Checkbox, Flex, IconButton, Table, Text, TextField } from "@radix-ui/themes";
-import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
+import { Checkbox, Flex, Table, Text, TextField } from "@radix-ui/themes";
 import type { IItem, IRowResult } from "../types";
 import { RaritySelect } from "./RaritySelect";
 import { StatCell } from "./TableRowItem/StatCell";
+import { RowActions } from "./TableRowItem/RowActions";
 
 const areRowValuesEqual = (prev: IRowResult, next: IRowResult): boolean => (
   prev.costMoney === next.costMoney
@@ -46,10 +46,6 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
     },
     [item.id, onUpdate],
   );
-
-  const handleMoveUp = useCallback(() => onMove(index, -1), [index, onMove]);
-  const handleMoveDown = useCallback(() => onMove(index, 1), [index, onMove]);
-  const handleDelete = useCallback(() => onDelete(item.id), [item.id, onDelete]);
 
   return (
     <Table.Row
@@ -108,17 +104,13 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 
       {/* 尾部操作區域 */}
       <Table.Cell>
-        <Flex gap="1" justify="center">
-          <IconButton size="1" variant="ghost" disabled={index === 0} onClick={handleMoveUp}>
-            <ArrowUpIcon />
-          </IconButton>
-          <IconButton size="1" variant="ghost" disabled={isLast} onClick={handleMoveDown}>
-            <ArrowDownIcon />
-          </IconButton>
-          <IconButton size="1" variant="ghost" color="red" onClick={handleDelete}>
-            <TrashIcon />
-          </IconButton>
-        </Flex>
+        <RowActions
+          index={index}
+          isLast={isLast}
+          itemId={item.id}
+          onMove={onMove}
+          onDelete={onDelete}
+        />
       </Table.Cell>
     </Table.Row>
   );
