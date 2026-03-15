@@ -1,10 +1,6 @@
 import { useCallback } from "react";
-import {
-	calculateBookStacksValue,
-	type IBookStacks,
-	type IInventory,
-	sanitizeBookStacks,
-} from "../types";
+import type { IInventory } from "../types";
+import { calculateBookStacksValue, type IBookStacks, sanitizeBookStacks } from "../config/inventory";
 
 const clampPositiveNumber = (value: string) => {
 	const n = Number(value);

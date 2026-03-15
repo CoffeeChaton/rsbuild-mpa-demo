@@ -1,7 +1,8 @@
 // src/pages/game2/hooks/useArsenalStorage.ts
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { STORAGE_KEY } from "../config/constants";
-import { type IInventory, type IItem, sanitizeBookStacks } from "../types";
+import type { IInventory, IItem } from "../types";
+import { sanitizeBookStacks } from "../config/inventory";
 
 const toPositiveNumber = (value: unknown) => {
 	const parsed = Number(value);

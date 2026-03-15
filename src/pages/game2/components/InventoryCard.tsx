@@ -3,12 +3,6 @@
 import React from "react";
 import { Button, Card, Flex, ScrollArea, Separator, Text, TextField, Tooltip } from "@radix-ui/themes";
 import {
-	BOOK_CONFIG,
-	calculateBookStacksValue,
-	DEFAULT_BOOK_STACKS,
-	type IInventory,
-} from "../types";
-import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
@@ -16,6 +10,8 @@ import {
 } from "../../../components/ui/accordion";
 import { DownloadIcon, UploadIcon } from "@radix-ui/react-icons";
 import { useInventory } from "../hooks/useInventory";
+import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../config/inventory";
+import type { IInventory } from "../types";
 
 interface IInventoryCardProps {
 	inventory: IInventory;
