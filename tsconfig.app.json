@@ -1,18 +1,18 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2023"
-    ],
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true
-  },
-  "include": [
-    "src",
-    "shared/**/*.ts"
-  ]
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"composite": true,
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ES2023"
+		],
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true
+	},
+	"include": [
+		"src",
+		"shared/**/*.ts"
+	]
 }

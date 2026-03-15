@@ -23,8 +23,8 @@ import type { IItem } from "../types/item";
  * diff = (elite * 100 + level)
  */
 export const COST_PER_LEVEL = {
-  money: 4800,
-  books: 3200,
+	money: 4800,
+	books: 3200,
 };
 
 /**
@@ -33,8 +33,8 @@ export const COST_PER_LEVEL = {
  * Excel compatible
  */
 export const TSV_HEADER = [
-  ["", "", "", "", "模組", "", "初始練度", "", "目標練度", "", "自動估算"].join("\t"),
-  ["是否計算", "星級", "角色名", "技能備註", "FROM", "TO", "精英化", "等級", "精英化", "等級", "預估錢", "預估書", "累計錢", "累計書"].join("\t"),
+	["", "", "", "", "模組", "", "初始練度", "", "目標練度", "", "自動估算"].join("\t"),
+	["是否計算", "星級", "角色名", "技能備註", "FROM", "TO", "精英化", "等級", "精英化", "等級", "預估錢", "預估書", "累計錢", "累計書"].join("\t"),
 ].join("\n");
 
 /**
@@ -43,28 +43,28 @@ export const TSV_HEADER = [
  * 新增角色時使用
  */
 export const DEFAULT_ITEM_TEMPLATE: Omit<IItem, "id"> = {
-  calculate: true,
-  rarity: 6, // 預設稀有度
+	calculate: true,
+	rarity: 6, // 預設稀有度
 
-  name: "",
-  note: "",
+	name: "",
+	note: "",
 
-  moduleFrom: "0",
-  moduleTo: "3",
+	moduleFrom: "0",
+	moduleTo: "3",
 
-  e1: "0",
-  l1: "1",
+	e1: "0",
+	l1: "1",
 
-  e2: "2",
-  l2: "1",
+	e2: "2",
+	l2: "1",
 };
 
 /**
  * TSV import 判斷 header
  */
 export const TSV_HEADER_KEYWORDS = [
-  "計算",
-  "角色",
+	"計算",
+	"角色",
 ];
 
 /** 預留導航欄高度常數 */

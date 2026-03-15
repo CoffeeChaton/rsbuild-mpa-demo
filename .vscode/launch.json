@@ -1,13 +1,13 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "DEMO2",
-      "url": "http://localhost:3055/",
-      "webRoot": "${workspaceFolder}/bin",
-      "sourceMaps": true,
-    },
-  ],
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "DEMO2",
+			"url": "http://localhost:3055/",
+			"webRoot": "${workspaceFolder}/bin",
+			"sourceMaps": true,
+		},
+	],
 }

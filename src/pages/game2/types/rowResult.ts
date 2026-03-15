@@ -8,11 +8,11 @@ export type TRowStatus = "safe" | "danger" | "disabled";
  * 計算後的 Row
  */
 export interface IRowResult extends IItem {
-  costMoney: number;
-  costBooks: number;
-  cumMoney: number;
-  cumBooks: number;
-  status: TRowStatus;
-  moneyStatus: TRowStatus;
-  booksStatus: TRowStatus;
+	costMoney: number;
+	costBooks: number;
+	cumMoney: number;
+	cumBooks: number;
+	status: TRowStatus;
+	moneyStatus: TRowStatus;
+	booksStatus: TRowStatus;
 }

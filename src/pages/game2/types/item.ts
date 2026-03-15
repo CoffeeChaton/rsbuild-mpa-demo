@@ -6,41 +6,41 @@
  * 對應一個角色的培養需求
  */
 export interface IItem {
-  id: string;
+	id: string;
 
-  /**
-   * 是否參與計算
-   */
-  calculate: boolean;
+	/**
+	 * 是否參與計算
+	 */
+	calculate: boolean;
 
-  /** 稀有度 1~6 */
-  rarity: number;
+	/** 稀有度 1~6 */
+	rarity: number;
 
-  /**
-   * 角色名稱
-   */
-  name: string;
+	/**
+	 * 角色名稱
+	 */
+	name: string;
 
-  /**
-   * 備註
-   */
-  note: string;
+	/**
+	 * 備註
+	 */
+	note: string;
 
-  /**
-   * 模組等級
-   */
-  moduleFrom: string;
-  moduleTo: string;
+	/**
+	 * 模組等級
+	 */
+	moduleFrom: string;
+	moduleTo: string;
 
-  /**
-   * FROM 等級
-   */
-  e1: string;
-  l1: string;
+	/**
+	 * FROM 等級
+	 */
+	e1: string;
+	l1: string;
 
-  /**
-   * TO 等級
-   */
-  e2: string;
-  l2: string;
+	/**
+	 * TO 等級
+	 */
+	e2: string;
+	l2: string;
 }

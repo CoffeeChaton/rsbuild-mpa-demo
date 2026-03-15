@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --brand-color: #007bff;
+	--brand-color: #007bff;
 }
 
 body {
-  @apply bg-gray-50 text-gray-900;
+	@apply bg-gray-50 text-gray-900;
 }

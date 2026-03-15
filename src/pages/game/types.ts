@@ -5,23 +5,23 @@
 export type TAccountId = string;
 
 export interface IMaterialEntry {
-  name: string;
-  amount: number;
-  itemNote: string;
+	name: string;
+	amount: number;
+	itemNote: string;
 }
 
 export interface IConfigGroup {
-  id: string;
-  isEnabled: boolean;
-  isCollapsed: boolean;
-  listName: string; // 組標題
-  description: string; // 一行說明
-  materials: IMaterialEntry[];
+	id: string;
+	isEnabled: boolean;
+	isCollapsed: boolean;
+	listName: string; // 組標題
+	description: string; // 一行說明
+	materials: IMaterialEntry[];
 }
 
 export interface IAccountProfile {
-  id: TAccountId;
-  accountName: string;
-  server: string;
-  configs: IConfigGroup[];
+	id: TAccountId;
+	accountName: string;
+	server: string;
+	configs: IConfigGroup[];
 }

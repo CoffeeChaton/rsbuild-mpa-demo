@@ -4,129 +4,129 @@ import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { calcArsenalRows } from "../core/calcArsenalRows";
 import {
-  STORAGE_KEY,
-  TSV_HEADER,
-  TSV_HEADER_KEYWORDS,
+	STORAGE_KEY,
+	TSV_HEADER,
+	TSV_HEADER_KEYWORDS,
 } from "../config/constants";
 import {
-  type IInventory,
-  type IItem,
-  sanitizeBookStacks,
+	type IInventory,
+	type IItem,
+	sanitizeBookStacks,
 } from "../types";
 import { type ILevelData, LEVEL_DATA_URL, levelDataFetcher } from "../core/data";
 
 export const DEFAULT_ITEM: Omit<IItem, "id"> = {
-  calculate: true,
-  name: "",
-  note: "",
-  moduleFrom: "0",
-  moduleTo: "3",
-  e1: "0",
-  l1: "1",
-  e2: "2",
-  l2: "90",
-  rarity: 6,
+	calculate: true,
+	name: "",
+	note: "",
+	moduleFrom: "0",
+	moduleTo: "3",
+	e1: "0",
+	l1: "1",
+	e2: "2",
+	l2: "90",
+	rarity: 6,
 };
 
 const toPositiveNumber = (value: unknown) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
+	const parsed = Number(value);
+	return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
 };
 
 const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
-  money: toPositiveNumber(inv?.money),
-  books: toPositiveNumber(inv?.books),
-  bookStacks: sanitizeBookStacks(inv?.bookStacks),
-  avgMoneyProduction: toPositiveNumber(inv?.avgMoneyProduction),
-  avgBookProduction: toPositiveNumber(inv?.avgBookProduction),
+	money: toPositiveNumber(inv?.money),
+	books: toPositiveNumber(inv?.books),
+	bookStacks: sanitizeBookStacks(inv?.bookStacks),
+	avgMoneyProduction: toPositiveNumber(inv?.avgMoneyProduction),
+	avgBookProduction: toPositiveNumber(inv?.avgBookProduction),
 });
 
 export const useArsenalCalculator = () => {
-  const [items, setItems] = useState<IItem[]>([]);
-  const [inventory, setInventory] = useState<IInventory>(() => createInventoryState());
-  const [isLoaded, setIsLoaded] = useState(false);
+	const [items, setItems] = useState<IItem[]>([]);
+	const [inventory, setInventory] = useState<IInventory>(() => createInventoryState());
+	const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const { items: sItems, inv: sInv } = JSON.parse(saved);
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (sItems) setItems(sItems);
-        if (sInv) setInventory(createInventoryState(sInv));
-      } catch (e) {
-        console.error("Restore failed", e);
-      }
-    }
-    setIsLoaded(true);
-  }, []);
+	useEffect(() => {
+		const saved = localStorage.getItem(STORAGE_KEY);
+		if (saved) {
+			try {
+				const { items: sItems, inv: sInv } = JSON.parse(saved);
+				// eslint-disable-next-line react-hooks/set-state-in-effect
+				if (sItems) setItems(sItems);
+				if (sInv) setInventory(createInventoryState(sInv));
+			} catch (e) {
+				console.error("Restore failed", e);
+			}
+		}
+		setIsLoaded(true);
+	}, []);
 
-  useEffect(() => {
-    if (isLoaded) localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, inv: inventory }));
-  }, [items, inventory, isLoaded]);
+	useEffect(() => {
+		if (isLoaded) localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, inv: inventory }));
+	}, [items, inventory, isLoaded]);
 
-  // --- 計算累計 ---
-  const { data: levelData, error: levelDataError } = useSWR<ILevelData>(LEVEL_DATA_URL, levelDataFetcher, {
-    revalidateOnFocus: false,
-  });
+	// --- 計算累計 ---
+	const { data: levelData, error: levelDataError } = useSWR<ILevelData>(LEVEL_DATA_URL, levelDataFetcher, {
+		revalidateOnFocus: false,
+	});
 
-  const deferredItems = useDeferredValue(items);
-  const deferredInventory = useDeferredValue(inventory);
-  const rows = useMemo(
-    () => (levelData
-      ? calcArsenalRows(deferredItems, deferredInventory, levelData)
-      : []),
-    [deferredItems, deferredInventory, levelData],
-  );
+	const deferredItems = useDeferredValue(items);
+	const deferredInventory = useDeferredValue(inventory);
+	const rows = useMemo(
+		() => (levelData
+			? calcArsenalRows(deferredItems, deferredInventory, levelData)
+			: []),
+		[deferredItems, deferredInventory, levelData],
+	);
 
-  // --- 導入 TSV ---
-  const handleImport = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
-      const dataLines = TSV_HEADER_KEYWORDS.some(k => lines[0].includes(k)) ? lines.slice(1) : lines;
-      const newItems: IItem[] = dataLines.map(line => {
-        const c = line.split("\t");
-        return {
-          id: crypto.randomUUID(),
-          calculate: c[0]?.trim() === "O",
-          rarity: Number(c[1]) || NaN,
-          name: c[2] || "",
-          note: c[3] || "",
-          moduleFrom: c[4] || "0",
-          moduleTo: c[5] || "3",
-          e1: c[6] || "0",
-          l1: c[7] || "1",
-          e2: c[8] || "0",
-          l2: c[9] || "1",
-        };
-      });
-      setItems(newItems);
-    } catch (error) {
-      console.error("貼上失敗", error);
-      alert("貼上失敗");
-    }
-  };
+	// --- 導入 TSV ---
+	const handleImport = async () => {
+		try {
+			const text = await navigator.clipboard.readText();
+			const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
+			const dataLines = TSV_HEADER_KEYWORDS.some(k => lines[0].includes(k)) ? lines.slice(1) : lines;
+			const newItems: IItem[] = dataLines.map(line => {
+				const c = line.split("\t");
+				return {
+					id: crypto.randomUUID(),
+					calculate: c[0]?.trim() === "O",
+					rarity: Number(c[1]) || NaN,
+					name: c[2] || "",
+					note: c[3] || "",
+					moduleFrom: c[4] || "0",
+					moduleTo: c[5] || "3",
+					e1: c[6] || "0",
+					l1: c[7] || "1",
+					e2: c[8] || "0",
+					l2: c[9] || "1",
+				};
+			});
+			setItems(newItems);
+		} catch (error) {
+			console.error("貼上失敗", error);
+			alert("貼上失敗");
+		}
+	};
 
-  // --- 導出 TSV ---
-  const handleExport = () => {
-    const header = TSV_HEADER;
-    const body = rows.map(r =>
-      `${r.calculate ? "O" : "X"}\t${r.rarity}\t${r.name}\t${r.note}\t${r.moduleFrom}\t${r.moduleTo}\t${r.e1}\t${r.l1}\t${r.e2}\t${r.l2}\t${r.costMoney}\t${r.costBooks}\t${r.cumMoney}\t${r.cumBooks}`
-    ).join("\n");
-    navigator.clipboard.writeText(header + "\n" + body);
-    alert("TSV 已複製到剪貼簿");
-  };
+	// --- 導出 TSV ---
+	const handleExport = () => {
+		const header = TSV_HEADER;
+		const body = rows.map(r =>
+			`${r.calculate ? "O" : "X"}\t${r.rarity}\t${r.name}\t${r.note}\t${r.moduleFrom}\t${r.moduleTo}\t${r.e1}\t${r.l1}\t${r.e2}\t${r.l2}\t${r.costMoney}\t${r.costBooks}\t${r.cumMoney}\t${r.cumBooks}`
+		).join("\n");
+		navigator.clipboard.writeText(header + "\n" + body);
+		alert("TSV 已複製到剪貼簿");
+	};
 
-  return {
-    items,
-    setItems,
-    inventory,
-    setInventory,
-    rows,
-    handleImport,
-    handleExport,
-    levelDataLoading: !levelData && !levelDataError,
-    levelDataError,
-  };
+	return {
+		items,
+		setItems,
+		inventory,
+		setInventory,
+		rows,
+		handleImport,
+		handleExport,
+		levelDataLoading: !levelData && !levelDataError,
+		levelDataError,
+	};
 };

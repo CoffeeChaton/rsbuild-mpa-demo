@@ -20,72 +20,72 @@ import { TableHeader } from "./TableHeader";
  */
 
 interface ITableAreaProps {
-  rows: IRowResult[];
-  items: IItem[];
-  setItems: React.Dispatch<React.SetStateAction<IItem[]>>;
+	rows: IRowResult[];
+	items: IItem[];
+	setItems: React.Dispatch<React.SetStateAction<IItem[]>>;
 }
 
 export const TableArea: React.FC<ITableAreaProps> = ({
-  rows,
-  items,
-  setItems,
+	rows,
+	items,
+	setItems,
 }) => {
-  const {
-    updateItem,
-    deleteItem,
-    createItem,
-    moveItem,
-  } = useTableItems(setItems);
+	const {
+		updateItem,
+		deleteItem,
+		createItem,
+		moveItem,
+	} = useTableItems(setItems);
 
-  const itemIndexMap = useMemo(() => {
-    const map = new Map<string, { item: IItem, index: number }>();
-    items.forEach((item, index) => map.set(item.id, { item, index }));
-    return map;
-  }, [items]);
+	const itemIndexMap = useMemo(() => {
+		const map = new Map<string, { item: IItem, index: number }>();
+		items.forEach((item, index) => map.set(item.id, { item, index }));
+		return map;
+	}, [items]);
 
-  return (
-    <Box
-      className="border rounded-xl shadow-sm bg-white"
-      style={{
-        flex: 1,
-        overflowY: "auto",
-        overflowX: "auto",
-      }}
-    >
-      <Table.Root variant="surface">
-        <TableHeader />
+	return (
+		<Box
+			className="border rounded-xl shadow-sm bg-white"
+			style={{
+				flex: 1,
+				overflowY: "auto",
+				overflowX: "auto",
+			}}
+		>
+			<Table.Root variant="surface">
+				<TableHeader />
 
-        <Table.Body>
-          {rows.map((row) => {
-            const entry = itemIndexMap.get(row.id);
-            if (!entry) return null;
+				<Table.Body>
+					{rows.map((row) => {
+						const entry = itemIndexMap.get(row.id);
+						if (!entry) return null;
 
-            const { item, index } = entry;
-            return (
-              <TableRowItem
-                key={row.id}
-                item={item}
-                row={row}
-                index={index}
-                isLast={index === items.length - 1}
-                onUpdate={updateItem}
-                onMove={moveItem}
-                onDelete={deleteItem}
-              />
-            );
-          })}
-        </Table.Body>
-      </Table.Root>
+						const { item, index } = entry;
+						return (
+							<TableRowItem
+								key={row.id}
+								item={item}
+								row={row}
+								index={index}
+								isLast={index === items.length - 1}
+								onUpdate={updateItem}
+								onMove={moveItem}
+								onDelete={deleteItem}
+							/>
+						);
+					})}
+				</Table.Body>
+			</Table.Root>
 
-      <Box p="2">
-        <Button
-          variant="ghost"
-          size="3"
-          onClick={createItem}
-        >
-          <PlusIcon /> 新增需求列
-        </Button>
-      </Box>
-    </Box>
-  );
+			<Box p="2">
+				<Button
+					variant="ghost"
+					size="3"
+					onClick={createItem}
+				>
+					<PlusIcon /> 新增需求列
+				</Button>
+			</Box>
+		</Box>
+	);
 };

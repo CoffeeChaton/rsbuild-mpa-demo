@@ -1,11 +1,11 @@
 {
-  "js/ts.experimental.useTsgo": true,
-  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
-  "files.associations": {
-    "settings.json": "jsonc",
-    "tsconfig.json": "jsonc",
-    "dprint.json": "jsonc",
-  },
-  "files.eol": "\n",
-  "explorer.fileNesting.enabled": false,
+	"js/ts.experimental.useTsgo": true,
+	"js/ts.tsdk.promptToUseWorkspaceVersion": true,
+	"files.associations": {
+		"settings.json": "jsonc",
+		"tsconfig.json": "jsonc",
+		"dprint.json": "jsonc",
+	},
+	"files.eol": "\n",
+	"explorer.fileNesting.enabled": false,
 }

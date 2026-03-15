@@ -1,29 +1,29 @@
 {
-  "compilerOptions": {
-    "target": "ES2023",
-    "jsx": "react-jsx",
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/*": [
-    //     "./src/*"
-    //   ],
-    //   "@shared/*": [
-    //     "./shared/*"
-    //   ] // 注意最後要加 /* 才能匹配子資料夾
-    // },
-    /* 嚴格規範 */
-    "strict": true,
-    "skipLibCheck": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    /* 模組處理 */
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
-  }
+	"compilerOptions": {
+		"target": "ES2023",
+		"jsx": "react-jsx",
+		// "baseUrl": ".",
+		// "paths": {
+		//   "@/*": [
+		//     "./src/*"
+		//   ],
+		//   "@shared/*": [
+		//     "./shared/*"
+		//   ] // 注意最後要加 /* 才能匹配子資料夾
+		// },
+		/* 嚴格規範 */
+		"strict": true,
+		"skipLibCheck": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true,
+		/* 模組處理 */
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"useDefineForClassFields": true,
+		"verbatimModuleSyntax": true
+	}
 }

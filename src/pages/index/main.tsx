@@ -7,26 +7,26 @@ import { applyCanonicalTag } from "../../common/router/canonical-seo";
 import "../../styles/globals.css";
 
 const bootstrap = (App: ComponentType) => {
-  if (canonicalUrl()) return; // 自動 redirect 到 /game3/
+	if (canonicalUrl()) return; // 自動 redirect 到 /game3/
 
-  applyCanonicalTag(); // SEO <link rel="canonical">
+	applyCanonicalTag(); // SEO <link rel="canonical">
 
-  const container = document.getElementById("root");
-  if (!container) return console.error("[Bootstrap] Root element not found");
+	const container = document.getElementById("root");
+	if (!container) return console.error("[Bootstrap] Root element not found");
 
-  const content = (
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
+	const content = (
+		<StrictMode>
+			<App />
+		</StrictMode>
+	);
 
-  const isHydration = container.innerHTML.trim().length > 0;
+	const isHydration = container.innerHTML.trim().length > 0;
 
-  if (isHydration) {
-    ReactDOM.hydrateRoot(container, content);
-  } else {
-    ReactDOM.createRoot(container).render(content);
-  }
+	if (isHydration) {
+		ReactDOM.hydrateRoot(container, content);
+	} else {
+		ReactDOM.createRoot(container).render(content);
+	}
 };
 
 bootstrap(App);
