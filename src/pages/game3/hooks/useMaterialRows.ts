@@ -8,12 +8,17 @@ interface IItemBundle {
 	items: Record<string, { name: { tw: string }, rare: number }>;
 }
 
-export function useMaterialRows(
+export type UseMaterialRows = (jsonA: string, tsvB: string, filter: TFilter, bundle: IItemDataBundle | undefined) => {
+	rows: IItemRow[],
+	groupedRows: Record<number, IItemRow[]>,
+};
+
+export const useMaterialRows: UseMaterialRows = (
 	jsonA: string,
 	tsvB: string,
 	filter: TFilter,
 	bundle: IItemDataBundle | undefined,
-) {
+) => {
 	const dataA = useMemo(
 		() => analyzeSource(jsonA, bundle, true),
 		[jsonA, bundle],
@@ -72,4 +77,4 @@ export function useMaterialRows(
 		rows,
 		groupedRows,
 	};
-}
+};

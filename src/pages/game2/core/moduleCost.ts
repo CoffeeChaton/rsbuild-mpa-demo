@@ -25,10 +25,10 @@ export const calculateModuleCost = (rarity: number, fromLevel: number, toLevel: 
 };
 
 export const MODULE_COST_DISPLAY_ROWS = [
-	{ rarity: 6, costs: MODULE_COST_MATRIX[6] },
-	{ rarity: 5, costs: MODULE_COST_MATRIX[5] },
-	{ rarity: 4, costs: MODULE_COST_MATRIX[4] },
+	{ rarity: 6, costs: MODULE_COST_MATRIX[6] as [number, number, number] },
+	{ rarity: 5, costs: MODULE_COST_MATRIX[5] as [number, number, number] },
+	{ rarity: 4, costs: MODULE_COST_MATRIX[4] as [number, number, number] },
 	{ rarity: 3, costs: null },
 	{ rarity: 2, costs: null },
 	{ rarity: 1, costs: null },
-];
+] as const;

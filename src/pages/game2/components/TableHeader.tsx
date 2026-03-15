@@ -9,7 +9,7 @@ import { MODULE_COST_DISPLAY_ROWS } from "../core/moduleCost";
  * 靜態 Header
  * 使用 memo 保證不會重新 render
  */
-export const TableHeader = memo(() => {
+export const TableHeader: React.FC = memo(() => {
 	return (
 		<Table.Header>
 			<Table.Row>

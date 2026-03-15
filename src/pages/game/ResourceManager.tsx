@@ -7,7 +7,7 @@ import { SummarySection } from "./components/SummarySection";
 import { JsonConfigModal } from "./components/JsonConfigModal";
 import { Navbar } from "../../common/Navbar";
 
-export function ResourceManager() {
+export const ResourceManager: React.FC = () => {
 	const account = useAccountManager();
 	const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
 	const [materialMap, setMaterialMap] = useState<Record<string, string>>({});
@@ -108,4 +108,4 @@ export function ResourceManager() {
 			</div>
 		</>
 	);
-}
+};

@@ -13,10 +13,17 @@ const clampPositiveNumber = (value: string) => {
 
 type ProductionFieldKey = "avgMoneyProduction" | "avgBookProduction";
 
-export function useInventory(
-	inventory: IInventory,
-	onUpdate: (update: Partial<IInventory>) => void,
-) {
+export type TUseInventory = (inventory: IInventory, onUpdate: (update: Partial<IInventory>) => void) => {
+	handleStackChange: (index: number, value: string) => void,
+	handleProductionChange: (key: ProductionFieldKey, value: string) => void,
+	handleClipboardExport: () => Promise<void>,
+	handleClipboardImport: () => Promise<void>,
+};
+
+export const useInventory: TUseInventory = (
+	inventory,
+	onUpdate,
+) => {
 	const handleStackChange = useCallback(
 		(index: number, value: string) => {
 			const num = clampPositiveNumber(value);
@@ -58,4 +65,4 @@ export function useInventory(
 		handleClipboardExport,
 		handleClipboardImport,
 	};
-}
+};

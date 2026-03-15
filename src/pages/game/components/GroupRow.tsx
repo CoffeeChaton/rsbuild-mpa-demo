@@ -8,7 +8,7 @@ interface IProps {
 	onDelete: () => void;
 }
 
-export function GroupRow({ group, materialMap, onUpdate, onDelete }: IProps) {
+export const GroupRow: React.FC<IProps> = ({ group, materialMap, onUpdate, onDelete }) => {
 	const addMaterial = () => {
 		const updated = { ...group, materials: [...group.materials, { name: "", amount: 1, itemNote: "" }] };
 		onUpdate(updated);
@@ -114,4 +114,4 @@ export function GroupRow({ group, materialMap, onUpdate, onDelete }: IProps) {
 			</datalist>
 		</div>
 	);
-}
+};

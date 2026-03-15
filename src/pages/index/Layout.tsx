@@ -4,7 +4,7 @@ import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 
-const MetaUpdater = () => {
+const MetaUpdater: React.FC = () => {
 	// 1. 強制排除 any，符合 IPageInfo 嚴格型別
 	const location = useLocation();
 
@@ -39,7 +39,7 @@ const MetaUpdater = () => {
 	return null;
 };
 
-export const Layout = ({ children }: { children: ReactNode }) => (
+export const Layout: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => (
 	<Theme>
 		<MetaUpdater />
 		{children}

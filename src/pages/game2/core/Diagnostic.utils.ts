@@ -1,7 +1,16 @@
 import type { IDiagnosticEntry, IInventory, IRowResult } from "../types";
 
 // 核心計算邏輯
-export const getProductionSummary = (rows: IRowResult[], inventory: IInventory) => {
+
+export type TGetProductionSummary = (rows: IRowResult[], inventory: IInventory) => {
+	moneyGap: number,
+	booksGap: number,
+	moneyDays: number | null,
+	booksDays: number | null,
+	estimatedDays: number | null,
+};
+
+export const getProductionSummary: TGetProductionSummary = (rows, inventory) => {
 	const { money, books, avgMoneyProduction, avgBookProduction } = inventory;
 	const totalMoneyNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumMoney) : acc), 0);
 	const totalBooksNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumBooks) : acc), 0);

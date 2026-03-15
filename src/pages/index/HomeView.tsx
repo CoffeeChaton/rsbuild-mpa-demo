@@ -1,6 +1,6 @@
 // src/pages/index/HomeView.tsx
 
-export const HomeView = () => {
+export const HomeView: React.FC = () => {
 	return (
 		<>
 			<main className="flex flex-col items-center justify-center min-h-[60vh] p-10">

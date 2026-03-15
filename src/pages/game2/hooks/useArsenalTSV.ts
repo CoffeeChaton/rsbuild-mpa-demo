@@ -2,10 +2,12 @@
 import type { IItem, IRowResult } from "../types";
 import { TSV_HEADER, TSV_HEADER_KEYWORDS } from "../config/constants";
 
-export const useArsenalTSV = (
-	setItems: (items: IItem[]) => void,
-	rows: IRowResult[],
-) => {
+export type TUseArsenalTSV = (setItems: (items: IItem[]) => void, rows: IRowResult[]) => {
+	handleImport: () => Promise<void>,
+	handleExport: () => void,
+};
+
+export const useArsenalTSV: TUseArsenalTSV = (setItems, rows) => {
 	const handleImport = async () => {
 		try {
 			const text = await navigator.clipboard.readText();

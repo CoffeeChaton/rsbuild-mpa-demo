@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
-import { type Dispatch, memo, type SetStateAction } from "react";
+import { type Dispatch, memo, type NamedExoticComponent, type SetStateAction } from "react";
 import type { IItemRow, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
@@ -20,7 +20,7 @@ export interface IToolbarAreaProp {
 	copyResult: () => void;
 }
 
-export const ToolbarArea = memo<IToolbarAreaProp>(({
+export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbarAreaProp>(({
 	rows,
 	setImportOpen,
 	filter,

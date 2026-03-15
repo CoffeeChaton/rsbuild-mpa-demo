@@ -39,7 +39,7 @@ export function parseArknightsItemsToTSV(htmlString: string): string {
 // const tsvOutput = parseArknightsItemsToTSV(yourHtmlString);
 // console.log(tsvOutput);
 
-export function TEMP() {
+export function TEMP(): void {
 	const yourHtmlString = ``;
 	const tsvOutput = parseArknightsItemsToTSV(yourHtmlString);
 	console.log(tsvOutput);

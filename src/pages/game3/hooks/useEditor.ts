@@ -1,7 +1,13 @@
 import { useCallback, useState } from "react";
 import type { TEditor } from "../type";
 
-export function useEditor(initial?: Partial<TEditor>) {
+export type UseEditor = (initial?: Partial<TEditor> | undefined) => {
+	editor: TEditor,
+	setEditorOpen: (open: boolean, data?: Partial<TEditor>) => void,
+	updateEditor: (data: Partial<TEditor>) => void,
+};
+
+export const useEditor: UseEditor = (initial) => {
 	const [editor, setEditor] = useState<TEditor>({
 		open: false,
 		targetId: null,
@@ -32,4 +38,4 @@ export function useEditor(initial?: Partial<TEditor>) {
 		setEditorOpen,
 		updateEditor,
 	};
-}
+};

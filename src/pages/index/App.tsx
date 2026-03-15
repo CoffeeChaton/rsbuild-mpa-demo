@@ -4,7 +4,7 @@ import { createRoutes } from "../../common/router/create-routes.tsx";
 import { Layout } from "./Layout.tsx";
 
 // 直接定義 404 View (非 Lazy)
-const NotFoundView = () => (
+const NotFoundView: React.FC = () => (
 	<>
 		<Layout>
 			<Navbar />
@@ -17,7 +17,7 @@ const NotFoundView = () => (
 	</>
 );
 
-export const App = () => {
+export const App: React.FC = () => {
 	// 生成 ROUTES + 404
 	const routes: RouteObject[] = [
 		...createRoutes(),

@@ -1,7 +1,7 @@
 import { Navbar } from "../../common/Navbar";
 import { MapEditView } from "./MapEditView";
 
-export const App = () => {
+export const App: React.FC = () => {
 	return (
 		<>
 			<Navbar />

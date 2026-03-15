@@ -63,4 +63,4 @@ const RowInputsComponent: React.FC<IRowInputsProps> = ({
 	);
 };
 
-export const RowInputs = React.memo(RowInputsComponent);
+export const RowInputs: React.NamedExoticComponent<IRowInputsProps> = React.memo(RowInputsComponent);

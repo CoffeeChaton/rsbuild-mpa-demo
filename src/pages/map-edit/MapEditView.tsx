@@ -3,7 +3,7 @@ import { TILE_LAYERS, type TMapPreference } from "../../common/types/map";
 import { loadMapPreference, saveMapPreference } from "../../common/utils/mapStorage";
 import { MapViewer } from "./MapViewer";
 
-export const MapEditView = () => {
+export const MapEditView: React.FC = () => {
 	const [pref, setPref] = useState<TMapPreference>(loadMapPreference());
 
 	// 處理底圖切換

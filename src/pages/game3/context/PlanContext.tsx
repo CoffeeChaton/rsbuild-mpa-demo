@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { type Context, createContext, useContext } from "react";
 import type { TEditor } from "../type";
 
 export interface IPlanContext {
@@ -12,7 +12,7 @@ export interface IPlanContext {
 	deletePlan: (name: string) => void;
 }
 
-export const PlanContext = createContext<IPlanContext | null>(null);
+export const PlanContext: Context<IPlanContext | null> = createContext<IPlanContext | null>(null);
 
 export function usePlanContext(): IPlanContext {
 	const ctx = useContext(PlanContext);

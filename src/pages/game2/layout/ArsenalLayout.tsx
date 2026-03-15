@@ -3,7 +3,7 @@ import { Box, Flex, Grid } from "@radix-ui/themes";
 
 import { InventoryCard } from "../components/InventoryCard";
 import { TableArea } from "../components/TableArea";
-import { Toolbar } from "../features/Toolbar";
+import { Toolbar } from "../components/Toolbar";
 
 import { useArsenalCalculator } from "../hooks/useArsenalCalculator";
 import { NAV_BAR_HEIGHT } from "../config/constants";

@@ -82,7 +82,7 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 	);
 };
 
-export const TableRowItem = memo(
+export const TableRowItem: React.FC<ITableRowItemProps> = memo(
 	TableRowItemComponent,
 	(prev, next) => (
 		prev.index === next.index

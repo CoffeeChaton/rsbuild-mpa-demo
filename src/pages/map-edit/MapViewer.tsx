@@ -17,7 +17,7 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-export const MapViewer = () => {
+export const MapViewer: React.FC = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const mapInstance = useRef<L.Map | null>(null);
 

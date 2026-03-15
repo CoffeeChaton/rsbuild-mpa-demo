@@ -15,7 +15,7 @@ import { useEditor } from "./hooks/useEditor";
 
 const NAVBAR_HEIGHT = 70; // px
 
-export function FutureMaterialPage() {
+export const FutureMaterialPage: React.FC = () => {
 	const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
 	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
 	const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
@@ -80,4 +80,4 @@ export function FutureMaterialPage() {
 			</PlanContext.Provider>
 		</Flex>
 	);
-}
+};

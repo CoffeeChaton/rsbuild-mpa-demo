@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { type IPageInfo, PAGE_MAP, type TPageKey } from "./config/pages";
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
 	const location = useLocation();
 
 	const navItems = (Object.keys(PAGE_MAP) as TPageKey[])

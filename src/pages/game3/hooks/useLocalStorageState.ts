@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 
 export function useLocalStorageState<T>(
 	key: string,
 	defaultValue: T,
-) {
+): readonly [T, Dispatch<SetStateAction<T>>] {
 	const [state, setState] = useState<T>(() => {
 		try {
 			const stored = localStorage.getItem(key);

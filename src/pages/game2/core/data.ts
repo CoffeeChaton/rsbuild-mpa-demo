@@ -11,7 +11,7 @@ export const LevelDataSchema = v.object({
 
 export type ILevelData = v.InferOutput<typeof LevelDataSchema>;
 
-export const LEVEL_DATA_URL = `${import.meta.env.BASE_URL}data/level.json`.replace(/\/+/g, "/");
+export const LEVEL_DATA_URL: string = `${import.meta.env.BASE_URL}data/level.json`.replace(/\/+/g, "/");
 
 /**
  * 來源數據：https://github.com/arkntools/arknights-toolbox-data/blob/main/assets/data/level.json

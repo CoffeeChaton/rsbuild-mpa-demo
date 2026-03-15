@@ -1,4 +1,4 @@
-export const ProductView = () => {
+export const ProductView: React.FC = () => {
 	return (
 		<>
 			<main className="p-8">

@@ -1,7 +1,8 @@
 import type { ComponentProps } from "react";
 import { cn } from "../../lib/utils";
+import type { JSX } from "react/jsx-runtime";
 
-function Table({ className, ...props }: ComponentProps<"table">) {
+function Table({ className, ...props }: ComponentProps<"table">): JSX.Element {
 	return (
 		<div
 			data-slot="table-container"
@@ -16,7 +17,7 @@ function Table({ className, ...props }: ComponentProps<"table">) {
 	);
 }
 
-function TableHeader({ className, ...props }: ComponentProps<"thead">) {
+function TableHeader({ className, ...props }: ComponentProps<"thead">): JSX.Element {
 	return (
 		<thead
 			data-slot="table-header"
@@ -26,7 +27,7 @@ function TableHeader({ className, ...props }: ComponentProps<"thead">) {
 	);
 }
 
-function TableBody({ className, ...props }: ComponentProps<"tbody">) {
+function TableBody({ className, ...props }: ComponentProps<"tbody">): JSX.Element {
 	return (
 		<tbody
 			data-slot="table-body"
@@ -36,7 +37,7 @@ function TableBody({ className, ...props }: ComponentProps<"tbody">) {
 	);
 }
 
-function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
+function TableFooter({ className, ...props }: ComponentProps<"tfoot">): JSX.Element {
 	return (
 		<tfoot
 			data-slot="table-footer"
@@ -49,7 +50,7 @@ function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
 	);
 }
 
-function TableRow({ className, ...props }: ComponentProps<"tr">) {
+function TableRow({ className, ...props }: ComponentProps<"tr">): JSX.Element {
 	return (
 		<tr
 			data-slot="table-row"
@@ -62,7 +63,7 @@ function TableRow({ className, ...props }: ComponentProps<"tr">) {
 	);
 }
 
-function TableHead({ className, ...props }: ComponentProps<"th">) {
+function TableHead({ className, ...props }: ComponentProps<"th">): JSX.Element {
 	return (
 		<th
 			data-slot="table-head"
@@ -75,7 +76,7 @@ function TableHead({ className, ...props }: ComponentProps<"th">) {
 	);
 }
 
-function TableCell({ className, ...props }: ComponentProps<"td">) {
+function TableCell({ className, ...props }: ComponentProps<"td">): JSX.Element {
 	return (
 		<td
 			data-slot="table-cell"
@@ -91,7 +92,7 @@ function TableCell({ className, ...props }: ComponentProps<"td">) {
 function TableCaption({
 	className,
 	...props
-}: ComponentProps<"caption">) {
+}: ComponentProps<"caption">): JSX.Element {
 	return (
 		<caption
 			data-slot="table-caption"

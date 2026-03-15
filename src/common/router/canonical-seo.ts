@@ -1,4 +1,4 @@
-export function applyCanonicalTag() {
+export function applyCanonicalTag(): void {
 	const url = window.location.origin + window.location.pathname;
 	let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
 
