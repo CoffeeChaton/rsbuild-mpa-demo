@@ -5,7 +5,6 @@
 - `pnpm dev`: 啟動開發環境 (http://localhost:3000)
 - `pnpm build`: 生產環境建置 (包含 SSG 注入與 404 修正)
 - `pnpm preview`: 預覽建置成果 (模擬 GitHub Pages 路徑)
-- `pnpm build:live`: **最高強度驗證**。物理重組目錄並啟動靜態伺服器，100% 模擬部署環境。
 
 ## 🛠️ 新增頁面標準流程
 
@@ -42,10 +41,9 @@
 
 ## 🔍 故障排除：EBUSY Error
 
-**問題**: 執行 `build:live` 時出現 `EBUSY: resource busy or locked, rename...`。
 **原因**: Windows 系統鎖定了 `dist` 資料夾。通常是因為終端機路徑正位在 `dist` 內部，或 `serve` 正在運行。
 **解決**:
 
 1. `cd ..` 退出 `dist` 目錄。
 2. 關閉所有開啟 `dist` 檔案的程式（如 VS Code 預覽、檔案總管）。
-3. 重新執行 `pnpm build:live`。
+3. 重新執行 `pnpm build`。
