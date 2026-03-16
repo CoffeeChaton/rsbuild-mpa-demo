@@ -47,6 +47,7 @@ const config: RsbuildConfig = defineConfig({
 		port: process.env["NODE_ENV"] === "development" ? 3055 : 8080,
 		base: assetPrefix,
 		historyApiFallback: { index: `${assetPrefix}index.html` },
+		printUrls: ({ urls }) => urls.filter((url) => url.includes("localhost")),
 	},
 });
 
