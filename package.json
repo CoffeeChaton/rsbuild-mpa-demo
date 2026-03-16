@@ -48,6 +48,7 @@
 		"@types/leaflet": "^1.9.21",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"foxact": "^0.2.55",
 		"leaflet": "^1.9.4",
 		"lucide-react": "^0.577.0",
 		"monaco-editor": "^0.55.1",
