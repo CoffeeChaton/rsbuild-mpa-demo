@@ -2,9 +2,9 @@
 import { type ComponentType, StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
-import { canonicalUrl } from "../../common/router/canonical-url";
-import { applyCanonicalTag } from "../../common/router/canonical-seo";
-import "../../styles/globals.css";
+import { canonicalUrl } from "./common/router/canonical-url";
+import { applyCanonicalTag } from "./common/router/canonical-seo";
+import "./styles/globals.css";
 
 const bootstrap = (App: ComponentType) => {
 	if (canonicalUrl()) return; // 自動 redirect 到 /game3/

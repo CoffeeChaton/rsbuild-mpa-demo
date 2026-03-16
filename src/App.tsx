@@ -1,14 +1,12 @@
 import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
-import { Navbar } from "../../common/Navbar";
-import { Layout } from "./Layout.tsx";
-import { VIEW_MAP } from "../../common/router/view-map.ts";
+import { Layout } from "./pages/index/Layout.tsx";
+import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Suspense } from "react";
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView: React.FC = () => (
 	<>
 		<Layout>
-			<Navbar />
 			<div className="h-[60vh] flex flex-col items-center justify-center">
 				<h1 className="text-9xl font-black text-gray-200">404</h1>
 				<p className="text-2xl font-bold mt-4">抱歉，頁面不存在</p>
@@ -47,9 +45,7 @@ export const App: React.FC = () => {
 		{ path: "*", element: <NotFoundView /> },
 	];
 
-	const router = createBrowserRouter(routes, {
-		basename: import.meta.env.BASE_URL || "/",
-	});
+	const router = createBrowserRouter(routes, { basename: import.meta.env.BASE_URL });
 
 	return <RouterProvider router={router} />;
 };

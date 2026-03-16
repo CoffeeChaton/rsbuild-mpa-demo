@@ -1,3 +1,4 @@
+// rsbuild.config.ts
 import { defineConfig, type RsbuildConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dirname, resolve } from "node:path";
@@ -14,12 +15,15 @@ const getEntries = () => {
 	Object.keys(PAGE_MAP).forEach((key) => {
 		if (key === "404") return;
 		const entry = key === "index" ? "" : key;
-		entries[entry] = resolve(__dirname, "src/pages/index/main.tsx");
+		entries[entry] = resolve(__dirname, "src/main.tsx");
 	});
 	return entries;
 };
 
 const config: RsbuildConfig = defineConfig({
+	dev: {
+		lazyCompilation: false,
+	},
 	plugins: [pluginReact(), pluginSSG()],
 	source: {
 		entry: getEntries(),

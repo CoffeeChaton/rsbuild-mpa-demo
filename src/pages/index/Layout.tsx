@@ -3,6 +3,7 @@ import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pag
 import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+import { Navbar } from "../../common/Navbar";
 
 const MetaUpdater: React.FC = () => {
 	// 1. 強制排除 any，符合 IPageInfo 嚴格型別
@@ -42,6 +43,7 @@ const MetaUpdater: React.FC = () => {
 export const Layout: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => (
 	<Theme>
 		<MetaUpdater />
+		<Navbar />
 		{children}
 	</Theme>
 );

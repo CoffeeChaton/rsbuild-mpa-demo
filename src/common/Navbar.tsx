@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Flex, Heading, TabNav } from "@radix-ui/themes";
 import { PAGE_MAP, type TPageKey } from "./config/pages";
 
 export const Navbar: React.FC = () => {
@@ -17,32 +16,38 @@ export const Navbar: React.FC = () => {
 	const currentPath = location.pathname.replace(/\/+$/, "") || "/";
 
 	return (
-		<TabNav.Root color="indigo" size="2">
-			<Flex align="center" gap="4" px="4">
-				{/* Logo 區域 */}
-				<Heading size="4" weight="bold" color="indigo">DEMO</Heading>
+		<nav className="flex items-center gap-6 px-4 h-12 border-b bg-white">
+			{/* Logo 區域 */}
+			<div
+				className="text-lg font-[900] text-indigo-600 tracking-tight"
+				style={{ fontWeight: 900 }}
+			>
+				DEMO
+			</div>
 
-				{/* 導覽連結 */}
+			{/* 導覽連結 */}
+			<div className="flex h-full gap-4">
 				{navItems.map((item) => {
 					const target = item.path.replace(/\/+$/, "") || "/";
 					const isActive = currentPath === target;
 
 					return (
-						<TabNav.Link
-							asChild
+						<Link
 							key={item.key}
-							active={isActive}
+							to={item.path}
+							prefetch="intent" // RR7 原生支援：滑鼠移入時觸發異步資源預載
+							className={`
+                relative flex items-center px-1 text-sm font-medium transition-colors h-full
+                ${isActive ? "text-indigo-600" : "text-gray-500 hover:text-indigo-500"}
+              `}
 						>
-							<Link
-								to={item.path}
-								prefetch="intent" // RR7 預載關鍵字
-							>
-								{item.label}
-							</Link>
-						</TabNav.Link>
+							{item.label}
+							{/* Active 底線 */}
+							{isActive && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600" />}
+						</Link>
 					);
 				})}
-			</Flex>
-		</TabNav.Root>
+			</div>
+		</nav>
 	);
 };
