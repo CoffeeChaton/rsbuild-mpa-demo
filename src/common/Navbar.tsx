@@ -1,15 +1,13 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { type IPageInfo, PAGE_MAP, type TPageKey } from "./config/pages";
+import { Flex, Heading, TabNav } from "@radix-ui/themes";
+import { PAGE_MAP, type TPageKey } from "./config/pages";
 
 export const Navbar: React.FC = () => {
 	const location = useLocation();
 
 	const navItems = (Object.keys(PAGE_MAP) as TPageKey[])
-		.filter((key) => {
-			// 這裡 info 會精確推導為 IPageInfo
-			const info: IPageInfo = PAGE_MAP[key];
-			return !info.hidden;
-		})
+		.filter((key) => !PAGE_MAP[key].hidden)
 		.map((key) => ({
 			key,
 			path: key === "index" ? "/" : `/${key}/`,
@@ -19,23 +17,32 @@ export const Navbar: React.FC = () => {
 	const currentPath = location.pathname.replace(/\/+$/, "") || "/";
 
 	return (
-		<nav className="flex items-center gap-6 p-4 border-b bg-white shadow-sm">
-			<div className="text-xl font-black text-blue-600">DEMO</div>
-			<div className="flex gap-4">
+		<TabNav.Root color="indigo" size="2">
+			<Flex align="center" gap="4" px="4">
+				{/* Logo 區域 */}
+				<Heading size="4" weight="bold" color="indigo">DEMO</Heading>
+
+				{/* 導覽連結 */}
 				{navItems.map((item) => {
 					const target = item.path.replace(/\/+$/, "") || "/";
 					const isActive = currentPath === target;
+
 					return (
-						<Link
+						<TabNav.Link
+							asChild
 							key={item.key}
-							to={item.path}
-							className={`${isActive ? "text-blue-600 font-bold border-b-2 border-blue-600" : "text-gray-500"} hover:text-blue-500 transition-colors px-1 pb-1`}
+							active={isActive}
 						>
-							{item.label}
-						</Link>
+							<Link
+								to={item.path}
+								prefetch="intent" // RR7 預載關鍵字
+							>
+								{item.label}
+							</Link>
+						</TabNav.Link>
 					);
 				})}
-			</div>
-		</nav>
+			</Flex>
+		</TabNav.Root>
 	);
 };

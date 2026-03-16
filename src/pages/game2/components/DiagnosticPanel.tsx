@@ -12,7 +12,7 @@ const SummaryBar = memo(({ summary }: { summary: ReturnType<typeof getProduction
 		<Flex gap="4" align="center" className="flex-wrap">
 			<Box>
 				<Text size="1" color="gray" as="div">預估剩餘</Text>
-				<Text size="2" weight="bold">{summary.estimatedDays ?? "—"} 天</Text>
+				<Text size="2" weight="bold">{summary.estimatedDays ?? "0"} 天</Text>
 			</Box>
 			<Box className="hidden sm:block" style={{ width: 1, height: 24, backgroundColor: "var(--gray-5)" }} />
 			<Flex gap="1" wrap="wrap">

@@ -1,7 +1,8 @@
 import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
-import { Navbar } from "../../common/Navbar"; // 確保 404 也有導航
-import { createRoutes } from "../../common/router/create-routes.tsx";
+import { Navbar } from "../../common/Navbar";
 import { Layout } from "./Layout.tsx";
+import { VIEW_MAP } from "../../common/router/view-map.ts";
+import { Suspense } from "react";
 
 // 直接定義 404 View (非 Lazy)
 const NotFoundView: React.FC = () => (
@@ -16,6 +17,28 @@ const NotFoundView: React.FC = () => (
 		</Layout>
 	</>
 );
+
+function createRoutes(): RouteObject[] {
+	return Object
+		.keys(VIEW_MAP)
+		.map((key) => {
+			const View = VIEW_MAP[key as keyof typeof VIEW_MAP];
+			const path = key === "index"
+				? "/"
+				: `/${key}/`;
+
+			return {
+				path,
+				element: (
+					<Layout>
+						<Suspense fallback={<div className="text-center py-20">Loading...</div>}>
+							<View />
+						</Suspense>
+					</Layout>
+				),
+			};
+		});
+}
 
 export const App: React.FC = () => {
 	// 生成 ROUTES + 404
