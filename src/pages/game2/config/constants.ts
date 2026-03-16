@@ -17,17 +17,6 @@ import type { IItem } from "../types/item";
  */
 
 /**
- * 每個等級差距對應的資源成本
- *
- * NOTE:
- * diff = (elite * 100 + level)
- */
-export const COST_PER_LEVEL = {
-	money: 4800,
-	books: 3200,
-};
-
-/**
  * TSV Export Header
  *
  * Excel compatible
