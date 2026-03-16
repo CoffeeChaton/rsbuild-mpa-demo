@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"engines": {
-		"node": ">=23.0.0",
+		"node": ">=24.0.0",
 		"pnpm": ">=10.0.0"
 	},
 	"lint-staged": {
@@ -14,21 +14,27 @@
 		]
 	},
 	"scripts": {
-		"scripts:compile-materials": "tsx scripts/compile-materials.ts",
-		"build": "rsbuild build",
+		"// ➜ 1. core": "",
 		"dev": "rsbuild dev",
+		"build": "rsbuild build",
+		"preview": "rsbuild preview",
+		"// ➜ 2. QC": "",
 		"lint": "TIMING=1 eslint . --cache",
 		"format": "dprint fmt",
-		"typecheck": "tsgo -b",
-		"toAI": "pnpm dlx repomix src/pages/game2/types  --compress",
 		"test": "vitest",
-		"preview": "rsbuild preview",
+		"// ➜ 3. Type": "",
 		"watch:tsgo": "tsgo -b -w",
 		"watch:tsc": "tsc -b -w",
-		"commit:typecheck": "pnpm typecheck",
-		"commit:test": "vitest run",
-		"pre-commit": "lint-staged && pnpm run \"/^commit:.*/\"",
+		"// ➜ 4. Utilities": "",
+		"toAI": "pnpm dlx repomix src/pages/game2/types  --compress",
+		"// ➜ 5. hooks": "",
 		"prepare": "husky",
+		"commit:typecheck": "pnpm tsgo -b",
+		"commit:test": "vitest run",
+		"pre-commit": "lint-staged && pnpm run \"/^commit:.*/\""
+	},
+	"scripts_vault": {
+		"scripts:compile-materials": "tsx scripts/compile-materials.ts",
 		"run_nolyfill": "nolyfill install",
 		"show_cycles": "skott -m file-tree -e .{ts,tsx} -s",
 		"get_slow_type": "tsc-shame"
