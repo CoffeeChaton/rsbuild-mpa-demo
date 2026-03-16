@@ -10,15 +10,25 @@ interface IPageModule {
 }
 
 type TLoader = () => Promise<IPageModule>;
+type TLazyPageReurn = {
+	Component: LazyExoticComponent<React.FC>,
+	loader: TLoader,
+};
 
-function lazyPage(loader: TLoader): React.LazyExoticComponent<React.FC> {
-	return lazy(() => loader().then(m => ({ default: m.App })));
-}
+type TLazyPageFn = (loader: TLoader) => TLazyPageReurn;
 
-export const VIEW_MAP: Record<
-	Exclude<TPageKey, "404">,
-	LazyExoticComponent<React.FC>
-> = {
+const lazyPage: TLazyPageFn = (loader) => {
+	const Component = lazy(() => loader().then(m => ({ default: m.App })));
+	return {
+		Component,
+		loader,
+	};
+};
+
+/**
+ * use https://rspack.rs/api/runtime-api/module-methods#magic-comments
+ */
+export const VIEW_MAP: Record<Exclude<TPageKey, "404">, TLazyPageReurn> = {
 	// 使用 Magic Comments 賦予檔案有意義的名字
 	index: lazyPage(() => import(/* webpackChunkName: "p-index" */ "../../pages/index/index")),
 	products: lazyPage(() => import(/* webpackChunkName: "p-products" */ "../../pages/products/index")),

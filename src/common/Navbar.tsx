@@ -1,6 +1,8 @@
+// src/common/Navbar.tsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PAGE_MAP, type TPageKey } from "./config/pages";
+import { VIEW_MAP } from "./router/view-map";
 
 export const Navbar: React.FC = () => {
 	const location = useLocation();
@@ -40,6 +42,10 @@ export const Navbar: React.FC = () => {
                 relative flex items-center px-1 text-sm font-medium transition-colors h-full
                 ${isActive ? "text-indigo-600" : "text-gray-500 hover:text-indigo-500"}
               `}
+							onMouseEnter={() => {
+								const page = VIEW_MAP[item.key as keyof typeof VIEW_MAP];
+								page?.loader?.();
+							}}
 						>
 							{item.label}
 							{/* Active 底線 */}

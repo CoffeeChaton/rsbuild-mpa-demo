@@ -1,3 +1,4 @@
+// src/App.tsx
 import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
 import { Layout } from "./pages/index/Layout.tsx";
 import { VIEW_MAP } from "./common/router/view-map.ts";
@@ -20,7 +21,7 @@ function createRoutes(): RouteObject[] {
 	return Object
 		.keys(VIEW_MAP)
 		.map((key) => {
-			const View = VIEW_MAP[key as keyof typeof VIEW_MAP];
+			const View = VIEW_MAP[key as keyof typeof VIEW_MAP].Component;
 			const path = key === "index"
 				? "/"
 				: `/${key}/`;
