@@ -1,4 +1,3 @@
-// src/pages/game2/context/ConfigContext.tsx
 import React, { createContext } from "react";
 import type { IConfigEntry } from "../types/config";
 
