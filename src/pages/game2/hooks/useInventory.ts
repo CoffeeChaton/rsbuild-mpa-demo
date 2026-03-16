@@ -1,4 +1,6 @@
+// src/pages/game2/hooks/useInventory.ts
 import { useCallback } from "react";
+import { useClipboard } from "foxact/use-clipboard";
 import type { IInventory } from "../types";
 import { calculateBookStacksValue, type IBookStacks, sanitizeBookStacks } from "../config/inventory";
 
@@ -12,14 +14,17 @@ type ProductionFieldKey = "avgMoneyProduction" | "avgBookProduction";
 export type TUseInventory = (inventory: IInventory, onUpdate: (update: Partial<IInventory>) => void) => {
 	handleStackChange: (index: number, value: string) => void,
 	handleProductionChange: (key: ProductionFieldKey, value: string) => void,
-	handleClipboardExport: () => Promise<void>,
+	handleClipboardExport: () => void,
 	handleClipboardImport: () => Promise<void>,
+	isCopied: boolean,
 };
 
 export const useInventory: TUseInventory = (
 	inventory,
 	onUpdate,
 ) => {
+	const { copy, copied: isCopied } = useClipboard({ timeout: 2000 });
+
 	const handleStackChange = useCallback(
 		(index: number, value: string) => {
 			const num = clampPositiveNumber(value);
@@ -39,15 +44,14 @@ export const useInventory: TUseInventory = (
 		[onUpdate],
 	);
 
-	const handleClipboardExport = useCallback(async () => {
+	const handleClipboardExport = useCallback(() => {
 		const payload = JSON.stringify(inventory, null, 2);
-		await navigator.clipboard.writeText(payload);
-	}, [inventory]);
+		copy(payload);
+	}, [inventory, copy]);
 
 	const handleClipboardImport = useCallback(async () => {
-		const text = await navigator.clipboard.readText();
-
 		try {
+			const text = await navigator.clipboard.readText();
 			const parsed = JSON.parse(text) as Partial<IInventory>;
 			onUpdate(parsed);
 		} catch {
@@ -60,5 +64,6 @@ export const useInventory: TUseInventory = (
 		handleProductionChange,
 		handleClipboardExport,
 		handleClipboardImport,
+		isCopied,
 	};
 };

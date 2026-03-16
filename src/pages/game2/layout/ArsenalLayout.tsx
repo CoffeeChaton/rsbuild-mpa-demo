@@ -1,17 +1,15 @@
 // src/pages/game2/layout/ArsenalLayout.tsx
 import React from "react";
 import { Box, Flex, Grid } from "@radix-ui/themes";
-
 import { InventoryCard } from "../components/InventoryCard";
 import { TableArea } from "../components/TableArea";
 import { Toolbar } from "../components/Toolbar";
 import { ConfigSwitch } from "../components/ConfigSwitch";
 import { Head } from "../components/Head";
-
 import { NAV_BAR_HEIGHT } from "../config/constants";
 import { DiagnosticPanel } from "../components/DiagnosticPanel";
-import { ConfigProvider } from "../context/ConfigContext";
 import { ArsenalProvider } from "../context/ArsenalContext";
+import { ConfigProvider } from "../context/ConfigProvider";
 
 /**
  * ArsenalLayout

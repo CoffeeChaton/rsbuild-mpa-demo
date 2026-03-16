@@ -8,7 +8,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "../../../components/ui/accordion";
-import { DownloadIcon, UploadIcon } from "@radix-ui/react-icons";
+import { CheckIcon, DownloadIcon, UploadIcon } from "@radix-ui/react-icons";
 import { useInventory } from "../hooks/useInventory";
 import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../config/inventory";
 import type { IInventory } from "../types";
@@ -38,6 +38,7 @@ export const InventoryCard: React.FC = memo(() => {
 		handleProductionChange,
 		handleClipboardExport,
 		handleClipboardImport,
+		isCopied,
 	} = useInventory(inventory, onUpdate);
 
 	const bookStacks = inventory.bookStacks ?? DEFAULT_BOOK_STACKS;
@@ -55,8 +56,14 @@ export const InventoryCard: React.FC = memo(() => {
 						<Button variant="soft" size="1" onClick={handleClipboardImport}>
 							<UploadIcon /> 導入
 						</Button>
-						<Button variant="outline" size="1" onClick={handleClipboardExport}>
-							<DownloadIcon /> 匯出
+						<Button
+							variant={isCopied ? "solid" : "outline"}
+							color={isCopied ? "green" : "blue"}
+							size="1"
+							onClick={handleClipboardExport}
+						>
+							{isCopied ? <CheckIcon /> : <DownloadIcon />}
+							{isCopied ? "已複製" : "匯出"}
 						</Button>
 					</Flex>
 				</Flex>

@@ -1,12 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 // src/pages/game2/context/ArsenalContext.tsx
 import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useMemo } from "react";
-import { useConfig } from "./ConfigContext";
 import { useArsenalStorage } from "../hooks/useArsenalStorage";
 import { useLevelData } from "../hooks/useLevelData";
 import { useArsenalRows as useArsenalRowsRaw } from "../hooks/useArsenalRows";
 import { useArsenalTSV } from "../hooks/useArsenalTSV";
 import type { IInventory, IItem, IRowResult } from "../types";
+import { useConfig } from "../hooks/useConfig";
 
 // Split contexts to prevent unnecessary re-renders
 interface IItemsContext {
@@ -28,6 +28,7 @@ interface IRowsContext {
 interface IActionsContext {
 	handleImport: () => Promise<void>;
 	handleExport: () => void;
+	isCopied: boolean;
 }
 
 const ItemsContext = createContext<IItemsContext | null>(null);
@@ -40,12 +41,12 @@ export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const { items, setItems, inventory, setInventory } = useArsenalStorage(currentConfigId);
 	const { levelData, levelDataLoading, levelDataError } = useLevelData();
 	const rows = useArsenalRowsRaw(items, inventory, levelData);
-	const { handleImport, handleExport } = useArsenalTSV(setItems, rows);
+	const { handleImport, handleExport, isCopied } = useArsenalTSV(setItems, rows);
 
 	const itemsValue = useMemo(() => ({ items, setItems }), [items, setItems]);
 	const inventoryValue = useMemo(() => ({ inventory, setInventory }), [inventory, setInventory]);
 	const rowsValue = useMemo(() => ({ rows, levelDataLoading, levelDataError }), [rows, levelDataLoading, levelDataError]);
-	const actionsValue = useMemo(() => ({ handleImport, handleExport }), [handleImport, handleExport]);
+	const actionsValue = useMemo(() => ({ handleImport, handleExport, isCopied }), [handleImport, handleExport, isCopied]);
 
 	return (
 		<ItemsContext.Provider value={itemsValue}>

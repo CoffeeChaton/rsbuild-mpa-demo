@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, Flex, IconButton, Popover, Text, TextField } from "@radix-ui/themes";
 import { ArchiveIcon, PlusIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useConfig } from "../context/ConfigContext";
+import { useConfig } from "../hooks/useConfig";
 
 export const ConfigSwitch: React.FC = () => {
 	const { configs, currentConfigId, switchConfig, addConfig, deleteConfig, renameConfig } = useConfig();
