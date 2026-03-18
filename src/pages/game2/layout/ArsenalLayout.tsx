@@ -1,6 +1,6 @@
 // src/pages/game2/layout/ArsenalLayout.tsx
 import React from "react";
-import { Box, Flex, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid, ScrollArea } from "@radix-ui/themes";
 import { InventoryCard } from "../components/InventoryCard";
 import { TableArea } from "../components/TableArea";
 import { Toolbar } from "../components/Toolbar";
@@ -48,7 +48,9 @@ export const ArsenalLayout: React.FC = () => {
 
 					{/* 主要表格區塊 */}
 					<Flex direction="column" gap="3" style={{ overflow: "hidden", minHeight: 0 }}>
-						<TableArea />
+						<ScrollArea type="always" scrollbars="vertical" style={{ height: 800 }}>
+							<TableArea />
+						</ScrollArea>
 					</Flex>
 				</Grid>
 
