@@ -42,8 +42,10 @@ const MetaUpdater: React.FC = () => {
 
 export const Layout: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => (
 	<ConfigProvider>
-		<MetaUpdater />
-		<Navbar />
-		{children}
+		<div className="bg-(--gray-1) min-h-screen">
+			<MetaUpdater />
+			<Navbar />
+			{children}
+		</div>
 	</ConfigProvider>
 );

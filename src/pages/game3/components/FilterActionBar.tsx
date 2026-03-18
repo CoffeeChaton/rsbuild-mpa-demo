@@ -17,7 +17,7 @@ export const MaterialToolbar: FC<IMaterialToolbarProps> = ({
 }) => {
 	return (
 		<Flex align="center" gap="3">
-			<TextField.Root size="2" placeholder="搜尋項目..." className="w-56 bg-slate-50" value={filter.search} onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}>
+			<TextField.Root size="2" placeholder="搜尋項目..." className="w-5" value={filter.search} onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}>
 				<TextField.Slot>
 					<MagnifyingGlassIcon />
 				</TextField.Slot>

@@ -49,7 +49,7 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 			onOpenChange={onOpenChange}
 		>
 			<Dialog.Content style={{ maxWidth: 700 }} className="rounded-3xl p-0 overflow-hidden">
-				<Box p="4" className="bg-slate-50 border-b">
+				<Box p="4" className="border-b">
 					<Flex justify="between" align="center">
 						<Text weight="bold">方案編輯器</Text>
 						<DropdownMenu.Root>
@@ -72,7 +72,7 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 							<Text as="label" size="1" weight="bold" color="gray" mb="1">方案名稱</Text>
 							<TextField.Root
 								placeholder="輸入方案標題..."
-								className="bg-slate-100 border-none"
+								className="border-none"
 								value={tempTitle}
 								onChange={e => setTempTitle(e.target.value)}
 							/>
@@ -81,7 +81,7 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 							<Text as="label" size="1" weight="bold" color="gray" mb="1">TSV 數據內容</Text>
 							<textarea
 								placeholder="活動名稱	產物	數量"
-								className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none bg-slate-100"
+								className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none"
 								value={tempContent}
 								onChange={e => setTempContent(e.target.value)}
 							/>

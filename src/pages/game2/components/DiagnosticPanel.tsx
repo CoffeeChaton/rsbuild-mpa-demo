@@ -90,7 +90,7 @@ export const DiagnosticPanel: React.FC = memo(() => {
 	}, [logs]);
 
 	return (
-		<Box mt="4" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }} className="shrink-0 bg-white">
+		<Box mt="4" style={{ border: "1px solid var(--gray-5)", borderRadius: "var(--radius-4)", overflow: "hidden" }} className="shrink-0 bg-(--gray)">
 			<Flex align="center" justify="between" p="4">
 				<Box>
 					<Text size="1" color="gray" weight="bold" style={{ letterSpacing: "0.05em" }}>

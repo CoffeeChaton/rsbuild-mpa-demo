@@ -48,7 +48,7 @@ export const FutureMaterialPage: React.FC = () => {
 	}, [rows]);
 
 	return (
-		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
+		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden">
 			{/* ToolbarArea */}
 			<PlanContext.Provider value={planContextValue}>
 				<ToolbarArea

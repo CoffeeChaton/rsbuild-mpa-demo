@@ -35,12 +35,8 @@ export const TableArea: React.FC = memo(() => {
 
 	return (
 		<Box
-			className="border rounded-xl shadow-sm bg-white"
-			style={{
-				flex: 1,
-				overflowY: "auto",
-				overflowX: "auto",
-			}}
+			mt="4"
+			className="shrink-0 overflow-hidden rounded-(--radius-4) border border-(--gray-5) bg-(--gray-1)"
 		>
 			<Table.Root variant="surface">
 				<TableHeader />

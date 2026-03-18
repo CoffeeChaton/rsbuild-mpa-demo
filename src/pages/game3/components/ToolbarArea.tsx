@@ -28,7 +28,7 @@ export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbar
 	copyResult,
 }) => {
 	return (
-		<Box p="3" className="bg-white border-b shadow-sm z-20">
+		<Box p="3" className="border-b shadow-sm z-20">
 			<Flex direction="column" gap="3">
 				{/* 第一列：左上角核心操作 */}
 				<Flex gap="3">
