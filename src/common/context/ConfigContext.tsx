@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { type Context, createContext } from "react";
 import type { IConfigEntry, TTheme } from "../types/config";
 
 export interface IConfigActionsContext {
@@ -9,7 +9,7 @@ export interface IConfigActionsContext {
 	updateTheme: (id: string, theme: TTheme) => void;
 }
 
-export const CurrentConfigIdContext = createContext<string | null>(null);
-export const ConfigsContext = createContext<IConfigEntry[] | null>(null);
-export const CurrentThemeContext = createContext<TTheme | null>(null);
-export const ConfigActionsContext = createContext<IConfigActionsContext | null>(null);
+export const CurrentConfigIdContext: Context<string | null> = createContext<string | null>(null);
+export const ConfigsContext: Context<IConfigEntry[] | null> = createContext<IConfigEntry[] | null>(null);
+export const CurrentThemeContext: Context<TTheme | null> = createContext<TTheme | null>(null);
+export const ConfigActionsContext: Context<IConfigActionsContext | null> = createContext<IConfigActionsContext | null>(null);
