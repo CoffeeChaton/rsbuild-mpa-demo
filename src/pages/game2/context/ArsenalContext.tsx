@@ -6,7 +6,7 @@ import { useLevelData } from "../hooks/useLevelData";
 import { useArsenalRows as useArsenalRowsRaw } from "../hooks/useArsenalRows";
 import { useArsenalTSV } from "../hooks/useArsenalTSV";
 import type { IInventory, IItem, IRowResult } from "../types";
-import { useConfig } from "../hooks/useConfig";
+import { useCurrentConfigId } from "../../../common/hooks/useConfig";
 
 // Split contexts to prevent unnecessary re-renders
 interface IItemsContext {
@@ -37,7 +37,7 @@ const RowsContext = createContext<IRowsContext | null>(null);
 const ActionsContext = createContext<IActionsContext | null>(null);
 
 export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const { currentConfigId } = useConfig();
+	const currentConfigId = useCurrentConfigId();
 	const { items, setItems, inventory, setInventory } = useArsenalStorage(currentConfigId);
 	const { levelData, levelDataLoading, levelDataError } = useLevelData();
 	const rows = useArsenalRowsRaw(items, inventory, levelData);

@@ -1,8 +1,10 @@
-// src/common/Navbar.tsx
+// @file src/common/Navbar.tsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Box, Flex, TabNav, Text } from "@radix-ui/themes";
 import { PAGE_MAP, type TPageKey } from "./config/pages";
 import { VIEW_MAP } from "./router/view-map";
+import { ConfigSwitch } from "./components/ConfigSwitch";
 
 export const Navbar: React.FC = () => {
 	const location = useLocation();
@@ -15,45 +17,52 @@ export const Navbar: React.FC = () => {
 			label: PAGE_MAP[key].label,
 		}));
 
+	// 正規化路徑比對
 	const currentPath = location.pathname.replace(/\/+$/, "") || "/";
 
 	return (
-		<nav className="flex items-center gap-6 px-4 h-12 border-b bg-white">
-			{/* Logo 區域 */}
-			<div
-				className="text-lg font-[900] text-indigo-600 tracking-tight"
-				style={{ fontWeight: 900 }}
-			>
-				DEMO
-			</div>
+		<Box className="shrink-0 border-b border-(--gray-5) bg-(--gray-1)">
+			<Flex align="center" px="4" gap="6" className="h-12">
+				{/* Logo 區域 */}
+				<Text
+					size="4"
+					weight="bold"
+					color="indigo"
+					className="select-none tracking-tight"
+				>
+					DEMO
+				</Text>
 
-			{/* 導覽連結 */}
-			<div className="flex h-full gap-4">
-				{navItems.map((item) => {
-					const target = item.path.replace(/\/+$/, "") || "/";
-					const isActive = currentPath === target;
+				{/* 導覽連結 */}
+				<TabNav.Root className="h-full border-b-0">
+					{navItems.map((item) => {
+						const target = item.path.replace(/\/+$/, "") || "/";
+						const isActive = currentPath === target;
 
-					return (
-						<Link
-							key={item.key}
-							to={item.path}
-							prefetch="intent" // RR7 原生支援：滑鼠移入時觸發異步資源預載
-							className={`
-                relative flex items-center px-1 text-sm font-medium transition-colors h-full
-                ${isActive ? "text-indigo-600" : "text-gray-500 hover:text-indigo-500"}
-              `}
-							onMouseEnter={() => {
-								const page = VIEW_MAP[item.key as keyof typeof VIEW_MAP];
-								page?.loader?.();
-							}}
-						>
-							{item.label}
-							{/* Active 底線 */}
-							{isActive && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600" />}
-						</Link>
-					);
-				})}
-			</div>
-		</nav>
+						return (
+							<TabNav.Link
+								asChild
+								key={item.key}
+								active={isActive}
+								onMouseEnter={() => {
+									const page = VIEW_MAP[item.key as keyof typeof VIEW_MAP];
+									page?.loader?.();
+								}}
+								className="transition-colors"
+							>
+								<Link to={item.path} className="flex items-center" prefetch="intent">
+									{item.label}
+								</Link>
+							</TabNav.Link>
+						);
+					})}
+				</TabNav.Root>
+
+				{/* 右側：帳號切換 */}
+				<Flex ml="auto" align="center">
+					<ConfigSwitch />
+				</Flex>
+			</Flex>
+		</Box>
 	);
 };

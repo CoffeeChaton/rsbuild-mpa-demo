@@ -1,19 +1,24 @@
-// src/pages/game2/components/ConfigSwitch.tsx
+// src/common/components/ConfigSwitch.tsx
 import React, { useState } from "react";
-import { Button, Flex, IconButton, Popover, Text, TextField } from "@radix-ui/themes";
-import { ArchiveIcon, PlusIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useConfig } from "../hooks/useConfig";
+import { Button, Flex, IconButton, Popover, SegmentedControl, Text, TextField } from "@radix-ui/themes";
+import { ArchiveIcon, MoonIcon, PlusIcon, SunIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { useConfigActions, useConfigs, useCurrentConfigId } from "../hooks/useConfig";
+import type { TTheme } from "../types/config";
 
 export const ConfigSwitch: React.FC = () => {
-	const { configs, currentConfigId, switchConfig, addConfig, deleteConfig, renameConfig } = useConfig();
+	const configs = useConfigs();
+	const currentConfigId = useCurrentConfigId();
+	const { switchConfig, addConfig, deleteConfig, renameConfig, updateTheme } = useConfigActions();
+
 	const [newName, setNewName] = useState("");
 	const [isAdding, setIsAdding] = useState(false);
 
 	const currentConfig = configs.find(c => c.id === currentConfigId) || configs[0];
 
 	const handleAdd = () => {
-		if (newName.trim()) {
-			addConfig(newName.trim());
+		const trimmedName = newName.trim();
+		if (trimmedName) {
+			addConfig(trimmedName);
 			setNewName("");
 			setIsAdding(false);
 		}
@@ -30,20 +35,46 @@ export const ConfigSwitch: React.FC = () => {
 						</Text>
 					</Button>
 				</Popover.Trigger>
-				<Popover.Content style={{ width: 280 }}>
+				<Popover.Content style={{ width: 300 }}>
 					<Flex direction="column" gap="3">
-						<Text size="1" weight="bold" color="gray">
-							存檔管理
-						</Text>
+						<Flex justify="between" align="center">
+							<Text size="1" weight="bold" color="gray">
+								存檔與主題管理
+							</Text>
+							{currentConfig && (
+								<SegmentedControl.Root
+									size="1"
+									value={currentConfig.theme}
+									onValueChange={(value) => updateTheme(currentConfig.id, value as TTheme)}
+								>
+									<SegmentedControl.Item value="light">
+										<SunIcon />
+									</SegmentedControl.Item>
+									<SegmentedControl.Item value="dark">
+										<MoonIcon />
+									</SegmentedControl.Item>
+								</SegmentedControl.Root>
+							)}
+						</Flex>
 
 						<Flex direction="column" gap="1">
 							{configs.map(config => (
-								<Flex key={config.id} align="center" justify="between" gap="2" p="1" className={`rounded-md ${config.id === currentConfigId ? "bg-blue-100" : "hover:bg-gray-100"}`}>
+								<Flex
+									key={config.id}
+									align="center"
+									justify="between"
+									gap="2"
+									p="1"
+									className={`rounded-md ${
+										config.id === currentConfigId
+											? "bg-[var(--accent-3)] shadow-sm"
+											: "hover:bg-[var(--gray-3)]"
+									}`}
+								>
 									<Text
 										size="2"
 										className="flex-1 cursor-pointer truncate px-2 py-1"
-										onClick={() =>
-											switchConfig(config.id)}
+										onClick={() => switchConfig(config.id)}
 									>
 										{config.name}
 									</Text>
@@ -92,7 +123,9 @@ export const ConfigSwitch: React.FC = () => {
 										onKeyDown={e => e.key === "Enter" && handleAdd()}
 									/>
 									<Button size="1" onClick={handleAdd}>確定</Button>
-									<Button size="1" variant="soft" color="gray" onClick={() => setIsAdding(false)}>取消</Button>
+									<Button size="1" variant="soft" color="gray" onClick={() => setIsAdding(false)}>
+										取消
+									</Button>
 								</Flex>
 							)
 							: (

@@ -1,13 +1,10 @@
-// src/pages/game2/state/config.ts
+// src/common/state/config.ts
 import { createLocalStorageState } from "foxact/create-local-storage-state";
-import { STORAGE_KEY } from "../config/constants";
+import { CONFIG_LIST_KEY, CURRENT_CONFIG_KEY } from "../config/constants";
 import type { IConfigEntry } from "../types/config";
 import type { StateHook, ValueHook } from "foxact/create-storage-state-factory";
 
-const CONFIG_LIST_KEY = `${STORAGE_KEY}_list`;
-const CURRENT_CONFIG_KEY = `${STORAGE_KEY}_current`;
-
-const config = createLocalStorageState<IConfigEntry[]>(CONFIG_LIST_KEY, [{ id: "default", name: "預設存檔", lastModified: Date.now() }]);
+const config = createLocalStorageState<IConfigEntry[]>(CONFIG_LIST_KEY, [{ id: "default", name: "預設存檔", lastModified: Date.now(), theme: "dark" }]);
 export const useConfigs: StateHook<IConfigEntry[]> = config[0];
 export const useConfigsValue: ValueHook<IConfigEntry[]> = config[1];
 
