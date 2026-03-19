@@ -5,6 +5,16 @@ export interface IPageInfo {
 	hidden?: boolean; // 是否在 Navbar 隱藏（例如 404）
 }
 
+export type TPageKey =
+	| "index"
+	| "products"
+	| "map-edit"
+	| "game"
+	| "game2"
+	| "game3"
+	| "game4"
+	| "404";
+
 export const PAGE_MAP = {
 	index: {
 		title: "首頁 - 品牌門面",
@@ -36,13 +46,15 @@ export const PAGE_MAP = {
 		description: "材料未來視 計算器",
 		label: "材料未來視 計算器",
 	},
+	"game4": {
+		title: "明日方舟 練度規劃表2",
+		description: "練度規劃表2",
+		label: "練度規劃表2",
+	},
 	"404": {
 		title: "404 - 找不到頁面",
 		description: "抱歉，您訪問的頁面不存在",
 		label: "404",
 		hidden: true,
 	},
-} as const as Record<"index" | "products" | "map-edit" | "game" | "game2" | "game3" | "404", IPageInfo>;
-
-// 定義導出的 Key 型別，供其他工具使用
-export type TPageKey = keyof typeof PAGE_MAP;
+} as const as Record<TPageKey, IPageInfo>;
