@@ -1,4 +1,13 @@
 {
+	"compilerOptions": {
+		// shadcn-ui just read tsconfig.json ...
+		// but ts-go tsc just read tsconfig.base.json
+		"paths": {
+			"@/*": [
+				"./*",
+			],
+		},
+	},
 	"files": [],
 	"references": [
 		{ "path": "./tsconfig.app.json" },

@@ -8,4 +8,5 @@
 	},
 	"files.eol": "\n",
 	"explorer.fileNesting.enabled": false,
+	"js/ts.tsdk.path": "node_modules/typescript/lib",
 }
