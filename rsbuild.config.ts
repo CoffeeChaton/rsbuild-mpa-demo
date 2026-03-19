@@ -21,6 +21,11 @@ const getEntries = () => {
 };
 
 const config: RsbuildConfig = defineConfig({
+	resolve: {
+		alias: {
+			"@": "./",
+		},
+	},
 	dev: {
 		lazyCompilation: false,
 	},
