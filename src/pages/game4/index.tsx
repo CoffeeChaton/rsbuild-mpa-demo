@@ -9,7 +9,6 @@ import { BasicInfoPanel } from "./components/basic-info-panel";
 import { DiagnosticPanel } from "./components/diagnostic-panel";
 import { OperatorTable } from "./components/operator-table";
 
-// OperatorTable
 export const App: React.FC = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 	const [diagnosticOpen, setDiagnosticOpen] = useState(true);
@@ -25,7 +24,7 @@ export const App: React.FC = () => {
 
 	//
 	return (
-		<div className="flex flex-col h-screen bg-background overflow-hidden">
+		<div className="flex flex-col bg-background overflow-hidden" style={{ height: `calc(100vh - 50px)` }}>
 			<AppHeader />
 
 			<div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">

@@ -1,56 +1,56 @@
-import { ExternalLink, Github } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
-import type { JSX } from "react/jsx-runtime";
+import * as React from "react";
+import { ExternalLinkIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
+import { Box, Button, Flex, Text } from "@radix-ui/themes";
 
-export const AppFooter = (): JSX.Element => {
+export const AppFooter: React.FC = () => {
 	return (
-		<footer className="border-t border-border bg-secondary/30">
-			<div className="px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
-				<div className="flex items-center gap-4 text-xs text-muted-foreground">
-					<span>明日方舟 練度規劃表</span>
-					<span className="hidden sm:inline">|</span>
-					<span className="hidden sm:inline">
-						資料來源:MooncellWiki / ArknightsToolbox
-					</span>
-				</div>
-				<div className="flex items-center gap-2">
-					<Button
-						variant="ghost"
-						size="sm"
-						className="h-7 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
-						asChild
-					>
-						<a
-							href="https://github.com/CoffeeChaton/rsbuild-mpa-demo"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<Github className="h-3.5 w-3.5" />
-							GitHub
-						</a>
-					</Button>
-					<Button
-						variant="ghost"
-						size="sm"
-						className="h-7 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
-						asChild
-					>
-						<a
-							href="https://prts.wiki"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<ExternalLink className="h-3.5 w-3.5" />
-							PRTS Wiki
-						</a>
-					</Button>
-				</div>
-			</div>
-			<div className="px-4 py-2 border-t border-border/50 text-center">
-				<p className="text-[10px] text-muted-foreground/70">
+		<footer className="border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
+			<Box px="4" py="3">
+				<Flex direction={{ initial: "column", sm: "row" }} align="center" justify="between" gap="2">
+					<Flex align="center" gap="4">
+						<Text size="1" color="gray">
+							明日方舟 練度規劃表
+						</Text>
+						<Box display={{ initial: "none", sm: "block" }}>
+							<Text size="1" color="gray">|</Text>
+						</Box>
+						<Box display={{ initial: "none", sm: "block" }}>
+							<Text size="1" color="gray">
+								資料來源: MooncellWiki / ArknightsToolbox
+							</Text>
+						</Box>
+					</Flex>
+					<Flex align="center" gap="2">
+						<Button variant="ghost" color="gray" size="1" asChild>
+							<a
+								href="https://github.com/CoffeeChaton/rsbuild-mpa-demo"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-1.5"
+							>
+								<GitHubLogoIcon width="14" height="14" />
+								GitHub
+							</a>
+						</Button>
+						<Button variant="ghost" color="gray" size="1" asChild>
+							<a
+								href="https://prts.wiki"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-1.5"
+							>
+								<ExternalLinkIcon width="14" height="14" />
+								PRTS Wiki
+							</a>
+						</Button>
+					</Flex>
+				</Flex>
+			</Box>
+			<Box px="4" py="2" className="border-t border-gray-200/50 dark:border-gray-800/50 text-center">
+				<Text size="1" color="gray" className="opacity-70" style={{ fontSize: "10px" }}>
 					本項目所使用的遊戲資源版權屬於上海鷹角網絡科技有限公司
-				</p>
-			</div>
+				</Text>
+			</Box>
 		</footer>
 	);
 };

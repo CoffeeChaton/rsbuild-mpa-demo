@@ -1,51 +1,25 @@
-import { Button } from "@/src/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
-import { Calculator, Moon, Settings, Sun } from "lucide-react";
-import type { JSX } from "react/jsx-runtime";
+import * as React from "react";
+import { Component2Icon } from "@radix-ui/react-icons";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 
-export const AppHeader = (): JSX.Element => {
+export const AppHeader: React.FC = () => {
 	return (
-		<header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-			<div className="flex items-center justify-between h-14 px-4">
-				<div className="flex items-center gap-3">
-					<div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
-						<Calculator className="h-4 w-4" />
-					</div>
-					<div className="flex flex-col">
-						<h1 className="text-sm font-semibold tracking-tight">
+		<header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur supports-backdrop-filter:bg-white/60">
+			<Flex align="center" justify="between" height="56px" px="4">
+				<Flex align="center" gap="3">
+					<Box className="flex items-center justify-center h-8 w-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+						<Component2Icon width="18" height="18" />
+					</Box>
+					<Flex direction="column">
+						<Heading as="h1" size="3" weight="bold" className="tracking-tight">
 							練度規劃表
-						</h1>
-						<span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+						</Heading>
+						<Text size="1" color="gray" className="uppercase tracking-wider">
 							Arknights Planner
-						</span>
-					</div>
-				</div>
-
-				<div className="flex items-center gap-2">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="h-8 w-8 p-0"
-							>
-								<Settings className="h-4 w-4" />
-								<span className="sr-only">設定</span>
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuItem>
-								<Sun className="h-4 w-4 mr-2" />
-								淺色主題
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<Moon className="h-4 w-4 mr-2" />
-								深色主題
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-			</div>
+						</Text>
+					</Flex>
+				</Flex>
+			</Flex>
 		</header>
 	);
 };
