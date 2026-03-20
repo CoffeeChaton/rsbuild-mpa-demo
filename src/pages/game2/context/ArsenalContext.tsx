@@ -2,7 +2,7 @@
 // src/pages/game2/context/ArsenalContext.tsx
 import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useMemo } from "react";
 import { useArsenalStorage } from "../hooks/useArsenalStorage";
-import { useArsenalRows as useArsenalRowsRaw } from "../hooks/useArsenalRows";
+import { useArsenalRowsRaw } from "../hooks/useArsenalRowsRaw";
 import { useArsenalTSV } from "../hooks/useArsenalTSV";
 import type { IInventory, IItem, IRowResult } from "../types";
 import { useCurrentConfigId } from "../../../common/hooks/useConfig";

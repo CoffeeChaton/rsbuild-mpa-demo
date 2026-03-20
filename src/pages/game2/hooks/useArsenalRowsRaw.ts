@@ -1,10 +1,10 @@
-// src/pages/game2/hooks/useArsenalRows.ts
+// src/pages/game2/hooks/useArsenalRowsRaw.ts
 import { useDeferredValue, useMemo } from "react";
 import { calcArsenalRows } from "../core/calcArsenalRows";
 import type { IInventory, IItem, IRowResult } from "../types";
 import type { ILevelData } from "../core/data";
 
-export const useArsenalRows = (
+export const useArsenalRowsRaw = (
 	items: IItem[],
 	inventory: IInventory,
 	levelData?: ILevelData,
