@@ -1,5 +1,5 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { cn } from "@/src/lib/utils";
+import { cn, getModifierKey } from "@/src/lib/utils";
 import {
 	ChevronDown,
 	ChevronLeft,
@@ -12,13 +12,6 @@ import { useIsMobile } from "@/src/lib/use-mobile";
 import { BasicInfoPanel } from "./basic-info-panel";
 
 const SIDEBAR_KEY = "sidebarOpen";
-
-const isMac = () => /Macintosh|Mac OS X/i.test(window.navigator.userAgent);
-
-const getModifierKey = () => {
-	if (typeof window === "undefined") return "Ctrl";
-	return isMac() ? "⌘" : "Ctrl";
-};
 
 export const LeftSidebar: React.FC = () => {
 	const isMobile = useIsMobile();
@@ -39,6 +32,7 @@ export const LeftSidebar: React.FC = () => {
 
 	// 快捷鍵 : 切換開關 (Cmd+B)
 	useHotkeys("mod+b", () => setSidebarOpen(prev => !prev));
+	const modifier = getModifierKey();
 
 	return (
 		<Collapsible
@@ -86,7 +80,7 @@ export const LeftSidebar: React.FC = () => {
 									!sidebarOpen && "opacity-0 group-hover:opacity-100", // 收起時 hover 才顯現，避免視覺雜亂
 								)}
 							>
-								<span>{getModifierKey()}</span>B
+								<span>{modifier}</span>B
 							</kbd>
 						)}
 					</div>
