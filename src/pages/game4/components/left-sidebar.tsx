@@ -1,3 +1,4 @@
+import { useHotkeys } from "react-hotkeys-hook";
 import { cn } from "@/src/lib/utils";
 import {
 	ChevronDown,
@@ -11,6 +12,13 @@ import { useIsMobile } from "@/src/lib/use-mobile";
 import { BasicInfoPanel } from "./basic-info-panel";
 
 const SIDEBAR_KEY = "sidebarOpen";
+
+const isMac = () => /Macintosh|Mac OS X/i.test(window.navigator.userAgent);
+
+const getModifierKey = () => {
+	if (typeof window === "undefined") return "Ctrl";
+	return isMac() ? "⌘" : "Ctrl";
+};
 
 export const LeftSidebar: React.FC = () => {
 	const isMobile = useIsMobile();
@@ -29,6 +37,9 @@ export const LeftSidebar: React.FC = () => {
 		localStorage.setItem(SIDEBAR_KEY, String(sidebarOpen));
 	}, [sidebarOpen]);
 
+	// 快捷鍵 : 切換開關 (Cmd+B)
+	useHotkeys("mod+b", () => setSidebarOpen(prev => !prev));
+
 	return (
 		<Collapsible
 			open={sidebarOpen}
@@ -42,7 +53,7 @@ export const LeftSidebar: React.FC = () => {
 		>
 			<CollapsibleTrigger asChild>
 				<button
-					title={sidebarOpen ? "收起側邊欄" : "展開側邊欄"} // ✅ tooltip
+					title={sidebarOpen ? "收起側邊欄 (Cmd+B)" : "展開側邊欄 (Cmd+B)"}
 					className={cn(
 						"flex items-center justify-between shrink-0 cursor-pointer transition-all select-none outline-none",
 						"bg-secondary/10 hover:bg-indigo-500/10 active:bg-indigo-500/20",
@@ -54,7 +65,7 @@ export const LeftSidebar: React.FC = () => {
 					<div
 						className={cn(
 							"flex items-center",
-							!isMobile && "flex-col h-full w-full justify-center",
+							!isMobile && "flex-col h-full w-full justify-center gap-3", // 桌面版增加間距放提示
 						)}
 					>
 						<span
@@ -66,6 +77,18 @@ export const LeftSidebar: React.FC = () => {
 						>
 							基本資料
 						</span>
+
+						{/* 快捷鍵提示標籤 - 僅在桌面版顯示 */}
+						{!isMobile && (
+							<kbd
+								className={cn(
+									"pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 lg:flex transition-opacity",
+									!sidebarOpen && "opacity-0 group-hover:opacity-100", // 收起時 hover 才顯現，避免視覺雜亂
+								)}
+							>
+								<span>{getModifierKey()}</span>B
+							</kbd>
+						)}
 					</div>
 
 					<div
