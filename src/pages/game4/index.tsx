@@ -1,9 +1,9 @@
 import { AppHeader } from "./components/app-header";
 import { AppFooter } from "./components/app-footer";
-import { OperatorTable } from "./components/operator-table";
 import { ArsenalProvider } from "../game2/context/ArsenalContext";
 import { LeftSidebar } from "./components/left-sidebar";
 import { BottomDiagnosticPanel } from "./components/bottom-diagnostic-panel";
+import { TableArea } from "../game2/components/TableArea";
 
 export const App: React.FC = () => {
 	return (
@@ -18,7 +18,7 @@ export const App: React.FC = () => {
 					<div className="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden">
 						{/* Operator Table */}
 						<div className="flex-1 min-h-0 bg-card overflow-hidden">
-							<OperatorTable />
+							<TableArea />
 						</div>
 
 						{/* Bottom Diagnostic Panel */}
