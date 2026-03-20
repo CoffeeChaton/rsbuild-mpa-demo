@@ -112,10 +112,11 @@ export const DiagnosticPanel: React.FC = () => {
 				title="龍門幣"
 				Icon={StackIcon}
 				current={money}
-				gap={moneyGap}
+				need={moneyGap}
 				daily={avgMoneyProduction}
 				color="blue"
 				overflowColor="blue"
+				gapColor="red"
 			/>
 
 			{/* EXP Progress Card */}
@@ -123,10 +124,11 @@ export const DiagnosticPanel: React.FC = () => {
 				title="經驗書"
 				Icon={ReaderIcon}
 				current={books}
-				gap={booksGap}
+				need={booksGap}
 				daily={avgBookProduction}
 				color="green"
-				overflowColor="grass"
+				overflowColor="green"
+				gapColor="red"
 			/>
 		</Grid>
 	);

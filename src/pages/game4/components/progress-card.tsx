@@ -61,7 +61,7 @@ interface IProgressCardProps {
 	/** 當前數量 */
 	current: number;
 	/** 差額（目標 - 當前） */
-	gap: number;
+	need: number;
 	/** 平均每日產量，用於 ProductionInsight */
 	daily: number;
 	/** 進度條顏色 */
@@ -70,19 +70,25 @@ interface IProgressCardProps {
 	formatNumber?: (value: number) => string;
 	/** 當前文字顏色，差額為溢出時使用 */
 	overflowColor: "blue" | "green" | "grass";
+	gapColor: "blue" | "green" | "grass" | "red";
+	showPercentText?: boolean; // 是否顯示百分比文字
 }
 
 export const ProgressCard: React.FC<IProgressCardProps> = ({
 	title,
 	Icon,
 	current,
-	gap,
+	need,
 	daily,
 	color = "blue",
 	formatNumber = (v) => v.toLocaleString(),
 	overflowColor = "grass",
+	gapColor = "red",
+	showPercentText = true,
 }) => {
-	const isMet = Number(gap) <= 0;
+	const target = current + need;
+	const percent = Math.min(100, (current / target) * 100);
+	const isMet = need <= 0;
 
 	return (
 		<Card variant="surface" className="flex-1">
@@ -96,24 +102,24 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 						</Text>
 					</Flex>
 					<Flex align="center" gap="3">
-						<ProductionInsight gap={gap} daily={daily} />
-						<StatusBadge
-							status={isMet ? "ok" : "warning"}
-							label={isMet ? "已達標" : "不足"}
-						/>
+						<ProductionInsight gap={need} daily={daily} />
+						<StatusBadge status={isMet ? "ok" : "warning"} label={isMet ? "已達標" : "不足"} />
 					</Flex>
 				</Flex>
 
 				{/* Body */}
 				<div className="space-y-1.5 mt-1">
-					<Progress
-						value={Math.min(100, (Number(current) / (Number(current) + Number(gap))) * 100)}
-						size="1"
-						color={color}
-					/>
+					<Flex justify="between" align="center">
+						<Progress value={percent} size="1" color={color} className="flex-1 mr-2" />
+						{showPercentText && (
+							<Text size="1" weight="bold" className="w-10 text-right font-mono">
+								{percent.toFixed(0)}%
+							</Text>
+						)}
+					</Flex>
 
 					<Flex justify="between" align="end">
-						{/* 當前 */}
+						{/* 庫存 */}
 						<Flex direction="column">
 							<Text size="1" color="gray" className="text-[10px] uppercase opacity-50">
 								庫存
@@ -125,23 +131,15 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 
 						{/* 差額 */}
 						<Flex direction="column" align="center">
-							{Number(gap) > 0
+							{need > 0
 								? (
-									<Text
-										size="1"
-										color="red"
-										className="font-mono text-[10px] bg-red-50 px-1.5 py-0.5 rounded border border-red-100"
-									>
-										缺 {formatNumber(gap)}
+									<Text size="1" color={gapColor} className={`font-mono text-[10px] bg-${gapColor}-50 px-1.5 py-0.5 rounded border border-${gapColor}-100`}>
+										缺 {formatNumber(need)}
 									</Text>
 								)
 								: (
-									<Text
-										size="1"
-										color={overflowColor}
-										className={`font-mono text-[10px] bg-${overflowColor}-50 px-1.5 py-0.5 rounded border border-${overflowColor}-100`}
-									>
-										溢 {formatNumber(Math.abs(Number(gap)))}
+									<Text size="1" color={overflowColor} className={`font-mono text-[10px] bg-${overflowColor}-50 px-1.5 py-0.5 rounded border border-${overflowColor}-100`}>
+										溢出 {formatNumber(Math.abs(need))}
 									</Text>
 								)}
 						</Flex>
@@ -152,7 +150,7 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 								目標
 							</Text>
 							<Text size="1" color="gray" className="font-mono">
-								{formatNumber(Number(current) + Number(gap))}
+								{formatNumber(target)}
 							</Text>
 						</Flex>
 					</Flex>

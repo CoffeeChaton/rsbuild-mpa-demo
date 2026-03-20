@@ -15,8 +15,8 @@ export const getProductionSummary: TGetProductionSummary = (rows, inventory) => 
 	const totalMoneyNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumMoney) : acc), 0);
 	const totalBooksNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumBooks) : acc), 0);
 
-	const moneyGap = Math.max(0, totalMoneyNeed - money);
-	const booksGap = Math.max(0, totalBooksNeed - books);
+	const moneyGap = totalMoneyNeed - money;
+	const booksGap = totalBooksNeed - books;
 
 	const getDays = (gap: number, prod: number) => gap > 0 && prod > 0 ? Math.ceil(gap / prod) : null;
 	const moneyDays = getDays(moneyGap, avgMoneyProduction);
