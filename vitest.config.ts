@@ -1,8 +1,9 @@
 import { defineConfig, type ViteUserConfig } from "vitest/config";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 const config: ViteUserConfig = defineConfig({
-	plugins: [tsconfigPaths()],
+	resolve: {
+		tsconfigPaths: true,
+	},
 });
 
 export default config;
