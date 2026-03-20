@@ -14,41 +14,59 @@
  */
 
 import * as React from "react";
-import { Box, Flex } from "@radix-ui/themes";
 import { AppHeader } from "./components/app-header";
 import { AppFooter } from "./components/app-footer";
 import { ArsenalProvider } from "../game2/context/ArsenalContext";
 import { LeftSidebar } from "./components/left-sidebar";
 import { BottomDiagnosticPanel } from "./components/bottom-diagnostic-panel";
 import { TableArea } from "../game2/components/TableArea";
+import { useIsMobile } from "@/src/lib/use-mobile";
 
 export const App: React.FC = () => {
+	const isMobile = useIsMobile();
+
 	return (
-		<Flex direction="column" className="overflow-hidden bg-gray-50 dark:bg-gray-950" style={{ height: `calc(100vh - 50px)` }}>
+		<div
+			className="grid overflow-hidden bg-gray-50 dark:bg-gray-950"
+			style={{
+				height: "calc(100vh - 50px)",
+				gridTemplateRows: "auto 1fr auto",
+			}}
+		>
 			{/* 1. 頂部標題與導航 */}
 			<AppHeader />
 
 			{/* 2. 核心計算引擎與布局 */}
 			<ArsenalProvider>
-				<Flex className="flex-1 min-h-0 overflow-hidden" direction={{ initial: "column", lg: "row" }}>
+				<div
+					className="grid min-h-0 overflow-hidden"
+					style={{
+						gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
+					}}
+				>
 					{/* 左側側邊欄：輸入庫存與產能 (數據源) */}
-					<LeftSidebar />
-
-					{/* 主內容區：核心表格與底部摘要 */}
-					<Flex direction="column" className="flex-1 min-w-0 min-h-0 overflow-hidden relative">
-						{/* 中央表格區域：管理角色與顯示計算結果 */}
-						<Box className="flex-1 min-h-0 bg-white dark:bg-gray-900 overflow-hidden">
+					<div className="min-h-0">
+						<LeftSidebar />
+					</div>
+					<div
+						className="grid min-w-0 min-h-0 overflow-hidden"
+						style={{
+							gridTemplateRows: "1fr auto",
+						}}
+					>
+						{/* Table */}
+						<div className="min-h-0 overflow-hidden">
 							<TableArea />
-						</Box>
+						</div>
 
-						{/* 底部摘要面板：顯示診斷、進度與預估天數 (數據終點) */}
+						{/* Bottom Panel */}
 						<BottomDiagnosticPanel />
-					</Flex>
-				</Flex>
+					</div>
+				</div>
 			</ArsenalProvider>
 
 			{/* 3. 頁尾資訊 */}
 			<AppFooter />
-		</Flex>
+		</div>
 	);
 };
