@@ -39,9 +39,10 @@ const ActionsContext = createContext<IActionsContext | null>(null);
 export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const currentConfigId = useCurrentConfigId();
 	const { items, setItems, inventory, setInventory } = useArsenalStorage(currentConfigId);
+
 	const levelData = v.parse(LevelDataSchema, rawLevelData);
 	const rows = useArsenalRowsRaw(items, inventory, levelData);
-	const { handleImport, handleExport, isCopied } = useArsenalTSV(setItems, rows);
+	const { handleImport, handleExport, isCopied } = useArsenalTSV(setItems, inventory, setInventory, rows);
 
 	const itemsValue = useMemo(() => ({ items, setItems }), [items, setItems]);
 	const inventoryValue = useMemo(() => ({ inventory, setInventory }), [inventory, setInventory]);

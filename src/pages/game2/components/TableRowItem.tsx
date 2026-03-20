@@ -1,9 +1,8 @@
 import React, { memo, useCallback } from "react";
-import { Checkbox, Flex, Table } from "@radix-ui/themes";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { Checkbox, Flex, IconButton, Table } from "@radix-ui/themes";
+import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
 import { StatCell } from "./TableRowItem/StatCell";
-import { RowActions } from "./TableRowItem/RowActions";
 import { RowInputs } from "./TableRowItem/RowInputs";
 
 // dnd-kit imports
@@ -102,10 +101,11 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 
 			{/* 尾部操作區域 */}
 			<Table.Cell>
-				<RowActions
-					itemId={item.id}
-					onDelete={onDelete}
-				/>
+				<Flex gap="1" justify="center">
+					<IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(item.id)} className="cursor-pointer">
+						<TrashIcon />
+					</IconButton>
+				</Flex>
 			</Table.Cell>
 		</Table.Row>
 	);

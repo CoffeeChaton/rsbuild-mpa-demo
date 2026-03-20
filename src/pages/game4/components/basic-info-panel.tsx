@@ -91,7 +91,7 @@ export const BasicInfoPanel: React.FC = () => {
 							</Flex>
 
 							<Flex direction="column" gap="2">
-								{BOOK_CONFIG.map((conf, i) => (
+								{BOOK_CONFIG.map((conf) => (
 									<div key={conf.label} className="grid items-center grid-cols-[1fr_90px] gap-2">
 										<Tooltip content={`每份 ${conf.value.toLocaleString()} EXP`}>
 											<Text size="1" color="gray" className="truncate cursor-help opacity-80">
@@ -103,8 +103,8 @@ export const BasicInfoPanel: React.FC = () => {
 											variant="surface"
 											className="font-mono tabular-nums"
 											type="number"
-											value={bookStacks[i] ?? 0}
-											onChange={(e) => handleStackChange(i, e.target.value)}
+											value={bookStacks[conf.key] ?? 0}
+											onChange={(e) => handleStackChange(conf.key, e.target.value)}
 										/>
 									</div>
 								))}
