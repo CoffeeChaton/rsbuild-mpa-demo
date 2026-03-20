@@ -2,7 +2,7 @@ import { cn } from "@/src/lib/utils";
 import { AppHeader } from "./components/app-header";
 import { AppFooter } from "./components/app-footer";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/src/components/ui/collapsible";
 import { BasicInfoPanel } from "./components/basic-info-panel";
@@ -10,17 +10,9 @@ import { DiagnosticPanel } from "./components/diagnostic-panel";
 import { OperatorTable } from "./components/operator-table";
 
 export const App: React.FC = () => {
-	const [sidebarOpen, setSidebarOpen] = useState(true);
-	const [diagnosticOpen, setDiagnosticOpen] = useState(true);
 	const isMobile = useIsMobile();
-
-	// On mobile, start with panels collapsed
-	useEffect(() => {
-		if (isMobile) {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setSidebarOpen(false);
-		}
-	}, [isMobile]);
+	const [sidebarOpen, setSidebarOpen] = useState(() => !isMobile);
+	const [diagnosticOpen, setDiagnosticOpen] = useState(() => !isMobile);
 
 	//
 	return (
