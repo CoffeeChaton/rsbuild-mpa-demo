@@ -9,8 +9,8 @@ export type TPageKey =
 	| "index"
 	| "products"
 	| "map-edit"
-	| "game"
-	| "game2"
+	// | "game"
+	// | "game2"
 	| "game3"
 	| "game4"
 	| "404";
@@ -31,20 +31,20 @@ export const PAGE_MAP = {
 		description: "自定義您的地圖偏好與中心點",
 		label: "地圖編輯",
 	},
-	"game": {
-		title: "明日方舟 資源計畫器",
-		description: "資源計畫器",
-		label: "資源計畫器(預計刪除)",
-	},
-	"game2": {
-		title: "明日方舟 練度規劃表",
-		description: "練度規劃表",
-		label: "練度規劃表",
-	},
+	// "game": {
+	// 	title: "明日方舟 資源計畫器",
+	// 	description: "資源計畫器",
+	// 	label: "資源計畫器(預計刪除)",
+	// },
+	// "game2": {
+	// 	title: "明日方舟 練度規劃表",
+	// 	description: "練度規劃表",
+	// 	label: "練度規劃表",
+	// },
 	"game3": {
 		title: "明日方舟 材料未來視",
-		description: "材料未來視 計算器",
-		label: "材料未來視 計算器",
+		description: "材料未來視",
+		label: "材料未來視",
 	},
 	"game4": {
 		title: "明日方舟 練度規劃表2",
