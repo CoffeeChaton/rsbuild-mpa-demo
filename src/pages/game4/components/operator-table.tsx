@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { GripVertical, Plus, Star, Trash2 } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
