@@ -1,1 +1,2 @@
+fnm use 24
 pnpm run build
