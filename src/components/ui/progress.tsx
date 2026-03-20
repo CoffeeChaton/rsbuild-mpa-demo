@@ -2,12 +2,13 @@ import * as React from "react";
 import { Progress as ProgressPrimitive } from "radix-ui";
 
 import { cn } from "@/src/lib/utils";
+import type { JSX } from "react/jsx-runtime";
 
 function Progress({
 	className,
 	value,
 	...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root>): JSX.Element {
 	return (
 		<ProgressPrimitive.Root
 			data-slot="progress"

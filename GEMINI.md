@@ -3,7 +3,7 @@
 ## 1. Technical Stack
 
 - **Framework**: React 19 (`hydrateRoot`) + Rsbuild.
-- **Routing**: `react-router-dom` v7 (Hybrid MPA/SPA).
+- **Routing**: `react-router` v7 (Hybrid MPA/SPA).
 - **UI & Styling**: Radix UI Themes, Tailwind CSS v4.
 - **Data & State**: `swr` (用於遠端 Fetching), `foxact` (UI Hooks).
 

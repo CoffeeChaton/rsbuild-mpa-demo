@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pages";
 import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";

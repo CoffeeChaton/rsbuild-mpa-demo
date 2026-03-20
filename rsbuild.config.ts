@@ -70,7 +70,7 @@ const config: RsbuildConfig = defineConfig({
 				cacheGroups: {
 					// 1. 核心基礎庫 (變動率極低，全站共用)
 					base: {
-						test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|swr)[\\/]/,
+						test: /[\\/]node_modules[\\/](react|react-dom|react-router|swr)[\\/]/,
 						name: "lib-base",
 						priority: 50,
 						enforce: true,

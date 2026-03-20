@@ -1,5 +1,5 @@
 // src/App.tsx
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router";
 import { Layout } from "./pages/index/Layout.tsx";
 import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Suspense } from "react";
@@ -28,7 +28,7 @@ function createRoutes(): RouteObject[] {
 
 			return {
 				path,
-				element: (
+				Component: () => (
 					<Layout>
 						<Suspense fallback={<div className="text-center py-20">Loading...</div>}>
 							<View />
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
 	// 生成 ROUTES + 404
 	const routes: RouteObject[] = [
 		...createRoutes(),
-		{ path: "*", element: <NotFoundView /> },
+		{ path: "*", Component: NotFoundView },
 	];
 
 	const router = createBrowserRouter(routes, { basename: import.meta.env.BASE_URL });

@@ -1,6 +1,6 @@
 // @file src/common/Navbar.tsx
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { Box, Flex, TabNav, Text } from "@radix-ui/themes";
 import { PAGE_MAP, type TPageKey } from "./config/pages";
 import { VIEW_MAP } from "./router/view-map";
