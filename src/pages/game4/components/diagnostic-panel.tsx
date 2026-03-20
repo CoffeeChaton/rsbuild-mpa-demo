@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * 診斷面板 (DiagnosticPanel)
  *

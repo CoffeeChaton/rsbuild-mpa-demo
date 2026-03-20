@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * 基本資料面板 (BasicInfoPanel)
  *

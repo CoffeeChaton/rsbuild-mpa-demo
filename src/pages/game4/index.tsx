@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Game4 頁面主入口 (Arknights Planner V4)
  *

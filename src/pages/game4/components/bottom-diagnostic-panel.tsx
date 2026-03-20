@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * 底部診斷面板容器 (BottomDiagnosticPanel)
  *

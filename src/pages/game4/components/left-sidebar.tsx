@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * 左側側邊欄容器 (LeftSidebar)
  *
