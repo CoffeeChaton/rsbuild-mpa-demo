@@ -1,56 +1,66 @@
 import * as React from "react";
 import { ExternalLinkIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Box, Button, Flex, Text } from "@radix-ui/themes";
+import { Flex, Separator, Text } from "@radix-ui/themes";
+import { IconLink } from "@/src/common/components/IconLink";
 
 export const AppFooter: React.FC = () => {
+	const sources = [
+		{
+			label: "arkntools",
+			href: "https://github.com/arkntools/arknights-toolbox-data/blob/main/assets/data/level.json",
+			icon: <GitHubLogoIcon width="13" height="13" />,
+		},
+		{
+			label: "PRTS Wiki",
+			href: "https://prts.wiki/w/干员升级数值",
+			icon: <ExternalLinkIcon width="13" height="13" />,
+		},
+	];
+
 	return (
-		<footer className="border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
-			<Box px="4" py="3">
-				<Flex direction={{ initial: "column", sm: "row" }} align="center" justify="between" gap="2">
-					<Flex align="center" gap="4">
-						<Text size="1" color="gray">
-							明日方舟 練度規劃表
-						</Text>
-						<Box display={{ initial: "none", sm: "block" }}>
-							<Text size="1" color="gray">|</Text>
-						</Box>
-						<Box display={{ initial: "none", sm: "block" }}>
-							<Text size="1" color="gray">
-								資料來源: MooncellWiki / ArknightsToolbox
-							</Text>
-						</Box>
-					</Flex>
-					<Flex align="center" gap="2">
-						<Button variant="ghost" color="gray" size="1" asChild>
-							<a
-								href="https://github.com/CoffeeChaton/rsbuild-mpa-demo"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center gap-1.5"
-							>
-								<GitHubLogoIcon width="14" height="14" />
-								GitHub
-							</a>
-						</Button>
-						<Button variant="ghost" color="gray" size="1" asChild>
-							<a
-								href="https://prts.wiki"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center gap-1.5"
-							>
-								<ExternalLinkIcon width="14" height="14" />
-								PRTS Wiki
-							</a>
-						</Button>
+		<footer
+			style={{
+				backgroundColor: "var(--slate-1)",
+				borderTop: "1px solid var(--slate-4)",
+			}}
+		>
+			<Flex
+				direction={{ initial: "column", md: "row" }}
+				align="center"
+				justify="between"
+				gap="3"
+				px="6"
+				py="3"
+			>
+				{/* 左側：品牌與資料來源 */}
+				<Flex align="center" gap="3" wrap="wrap" justify="center">
+					<Text size="1" weight="bold">明日方舟 練度規劃表</Text>
+
+					<Separator orientation="vertical" size="1" className="hidden sm:block" />
+
+					<Flex gap="3" align="center">
+						<Text size="1" style={{ color: "var(--slate-8)" }}>資料來源</Text>
+						{sources.map(src => (
+							<IconLink key={src.label} href={src.href} icon={src.icon}>
+								{src.label}
+							</IconLink>
+						))}
 					</Flex>
 				</Flex>
-			</Box>
-			<Box px="4" py="2" className="border-t border-gray-200/50 dark:border-gray-800/50 text-center">
-				<Text size="1" color="gray" className="opacity-70" style={{ fontSize: "10px" }}>
-					本項目所使用的遊戲資源版權屬於上海鷹角網絡科技有限公司
-				</Text>
-			</Box>
+
+				<Flex align="center" gap="2" wrap="wrap" justify="center">
+					<Text size="1" color="gray" style={{ opacity: 0.7 }}>
+						Made by
+					</Text>
+					<IconLink
+						href="https://github.com/CoffeeChaton/rsbuild-mpa-demo"
+						icon={<GitHubLogoIcon width="13" height="13" />}
+						color="pink"
+					>
+						CoffeeChaton
+					</IconLink>
+				</Flex>
+			</Flex>
 		</footer>
 	);
 };

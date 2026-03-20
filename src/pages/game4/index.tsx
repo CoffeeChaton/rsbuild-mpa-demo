@@ -16,7 +16,7 @@ export const App: React.FC = () => {
 
 	//
 	return (
-		<div className="flex flex-col bg-background overflow-hidden" style={{ height: `calc(100vh - 50px)` }}>
+		<div className="flex flex-col overflow-hidden" style={{ height: `calc(100vh - 50px)` }}>
 			<AppHeader />
 
 			<div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
