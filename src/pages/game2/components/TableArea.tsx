@@ -139,8 +139,12 @@ export const TableArea: React.FC = memo(() => {
 						</SortableContext>
 						{/* 底部空白填充 */}
 						<Table.Row>
-							<Table.Cell colSpan={12} style={{ border: "none", padding: 0 }}>
-								<div style={{ height: "120px" }} className="flex items-center justify-center">
+							<Table.Cell style={{ boxShadow: "none" }}>
+							</Table.Cell>
+						</Table.Row>
+						<Table.Row>
+							<Table.Cell colSpan={11} style={{ border: "none", padding: 0 }}>
+								<div className="flex items-center justify-center">
 									<span className="text-[10px] text-muted-foreground/30 tracking-[0.3em] uppercase">
 										— End of Planning —
 									</span>
