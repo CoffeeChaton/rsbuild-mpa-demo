@@ -1,3 +1,18 @@
+"use client";
+
+/**
+ * 基本資料面板 (BasicInfoPanel)
+ *
+ * 預期行為：
+ * 1. 管理玩家當前的庫存資源 (龍門幣、各級經驗書)。
+ * 2. 管理玩家的每日產能預估 (用於計算剩餘天數)。
+ * 3. 即時更新全域 Context，驅動後續的表格計算與診斷面板。
+ *
+ * 數據流向 (Source of Truth)：
+ * - 作為數據的「源頭」，修改此處的 `inventory` 會觸發 `ArsenalContext` 重新計算所有 `rows`。
+ */
+
+import * as React from "react";
 import { useCallback } from "react";
 import { ReaderIcon, StackIcon } from "@radix-ui/react-icons";
 import {
@@ -13,6 +28,7 @@ import { useArsenalInventory } from "../../game2/context/ArsenalContext";
 import type { IInventory } from "../../game2/types/inventory";
 import { useInventory } from "../../game2/hooks/useInventory";
 
+// 輔助函數：確保輸入值為正數
 const clampPositiveNumber = (value: string) => {
 	const parsed = Number(value);
 	return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
@@ -27,6 +43,7 @@ const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, unit: string 
 export const BasicInfoPanel: React.FC = () => {
 	const { inventory, setInventory } = useArsenalInventory();
 
+	// 更新全域庫存狀態
 	const onUpdate = useCallback((update: Partial<IInventory>) => {
 		setInventory(prev => ({ ...prev, ...update }));
 	}, [setInventory]);
@@ -37,21 +54,19 @@ export const BasicInfoPanel: React.FC = () => {
 	const totalExpValue = calculateBookStacksValue(bookStacks);
 
 	return (
-		<Flex direction="column" gap="4" height="100%" className="min-h-0">
-			<Separator size="4" />
-
-			{/* 庫存資源區塊 */}
+		<Flex direction="column" gap="4" className="min-h-0">
+			{/* 1. 庫存資源區塊 */}
 			<Flex direction="column" gap="3">
 				<Flex align="center" gap="2" px="1">
-					<StackIcon className="opacity-60" />
+					<StackIcon className="text-blue-500" />
 					<Text size="1" weight="bold" color="gray" className="uppercase tracking-widest">
-						庫存資源
+						庫存資源 (Inventory)
 					</Text>
 				</Flex>
 
 				<Card variant="surface" className="bg-gray-50/30 dark:bg-gray-900/30 border-dashed">
 					<Flex direction="column" gap="4" p="2">
-						{/* 龍門幣輸入 */}
+						{/* 龍門幣輸入：直接修改 money 數值 */}
 						<Flex direction="column" gap="2">
 							<Text size="1" color="gray" weight="medium">
 								{`龍門幣 (${(inventory.money / 10000).toFixed(1)} 萬)`}
@@ -66,12 +81,12 @@ export const BasicInfoPanel: React.FC = () => {
 							/>
 						</Flex>
 
-						{/* 作戰記錄細項 */}
+						{/* 作戰記錄細項：根據各等級數量計算總 EXP */}
 						<Flex direction="column" gap="2">
 							<Flex justify="between" align="center" mb="1" className="border-b border-gray-200 dark:border-gray-800 pb-1">
-								<Text size="2" weight="bold">作戰記錄</Text>
-								<Text size="1" color="gray" className="tabular-nums">
-									{totalExpValue.toLocaleString()} <Text size="1" color="gray">EXP</Text>
+								<Text size="1" weight="bold">作戰記錄 (EXP)</Text>
+								<Text size="1" color="blue" className="tabular-nums font-mono">
+									{totalExpValue.toLocaleString()}
 								</Text>
 							</Flex>
 
@@ -101,12 +116,12 @@ export const BasicInfoPanel: React.FC = () => {
 
 			<Separator size="4" />
 
-			{/* 產能區塊 */}
+			{/* 2. 每日產能區塊 */}
 			<Flex direction="column" gap="3">
 				<Flex align="center" gap="2" px="1">
-					<ReaderIcon className="opacity-60" />
+					<ReaderIcon className="text-green-500" />
 					<Text size="1" weight="bold" color="gray" className="uppercase tracking-widest">
-						每日產能
+						每日產能 (Production)
 					</Text>
 				</Flex>
 				<Card variant="surface" className="bg-gray-50/30 dark:bg-gray-900/30 border-dashed">

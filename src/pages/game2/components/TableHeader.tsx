@@ -12,8 +12,9 @@ import { MODULE_COST_DISPLAY_ROWS } from "../core/moduleCost";
 export const TableHeader: React.FC = memo(() => {
 	return (
 		<Table.Header>
-			<Table.Row>
-				<Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+			<Table.Row align="center">
+				<Table.ColumnHeaderCell width="60px" align="center">排序</Table.ColumnHeaderCell>
+				<Table.ColumnHeaderCell width="28px"></Table.ColumnHeaderCell>
 				<Table.ColumnHeaderCell width="28px">星級</Table.ColumnHeaderCell>
 				<Table.ColumnHeaderCell minWidth="100px">角色</Table.ColumnHeaderCell>
 				<Table.ColumnHeaderCell minWidth="140px">備註</Table.ColumnHeaderCell>
@@ -71,7 +72,7 @@ export const TableHeader: React.FC = memo(() => {
 				<Table.ColumnHeaderCell width="100px">預估書</Table.ColumnHeaderCell>
 				<Table.ColumnHeaderCell width="130px">累計錢</Table.ColumnHeaderCell>
 				<Table.ColumnHeaderCell width="130px">累計書</Table.ColumnHeaderCell>
-				<Table.ColumnHeaderCell width="120px" align="center">操作</Table.ColumnHeaderCell>
+				<Table.ColumnHeaderCell width="60px" align="center">操作</Table.ColumnHeaderCell>
 			</Table.Row>
 		</Table.Header>
 	);

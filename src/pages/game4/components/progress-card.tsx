@@ -87,7 +87,10 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 	showPercentText = true,
 }) => {
 	const target = current + need;
-	const percent = Math.min(100, (current / target) * 100);
+	const percent = Math.max(0, Math.min(100, (current / target) * 100));
+	if (Number.isNaN(percent)) {
+		return null;
+	}
 	const isMet = need <= 0;
 
 	return (

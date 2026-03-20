@@ -1,9 +1,14 @@
 import React, { memo, useCallback } from "react";
-import { Checkbox, Table } from "@radix-ui/themes";
+import { Checkbox, Flex, Table } from "@radix-ui/themes";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
 import { StatCell } from "./TableRowItem/StatCell";
 import { RowActions } from "./TableRowItem/RowActions";
 import { RowInputs } from "./TableRowItem/RowInputs";
+
+// dnd-kit imports
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const areRowValuesEqual = (prev: IRowResult, next: IRowResult): boolean => (
 	prev.costMoney === next.costMoney
@@ -32,14 +37,20 @@ const areItemValuesEqual = (prev: IItem, next: IItem): boolean => (
 interface ITableRowItemProps {
 	item: IItem;
 	row: IRowResult;
-	index: number;
-	isLast: boolean;
 	onUpdate: (id: string, field: keyof IItem, value: unknown) => void;
-	onMove: (idx: number, delta: number) => void;
 	onDelete: (id: string) => void;
 }
 
-const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index, isLast, onUpdate, onMove, onDelete }) => {
+const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpdate, onDelete }) => {
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id: item.id });
+
 	const handleUpdate = useCallback(
 		(field: keyof IItem, value: unknown) => {
 			onUpdate(item.id, field, value);
@@ -47,11 +58,32 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 		[item.id, onUpdate],
 	);
 
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+		zIndex: isDragging ? 100 : "auto",
+		position: "relative" as const,
+		opacity: isDragging ? 0.5 : row.calculate ? 1 : 0.4,
+		background: isDragging ? "var(--gray-2)" : "transparent",
+	};
+
 	return (
 		<Table.Row
+			ref={setNodeRef}
 			align="center"
-			style={{ transition: "background-color 0.1s ease" }}
+			style={style}
 		>
+			<Table.Cell align="center">
+				<Flex
+					align="center"
+					justify="center"
+					{...attributes}
+					{...listeners}
+					className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded"
+				>
+					<DragHandleDots2Icon className="text-gray-400" />
+				</Flex>
+			</Table.Cell>
 			<Table.Cell>
 				<Checkbox
 					checked={item.calculate}
@@ -71,10 +103,7 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 			{/* 尾部操作區域 */}
 			<Table.Cell>
 				<RowActions
-					index={index}
-					isLast={isLast}
 					itemId={item.id}
-					onMove={onMove}
 					onDelete={onDelete}
 				/>
 			</Table.Cell>
@@ -85,9 +114,7 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, index,
 export const TableRowItem: React.FC<ITableRowItemProps> = memo(
 	TableRowItemComponent,
 	(prev, next) => (
-		prev.index === next.index
-		&& prev.isLast === next.isLast
-		&& areItemValuesEqual(prev.item, next.item)
+		areItemValuesEqual(prev.item, next.item)
 		&& areRowValuesEqual(prev.row, next.row)
 	),
 );

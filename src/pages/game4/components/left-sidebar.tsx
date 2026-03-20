@@ -1,28 +1,43 @@
+"use client";
+
+/**
+ * 左側側邊欄容器 (LeftSidebar)
+ *
+ * 預期行為：
+ * 1. 提供一個可摺疊的容器，內含 `BasicInfoPanel`。
+ * 2. 桌面版支持水平展開/收起，手機版支持垂直展開/收起。
+ * 3. 記錄開關狀態於 `localStorage`。
+ * 4. 支持快捷鍵 (Cmd+B) 切換狀態。
+ *
+ * 佈局修正：
+ * - 修復直向文字 (writing-mode) 時圖標與文字換列的問題。
+ */
+
 import { useHotkeys } from "react-hotkeys-hook";
 import { cn, getModifierKey } from "@/src/lib/utils";
 import {
-	ChevronDown,
-	ChevronLeft,
-	ChevronRight,
-	ChevronUp,
-} from "lucide-react";
+	ChevronDownIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	ChevronUpIcon,
+	InfoCircledIcon,
+} from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/src/components/ui/collapsible";
+import * as Collapsible from "@radix-ui/react-collapsible";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import { BasicInfoPanel } from "./basic-info-panel";
+import { Box, Flex, Text } from "@radix-ui/themes";
 
 const SIDEBAR_KEY = "sidebarOpen";
 
 export const LeftSidebar: React.FC = () => {
 	const isMobile = useIsMobile();
 
+	// 從本地存儲恢復開關狀態
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
 		if (typeof window === "undefined") return true;
-
 		const saved = localStorage.getItem(SIDEBAR_KEY);
 		if (saved !== null) return saved === "true";
-
-		// fallback：桌面開、手機關
 		return !isMobile;
 	});
 
@@ -30,99 +45,90 @@ export const LeftSidebar: React.FC = () => {
 		localStorage.setItem(SIDEBAR_KEY, String(sidebarOpen));
 	}, [sidebarOpen]);
 
-	// 快捷鍵 : 切換開關 (Cmd+B)
+	// 快捷鍵：Cmd+B 切換開關
 	useHotkeys("mod+b", () => setSidebarOpen(prev => !prev));
 	const modifier = getModifierKey();
-
 	return (
-		<Collapsible
+		<Collapsible.Root
 			open={sidebarOpen}
 			onOpenChange={setSidebarOpen}
 			className={cn(
-				"border-border bg-sidebar transition-all duration-300 ease-in-out shrink-0 flex",
+				"border-border transition-all duration-300 ease-in-out shrink-0 flex bg-white dark:bg-gray-950 shadow-sm z-20",
 				isMobile
 					? "flex-col w-full border-b"
 					: "flex-row h-full border-r",
 			)}
 		>
-			<CollapsibleTrigger asChild>
+			{/* 觸發器：顯示標題與開關圖標 */}
+			<Collapsible.Trigger asChild>
 				<button
-					title={sidebarOpen ? "收起側邊欄 (Cmd+B)" : "展開側邊欄 (Cmd+B)"}
+					title={sidebarOpen ? `收起面板 (${modifier} + B)` : `展開面板 (${modifier} + B)`}
 					className={cn(
-						"flex items-center justify-between shrink-0 cursor-pointer transition-all select-none outline-none",
-						"bg-secondary/10 hover:bg-indigo-500/10 active:bg-indigo-500/20",
+						"flex items-center justify-between shrink-0 cursor-pointer transition-all select-none outline-none border-border",
+						"bg-gray-50/50 dark:bg-gray-900/50 hover:bg-blue-500/5 active:bg-blue-500/10",
 						isMobile
-							? "flex-row px-4 py-3 w-full border-b border-border"
-							: "flex-col py-6 px-2 w-10 border-r border-border h-full group",
+							? "flex-row px-4 py-2 w-full border-b"
+							: "flex-col py-6 px-1.5 w-10 border-r h-full group",
 					)}
 				>
-					<div
-						className={cn(
-							"flex items-center",
-							!isMobile && "flex-col h-full w-full justify-center gap-3", // 桌面版增加間距放提示
-						)}
+					<Flex
+						align="center"
+						direction={isMobile ? "row" : "column"}
+						gap="4"
+						className={cn(!isMobile && "h-full justify-center")}
 					>
-						<span
-							className={cn(
-								"font-medium text-[14px] text-muted-foreground whitespace-nowrap",
-								"transition-all duration-300",
-								!isMobile && "[writing-mode:vertical-lr] tracking-wider text-indigo-600 dark:text-indigo-400",
-							)}
+						{/* 文字標籤區：確保在直向模式下圖標與文字不換列 */}
+						<Flex
+							direction={isMobile ? "row" : "column"}
+							align="center"
+							gap="2"
+							className="whitespace-nowrap shrink-0"
 						>
-							基本資料
-						</span>
-
-						{/* 快捷鍵提示標籤 - 僅在桌面版顯示 */}
-						{!isMobile && (
-							<kbd
+							<InfoCircledIcon className="text-blue-500 shrink-0" />
+							<Text
+								size="1"
+								weight="bold"
 								className={cn(
-									"pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 lg:flex transition-opacity",
-									!sidebarOpen && "opacity-0 group-hover:opacity-100", // 收起時 hover 才顯現，避免視覺雜亂
+									"text-gray-500 tracking-widest whitespace-nowrap",
+									!isMobile && "[writing-mode:vertical-lr]",
 								)}
 							>
-								<span>{modifier}</span>B
-							</kbd>
-						)}
-					</div>
+								基本資料面板
+							</Text>
+						</Flex>
+					</Flex>
 
-					<div
-						className={cn(
-							"shrink-0 flex items-center justify-center",
-							!isMobile && "mt-auto mb-2",
-						)}
-					>
-						{/* Desktop */}
-						<span className="hidden lg:inline">
-							{sidebarOpen ? <ChevronLeft className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" /> : <ChevronRight className="h-4 w-4 text-indigo-500 animate-pulse" />}
-						</span>
-
-						{/* Mobile */}
-						<span className="lg:hidden">
-							{sidebarOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-						</span>
-					</div>
+					{/* 開關方向圖標 */}
+					<Box className={cn(!isMobile && "mt-auto mb-2 opacity-50")}>
+						{isMobile
+							? (
+								sidebarOpen ? <ChevronUpIcon /> : <ChevronDownIcon />
+							)
+							: (
+								sidebarOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />
+							)}
+					</Box>
 				</button>
-			</CollapsibleTrigger>
+			</Collapsible.Trigger>
 
-			<CollapsibleContent
+			{/* 內容區：渲染實際的 BasicInfoPanel */}
+			<Collapsible.Content
 				className={cn(
-					"overflow-hidden transition-all duration-300 ease-in-out",
+					"overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-gray-950",
 					isMobile
 						? "data-[state=closed]:h-0 data-[state=open]:h-auto w-full"
 						: "data-[state=closed]:w-0 data-[state=open]:w-72 h-full",
 				)}
 			>
-				<div
+				<Box
 					className={cn(
-						"transition-all",
-						isMobile
-							? "w-full p-2 max-h-[calc(100vh-120px)] overflow-y-auto" // 手機版：減少 padding 增加寬度感
-							: "w-72 h-full p-4 overflow-y-auto", // 桌面版：維持固定寬度
+						"p-4 transition-all",
+						isMobile ? "w-full max-h-[50vh] overflow-y-auto" : "w-72 h-full overflow-y-auto",
 					)}
 				>
 					<BasicInfoPanel />
-				</div>
-			</CollapsibleContent>
-		</Collapsible>
+				</Box>
+			</Collapsible.Content>
+		</Collapsible.Root>
 	);
 };

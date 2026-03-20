@@ -1,6 +1,6 @@
 // src/pages/game2/components/TableArea.tsx
 
-import React, { memo, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Badge, Box, Button, Flex, Table } from "@radix-ui/themes";
 import { CheckIcon, ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { TableRowItem } from "./TableRowItem";
@@ -10,12 +10,22 @@ import { TableHeader } from "./TableHeader";
 import { useArsenalActions, useArsenalItems, useArsenalRows } from "../context/ArsenalContext";
 import { Plus } from "lucide-react";
 
-/**
- * TableArea
- *
- * 職責：
- * - 顯示角色需求表格
- */
+// dnd-kit imports
+import {
+	closestCenter,
+	DndContext,
+	type DragEndEvent,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from "@dnd-kit/core";
+import {
+	arrayMove,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 export const TableArea: React.FC = memo(() => {
 	const { items, setItems } = useArsenalItems();
@@ -25,9 +35,26 @@ export const TableArea: React.FC = memo(() => {
 		updateItem,
 		deleteItem,
 		createItem,
-		moveItem,
 	} = useTableItems(setItems);
 	const { handleImport, handleExport, isCopied } = useArsenalActions();
+
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		}),
+	);
+
+	const handleDragEnd = useCallback((event: DragEndEvent) => {
+		const { active, over } = event;
+		if (over && active.id !== over.id) {
+			setItems((prevItems) => {
+				const oldIndex = prevItems.findIndex((item) => item.id === active.id);
+				const newIndex = prevItems.findIndex((item) => item.id === over.id);
+				return arrayMove(prevItems, oldIndex, newIndex);
+			});
+		}
+	}, [setItems]);
 
 	const itemIndexMap = useMemo(() => {
 		const map = new Map<string, { item: IItem, index: number }>();
@@ -74,47 +101,55 @@ export const TableArea: React.FC = memo(() => {
 				</Flex>
 			</div>
 
-			<Table.Root
-				variant="surface"
-				style={{
-					display: "flex", // 關鍵：改為 flex 佈局
-					flexDirection: "column",
-					overflowY: "auto", // 允許縱向滾動
-					height: "100%", // 撐滿剩餘空間
-				}}
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
 			>
-				<TableHeader />
-				<Table.Body>
-					{rows.map((row) => {
-						const entry = itemIndexMap.get(row.id);
-						if (!entry) return null;
+				<Table.Root
+					variant="surface"
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						overflowY: "auto",
+						height: "100%",
+					}}
+				>
+					<TableHeader />
+					<Table.Body>
+						<SortableContext
+							items={items.map(item => item.id)}
+							strategy={verticalListSortingStrategy}
+						>
+							{rows.map((row) => {
+								const entry = itemIndexMap.get(row.id);
+								if (!entry) return null;
 
-						const { item, index } = entry;
-						return (
-							<TableRowItem
-								key={row.id}
-								item={item}
-								row={row}
-								index={index}
-								isLast={index === items.length - 1}
-								onUpdate={updateItem}
-								onMove={moveItem}
-								onDelete={deleteItem}
-							/>
-						);
-					})}
-					{/* 底部空白填充，確保能捲動超過最後一項 */}
-					<Table.Row>
-						<Table.Cell colSpan={11} style={{ border: "none", padding: 0 }}>
-							<div style={{ height: "120px" }} className="flex items-center justify-center">
-								<span className="text-[10px] text-muted-foreground/30 tracking-[0.3em] uppercase">
-									— End of Planning —
-								</span>
-							</div>
-						</Table.Cell>
-					</Table.Row>
-				</Table.Body>
-			</Table.Root>
+								const { item } = entry;
+								return (
+									<TableRowItem
+										key={row.id}
+										item={item}
+										row={row}
+										onUpdate={updateItem}
+										onDelete={deleteItem}
+									/>
+								);
+							})}
+						</SortableContext>
+						{/* 底部空白填充 */}
+						<Table.Row>
+							<Table.Cell colSpan={12} style={{ border: "none", padding: 0 }}>
+								<div style={{ height: "120px" }} className="flex items-center justify-center">
+									<span className="text-[10px] text-muted-foreground/30 tracking-[0.3em] uppercase">
+										— End of Planning —
+									</span>
+								</div>
+							</Table.Cell>
+						</Table.Row>
+					</Table.Body>
+				</Table.Root>
+			</DndContext>
 		</Box>
 	);
 });
