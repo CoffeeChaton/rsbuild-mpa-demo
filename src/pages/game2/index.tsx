@@ -23,24 +23,15 @@ export const App: React.FC = () => {
 	const isMobile = useIsMobile();
 
 	return (
-		<div
-			className="grid overflow-hidden bg-gray-50 dark:bg-gray-950"
-			style={{
-				// 還有一個 外部 AI 看不太到的 Navbar 佔據了 頂部高度 避免滾動條跑來跑去，大約要扣 50px
-				height: "calc(100vh - 50px)",
-				gridTemplateRows: "auto 1fr auto",
-			}}
-		>
+		<div // 還有一個 外部 AI 看不太到的 Navbar 佔據了 頂部高度 避免滾動條跑來跑去，大約要扣 50px
+		 className="grid h-[calc(100vh-50px)] grid-rows-[auto_1fr_auto] overflow-hidden bg-gray-50 dark:bg-gray-950">
 			{/* 1. 頂部標題與導航 */}
 			<AppHeader />
 
 			{/* 2. 核心計算引擎與布局 */}
 			<ArsenalProvider>
 				<div
-					className="grid min-h-0 overflow-hidden"
-					style={{
-						gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
-					}}
+					className={`grid min-h-0 overflow-hidden ${isMobile ? "grid-cols-1" : "grid-cols-[auto_1fr]"}`}
 				>
 					{/* 左側側邊欄 */}
 					<div className="flex flex-col min-h-0 h-full">
@@ -48,12 +39,7 @@ export const App: React.FC = () => {
 					</div>
 
 					{/* 右側主內容區 */}
-					<div
-						className="grid min-w-0 min-h-0 overflow-hidden"
-						style={{
-							gridTemplateRows: "1fr auto",
-						}}
-					>
+					<div className="grid min-h-0 min-w-0 grid-rows-[1fr_auto] overflow-hidden">
 						{/* Table 區域：確保 h-full 以便 TableArea 內的 Box h-full 能生效 */}
 						<div className="min-h-0 overflow-hidden h-full relative">
 							<TableArea />

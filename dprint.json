@@ -12,7 +12,7 @@
 		"bin-release/",
 	],
 	"includes": [
-		"**/*.{ts,tsx,js,jsx,cjs,mjs,json,toml,html,md,css}",
+		"**/*.{ts,tsx,js,jsx,cjs,mjs,json,jsonc,toml,html,md,css}",
 	],
 	"incremental": true,
 	"indentWidth": 2,
@@ -50,6 +50,8 @@
 			"settings.json",
 			"tsconfig.json",
 			"dprint.json",
+			".knip.jsonc",
+			".oxlintrc.json",
 		],
 	},
 	/**

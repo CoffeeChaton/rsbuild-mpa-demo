@@ -3,16 +3,16 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"entry": [
 		"scripts/*.ts",
-		"src/pages/game/index.tsx!"
+		"src/pages/game/index.tsx!",
 	],
 	"project": [
 		"src/**/*.{ts,tsx}",
-		"scripts/**/*.ts"
+		"scripts/**/*.ts",
 	],
 	"paths": {
 		"@/*": [
-			"./*"
-		]
+			"./*",
+		],
 	},
 	"ignore": [
 		"src/components/ui/**",
@@ -21,7 +21,7 @@
 		// --- 保留低頻使用或測試輔助檔案 ---
 		"src/common/hooks/useRenderLog.ts",
 		"src/pages/game2/core/levelTestCases.ts",
-		"src/pages/game3/assets/TEMP.ts"
+		"src/pages/game3/assets/TEMP.ts",
 	],
 	"ignoreDependencies": [
 		"class-variance-authority", // 被忽略的 shadcn-ui 使用
@@ -33,11 +33,11 @@
 		"@tailwindcss/postcss",
 		"tailwindcss",
 		"tw-animate-css",
-		"@typescript/native-preview"
+		"@typescript/native-preview",
 	],
 	"ignoreBinaries": [
 		"tsx",
-		"dprint"
+		"dprint",
 	],
 	/**
 	* https://knip.dev/reference/configuration#ignoreunresolved
@@ -45,11 +45,11 @@
 	"ignoreUnresolved": [
 		// "ignore-unresolved-import",
 		// "#virtual/.+",
-		"\\?raw$" // // 忽略 Rsbuild/Vite 的原生資源導入語法
+		"\\?raw$", // // 忽略 Rsbuild/Vite 的原生資源導入語法
 	],
 	"ignoreExportsUsedInFile": {
 		"interface": true,
-		"type": true
+		"type": true,
 	},
 	// "compilers": {
 	// 	"css": "() => ''"

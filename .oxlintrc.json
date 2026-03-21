@@ -2,25 +2,44 @@
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"options": {
 		"typeAware": true,
-		"typeCheck": true
+		"typeCheck": true,
 	},
-	"plugins": null,
-	"categories": {},
+	//
+	"plugins": [
+		"react",
+		"react-perf",
+		"import",
+		// "jsx-a11y",
+		"promise",
+		"vitest",
+	],
+	"categories": {
+		// 1. Must Have
+		"correctness": "error",
+		"perf": "warn",
+		// 2.
+		// "suspicious":"warn",
+		// "style":"warn",
+		// 3.
+		// "pedantic":"warn",
+		// "restriction":"deny",
+		// "nursery":"deny"
+	},
 	"rules": {},
 	"settings": {
 		"jsx-a11y": {
 			"polymorphicPropName": null,
 			"components": {},
-			"attributes": {}
+			"attributes": {},
 		},
 		"next": {
-			"rootDir": []
+			"rootDir": [],
 		},
 		"react": {
 			"formComponents": [],
 			"linkComponents": [],
-			"version": null,
-			"componentWrapperFunctions": []
+			"version": "19.2.3",
+			"componentWrapperFunctions": [],
 		},
 		"jsdoc": {
 			"ignorePrivate": false,
@@ -30,15 +49,15 @@
 			"augmentsExtendsReplacesDocs": false,
 			"implementsReplacesDocs": false,
 			"exemptDestructuredRootsFromChecks": false,
-			"tagNamePreference": {}
+			"tagNamePreference": {},
 		},
 		"vitest": {
-			"typecheck": false
-		}
+			"typecheck": false,
+		},
 	},
 	"env": {
-		"builtin": true
+		"builtin": true,
 	},
 	"globals": {},
-	"ignorePatterns": []
+	"ignorePatterns": [],
 }

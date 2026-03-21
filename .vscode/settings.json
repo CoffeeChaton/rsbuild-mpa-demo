@@ -5,7 +5,21 @@
 		"settings.json": "jsonc",
 		"tsconfig.json": "jsonc",
 		"dprint.json": "jsonc",
+		".knip.jsonc": "jsonc",
+		".oxlintrc.json": "jsonc",
 	},
+	"json.schemas": [
+		{
+			"fileMatch": [
+				"*.jsonc",
+				"dprint.json",
+				".oxlintrc.json",
+			],
+			"schema": {
+				"allowTrailingCommas": true,
+			},
+		},
+	],
 	"files.eol": "\n",
 	"explorer.fileNesting.enabled": false,
 	"js/ts.tsdk.path": "node_modules/typescript/lib",
