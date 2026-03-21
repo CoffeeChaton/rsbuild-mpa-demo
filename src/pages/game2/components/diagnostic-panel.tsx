@@ -23,6 +23,7 @@ import { Badge, Card, Flex, Grid, Text } from "@radix-ui/themes";
 import { useDiagnostics } from "../hooks/useDiagnostics";
 import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { ProgressCard } from "./progress-card";
+import { calculateBookStacksValue } from "../config/inventory";
 
 export const DiagnosticPanel: React.FC = () => {
 	const { rows } = useArsenalRows();
@@ -40,17 +41,15 @@ export const DiagnosticPanel: React.FC = () => {
 		}, { error: 0, info: 0 });
 	}, [logs]);
 
-	const {
-		moneyGap,
-		booksGap,
-	} = summary;
+	const { moneyGap, booksGap } = summary;
 
 	const {
 		money,
-		books,
+		bookStacks,
 		avgMoneyProduction,
 		avgBookProduction,
 	} = inventory;
+	const books = calculateBookStacksValue(bookStacks);
 
 	return (
 		<Grid columns={{ initial: "1", sm: "2", lg: "4" }} gap="4" width="100%">

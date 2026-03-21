@@ -12,7 +12,6 @@ const toPositiveNumber = (value: unknown) => {
 
 const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
 	money: toPositiveNumber(inv?.money),
-	books: toPositiveNumber(inv?.books),
 	bookStacks: sanitizeBookStacks(inv?.bookStacks),
 	avgMoneyProduction: toPositiveNumber(inv?.avgMoneyProduction),
 	avgBookProduction: toPositiveNumber(inv?.avgBookProduction),

@@ -1,3 +1,4 @@
+import { calculateBookStacksValue } from "../config/inventory";
 import type { IDiagnosticEntry, IInventory, IRowResult } from "../types";
 
 // 核心計算邏輯
@@ -11,7 +12,10 @@ export type TGetProductionSummary = (rows: IRowResult[], inventory: IInventory) 
 };
 
 export const getProductionSummary: TGetProductionSummary = (rows, inventory) => {
-	const { money, books, avgMoneyProduction, avgBookProduction } = inventory;
+	const { money, bookStacks, avgMoneyProduction, avgBookProduction } = inventory;
+
+	const books = calculateBookStacksValue(bookStacks);
+
 	const totalMoneyNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumMoney) : acc), 0);
 	const totalBooksNeed = rows.reduce((acc, r) => (r.calculate ? Math.max(acc, r.cumBooks) : acc), 0);
 
@@ -33,7 +37,9 @@ export const getProductionSummary: TGetProductionSummary = (rows, inventory) => 
 
 export const generateLogs = (rows: IRowResult[], inventory: IInventory): IDiagnosticEntry[] => {
 	const logs: IDiagnosticEntry[] = [];
-	const { money, books, avgMoneyProduction, avgBookProduction } = inventory;
+	const { money, bookStacks, avgMoneyProduction, avgBookProduction } = inventory;
+
+	const books = calculateBookStacksValue(bookStacks);
 
 	rows.forEach((row, index) => {
 		// 檢查 1：等級邏輯錯誤
