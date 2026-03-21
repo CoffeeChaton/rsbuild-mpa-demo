@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Install Node.js 23
-        uses: actions/setup-node@v4
+      - name: Install Node.js 24
+        uses: actions/setup-node@v6
         with:
-          node-version: 23
+          node-version: '24'
 
       - name: Install pnpm 10
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
-          version: 10
+          version: '10'
 
       - name: Get pnpm store directory
         shell: bash
@@ -48,10 +48,10 @@ jobs:
           NODE_ENV: production
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           # 上傳編譯後的 dist 目錄
           path: './dist'

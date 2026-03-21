@@ -1,29 +1,28 @@
-/** * 經驗書配置：按 [高級, 中級, 初級, 基礎] 順序排列
- * 只存元數據，不存狀態
+/**
+ * 1. 唯一的配置來源
  */
 export const BOOK_CONFIG = [
-	{ label: "高級作戰紀錄", value: 2000 },
-	{ label: "中級作戰紀錄", value: 1000 },
-	{ label: "初級作戰紀錄", value: 400 },
-	{ label: "基礎作戰紀錄", value: 200 },
+	{ key: "advanced", label: "高級作戰紀錄", value: 2000 },
+	{ key: "intermediate", label: "中級作戰紀錄", value: 1000 },
+	{ key: "primary", label: "初級作戰紀錄", value: 400 },
+	{ key: "basic", label: "基礎作戰紀錄", value: 200 },
 ] as const;
 
-/** 經驗書數量狀態：固定長度為 4 的陣列 [count, count, count, count] */
-export type IBookStacks = [number, number, number, number];
-
-/** 初始狀態：全 0 */
-export const DEFAULT_BOOK_STACKS: IBookStacks = [0, 0, 0, 0];
-
-/** * 計算總經驗值
- * 直接用 index 對應 CONFIG 的 value
+/**
+ * 2. 類型體操：從配置自動推導 Key 的聯集
+ * TBookKey = "advanced" | "intermediate" | "primary" | "basic"
  */
-export const calculateBookStacksValue = (stacks: IBookStacks): number => stacks.reduce((acc, count, i) => acc + (Number(count) || 0) * BOOK_CONFIG[i].value, 0);
+export type TBookKey = (typeof BOOK_CONFIG)[number]["key"];
 
-/** 數據清洗：確保長度為 4 且皆為數字 */
-export const sanitizeBookStacks = (stacks?: IBookStacks): IBookStacks => {
-	const base = Array.isArray(stacks) ? stacks : DEFAULT_BOOK_STACKS;
-	return BOOK_CONFIG.map((_, i) => {
-		const val = Number(base[i]);
-		return Number.isFinite(val) ? val : 0;
-	}) as IBookStacks;
+/**
+ * 3. 具名物件結構：強制要求包含配置中的所有 Key
+ */
+export type IBookStacks = Record<TBookKey, number>;
+
+/** 初始狀態：使用 Record 確保所有 Key 都被初始化 */
+export const DEFAULT_BOOK_STACKS: IBookStacks = {
+	advanced: 0,
+	intermediate: 0,
+	primary: 0,
+	basic: 0,
 };

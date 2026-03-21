@@ -16,7 +16,11 @@ import { useEditor } from "./hooks/useEditor";
 const NAVBAR_HEIGHT = 70; // px
 
 export const FutureMaterialPage: React.FC = () => {
-	const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher);
+	const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher, {
+		revalidateOnFocus: false, // 視窗切換回來不用重新抓
+		revalidateOnReconnect: false, // 斷線重連不用重新抓
+		dedupingInterval: 3600000, // 一小時內只會抓一次
+	});
 	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
 	const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
 	const [importOpen, setImportOpen] = useState(false);
@@ -48,7 +52,7 @@ export const FutureMaterialPage: React.FC = () => {
 	}, [rows]);
 
 	return (
-		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-[#f2f4f7] overflow-hidden">
+		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden">
 			{/* ToolbarArea */}
 			<PlanContext.Provider value={planContextValue}>
 				<ToolbarArea

@@ -2,7 +2,6 @@
 	"compilerOptions": {
 		"target": "ES2023",
 		"jsx": "react-jsx",
-
 		/* 嚴格規範 */
 		"strict": true,
 		"skipLibCheck": true,
@@ -25,6 +24,11 @@
 		"noImplicitReturns": true, // 確保函數，標註了回傳值以後，忘了return
 		"noPropertyAccessFromIndexSignature": true, // 只允許 onj.xxx 不允許 obj['xxx'] 可能導致的潛在錯誤，請看ts範例
 		"declaration": true, // 配合下面這條
-		"isolatedDeclarations": true // 有性能要求再開，不然太煩，他要求所有的export 的東西，都把類型標上去
+		"isolatedDeclarations": true, // 有性能要求再開，不然太煩，他要求所有的export 的東西，都把類型標上去
+		"paths": {
+			"@/*": [
+				"./*"
+			]
+		}
 	}
 }

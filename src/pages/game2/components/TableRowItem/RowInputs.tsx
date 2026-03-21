@@ -1,66 +1,90 @@
-import React, { useCallback } from "react";
-import { Flex, Table, Text, TextField } from "@radix-ui/themes";
+import { memo, useCallback, useMemo } from "react";
+import { Flex, Text } from "@radix-ui/themes";
 import type { IItem } from "../../types";
 import { RaritySelect } from "../RaritySelect";
+import { validateItem } from "../../core/itemValidator";
+import type { JSX } from "react/jsx-runtime";
+import { TableCell } from "@/src/components/ui/table";
+import { TableInput } from "./TableInput";
+import { CellWithError } from "./CellWithError";
 
 interface IRowInputsProps {
 	item: IItem;
 	onUpdate: (id: string, field: keyof IItem, value: unknown) => void;
 }
 
-const RowInputsComponent: React.FC<IRowInputsProps> = ({
-	item,
-	onUpdate,
-}) => {
+export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInputsProps) => JSX.Element> = memo(({ item, onUpdate }: IRowInputsProps) => {
+	const error = useMemo(() => validateItem(item), [item]);
+
 	const handleUpdate = useCallback(
-		(field: keyof IItem, value: unknown) => {
-			onUpdate(item.id, field, value);
-		},
+		(field: keyof IItem, value: unknown) => onUpdate(item.id, field, value),
 		[item.id, onUpdate],
 	);
+
 	return (
 		<>
-			<Table.Cell>
-				{/* 選擇 星級 / 稀有度 */}
+			<TableCell className="text-center p-2">
 				<RaritySelect
 					value={item.rarity}
-					onValueChange={val => handleUpdate("rarity", Number(val))}
+					onValueChange={(val) => handleUpdate("rarity", Number(val))}
 				/>
-			</Table.Cell>
-			<Table.Cell>
-				<TextField.Root
-					size="1"
+			</TableCell>
+
+			{/* 角色名稱 */}
+			<CellWithError errorMessages={[error.fields.name]}>
+				<TableInput
+					id="name"
+					type="text"
+					width={100}
 					value={item.name}
-					onChange={e => handleUpdate("name", e.currentTarget.value)}
+					errorMessage={error.fields.name}
+					onChange={handleUpdate}
 				/>
-			</Table.Cell>
-			<Table.Cell>
-				<TextField.Root
-					size="1"
-					variant="soft"
+			</CellWithError>
+
+			{/* 備註 */}
+			<CellWithError errorMessages={[error.fields.note]}>
+				<TableInput
+					id="note"
+					type="text"
+					width={160}
 					value={item.note}
-					onChange={e => handleUpdate("note", e.target.value)}
+					errorMessage={error.fields.note}
+					onChange={handleUpdate}
 				/>
-			</Table.Cell>
-			<Table.Cell>
-				{/* 模組 */}
-				<Flex align="center" gap="1">
-					<TextField.Root type="number" size="1" style={{ width: 28 }} value={item.moduleFrom} onChange={e => handleUpdate("moduleFrom", e.target.value)} />
-					<Text size="1" color="gray">→</Text>
-					<TextField.Root type="number" size="1" style={{ width: 28 }} value={item.moduleTo} onChange={e => handleUpdate("moduleTo", e.target.value)} />
+			</CellWithError>
+
+			{/* 模組進度 */}
+			<CellWithError errorMessages={[error.fields.moduleFrom, error.fields.moduleTo]}>
+				<TableInput
+					id="moduleFrom"
+					width={40}
+					value={item.moduleFrom}
+					errorMessage={error.fields.moduleFrom}
+					onChange={handleUpdate}
+				/>
+				<Text size="1" color="gray" weight="bold">→</Text>
+				<TableInput
+					id="moduleTo"
+					width={40}
+					value={item.moduleTo}
+					errorMessage={error.fields.moduleTo}
+					onChange={handleUpdate}
+				/>
+			</CellWithError>
+
+			{/* 等級進度 */}
+			<CellWithError errorMessages={[error.fields.e1, error.fields.l1, error.fields.e2, error.fields.l2, error.fields.progress]}>
+				<Flex gap="1">
+					<TableInput id="e1" width={40} value={item.e1} errorMessage={error.fields.e1} onChange={handleUpdate} />
+					<TableInput id="l1" width={40} value={item.l1} errorMessage={error.fields.l1} onChange={handleUpdate} />
 				</Flex>
-			</Table.Cell>
-			<Table.Cell>
-				<Flex align="center" gap="1">
-					<TextField.Root type="number" size="1" style={{ width: 28 }} value={item.e1} onChange={e => handleUpdate("e1", e.target.value)} />
-					<TextField.Root type="number" size="1" style={{ width: 32 }} value={item.l1} onChange={e => handleUpdate("l1", e.target.value)} />
-					<Text size="1" color="gray">→</Text>
-					<TextField.Root type="number" size="1" style={{ width: 28 }} value={item.e2} onChange={e => handleUpdate("e2", e.target.value)} />
-					<TextField.Root type="number" size="1" style={{ width: 32 }} value={item.l2} onChange={e => handleUpdate("l2", e.target.value)} />
+				<Text size="1" color="gray" weight="bold">→</Text>
+				<Flex gap="1">
+					<TableInput id="e2" width={40} value={item.e2} errorMessage={error.fields.e2} onChange={handleUpdate} />
+					<TableInput id="l2" width={40} value={item.l2} errorMessage={error.fields.l2} onChange={handleUpdate} />
 				</Flex>
-			</Table.Cell>
+			</CellWithError>
 		</>
 	);
-};
-
-export const RowInputs: React.NamedExoticComponent<IRowInputsProps> = React.memo(RowInputsComponent);
+});

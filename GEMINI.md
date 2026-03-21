@@ -1,74 +1,47 @@
-# GEMINI.md - Project Instructional Context
+# GEMINI.md - Project Context & Strict Rules
 
-## 1. Project Overview
+## 1. Technical Stack
 
-This project is an **Rsbuild-powered React 19** application, specifically designed as a **Hybrid MPA/SPA** (Multi-Page Application / Single Page Application). It serves as a platform for various "Arknights" (明日方舟) game-related planning tools and GIS experiments.
+- **Framework**: React 19 (`hydrateRoot`) + Rsbuild.
+- **Routing**: `react-router` v7 (Hybrid MPA/SPA).
+- **UI & Styling**: Radix UI Themes, Tailwind CSS v4.
+- **Data & State**: `swr` (用於遠端 Fetching), `foxact` (UI Hooks).
 
-### Key Technologies:
+## 2. Mandatory Coding Rules (Strict)
 
-- **Build System**: [Rsbuild](https://rsbuild.dev/) (v1.7+)
-- **Frontend Library**: React 19 (using `hydrateRoot` for SSG compatibility)
-- **Routing**: `react-router-dom` v7+ (configured with `basename`)
-- **State Management / Data Fetching**: `swr`
-- **Styling**: Tailwind CSS v4, Lucide React, Shadcn UI, Radix UI, @radix-ui/themes
-- **Language**: TypeScript (with composite builds and strict rules)
-- **Formatting/Linting**: `dprint`, `eslint`
+- **Exports**: **Named Exports ONLY**. NEVER use `export default` (except in `rsbuild.config.ts`).
+- **External Libraries**:
+  - **Clipboard**: 必須使用 `foxact/use-clipboard`。所有剪貼行為必須提供 UI 反饋（如顯示「已複製」狀態）。
+  - **Storage**: 優先使用 `foxact` 的 `useLocalStorage` 或 `createLocalStorageState` 處理持久化。
+- **Type Safety**:
+  - **NO `any`**. Use `unknown` + Type Guards + schema.
+  - **Naming**: Types start with **`T`** (e.g., `TRowStatus`), Interfaces start with **`I`** (e.g., `IItem`).
+  - **Components**: Use **`React.FC`** with **`I[ComponentName]Props`** interface naming convention.
+- **Patterns**: Prefer `Object.hasOwn()` over `hasOwnProperty`.
+- **Logic**: All page entries must bootstrap via `src/pages/index/main.tsx`.
 
----
+## 3. Data & State Management Patterns
 
-## 2. Architecture & Design Principles
+- **Context Design**: 嚴禁使用巨型 Context。必須將數據拆分為「子 Context」（例如 `ItemsContext`, `InventoryContext`），以精確控制渲染範圍。
+- **Storage Namespacing**: 存檔 Key 必須遵循 `${STORAGE_KEY}_data_${configId}` 格式，確保多存檔隔離。
 
-### Hybrid MPA/SPA Strategy
+## 4. Performance Standards (Heavy Tables)
 
-- **Logical Entry**: All pages point to a unified entry at `src/pages/index/main.tsx`.
-- **Physical Segregation**: Rsbuild `getEntries` dynamically scans `src/pages/` and generates nested `index.html` files for each route (e.g., `dist/game3/index.html`).
-- **SEO/SSG**: A custom `pluginSSG` injects metadata (titles, descriptions) from `src/common/config/pages.ts` into HTML templates during the build.
-- **Client-side Navigation**: Once loaded, `react-router-dom` handles transitions without full page reloads.
+- **Memoization**: 大規模數據行（Rows）必須使用 `React.memo`。
+- **Custom Comparison**: 若 Row 組件接收複雜 Object，必須實作自定義比較函數（如 `areRowValuesEqual`）。
+- **Reference Stability**: 所有傳遞給 memoized 組件的 callback 必須使用 `useCallback`；計算結果使用 `useMemo`。
 
-### Type System & Safety
+## 5. Adding a New Page
 
-- **Multi-layered tsconfig**: Separate configurations for App (DOM) and Node environments (scripts).
-- **Composite Builds**: Uses `tsc -b` for incremental, strict type checking across all environments.
-- **Never Guards**: Uses `TIsNotNever<T>` and `TAssertEqual` for compile-time validation of critical configurations.
+1. **View**: `src/pages/[route]/[ViewName].tsx`.
+2. **Provider**: 若有複雜狀態，需建立 `[Name]Context.tsx`。
+3. **Map**: 於 `src/common/router/view-map.ts` 註冊組件。
+4. **SSG**: 於 `src/common/config/pages.ts` 的 `PAGE_MAP` 中新增 Metadata。
 
----
+## 6. RWD Standards
 
-## 3. Building and Running
-
-| Command          | Description                                                         |
-| :--------------- | :------------------------------------------------------------------ |
-| `pnpm dev`       | Start dev server at `http://localhost:3055`                         |
-| `pnpm build`     | Production build (includes SSG & 404 fixing)                        |
-| `pnpm preview`   | Preview build with production-like base path (`/rsbuild-mpa-demo/`) |
-| `pnpm typecheck` | Run full project type check via `tsgo`                              |
-| `pnpm lint`      | Run ESLint with timing and caching                                  |
-| `pnpm format`    | Format all files using `dprint`                                     |
-| `pnpm test`      | Run tests with Vitest                                               |
-
----
-
-## 4. Development Conventions
-
-### Code Style & Patterns
-
-- **Named Exports Only**: NEVER use `export default` (except for specific config files like `rsbuild.config.ts`).
-- **Strict Typing**:
-  - NO `any`. Use `unknown` and type guards.
-  - Types must start with `T` (e.g., `TPageKey`).
-  - Interfaces must start with `I` (e.g., `IPageInfo`).
-- **Bootstrapping**: All entries must go through the `bootstrap` function in `main.tsx`.
-- **Modern JS**: Prefer `Object.hasOwn()` over `hasOwnProperty`.
-
-### File Organization
-
-- `src/pages/`: Directory-based routing logic (each folder is a virtual route).
-- `src/common/`: Shared configuration, router logic, and reusable components.
-- `scripts/`: Build-time utilities (SSG, metadata injection).
-- `public/`: Static assets (images, JSON data).
-
-### Adding a New Page
-
-1. Create a View in `src/pages/[route]/[ViewName]/index.tsx`.
-2. Register the component in `src/common/router/view-map.ts`.
-3. Add metadata to `PAGE_MAP` in `src/common/config/pages.ts`.
-4. Verify via `pnpm build`.
+- 必須測試以下斷點的佈局表現：
+  - Desktop (1920x1080)
+  - Split View (Desktop / 2)
+  - Mobile (iPhone SE)
+- 優先使用 Radix UI 的響應式 Props (例如 `columns={{ initial: "1", lg: "2" }}`).

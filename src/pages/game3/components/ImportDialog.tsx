@@ -34,7 +34,7 @@ export const ImportDialog: FC<IImportDialogParam> = ({
 			<Dialog.Content style={{ maxWidth: 450 }} className="rounded-3xl">
 				<Dialog.Title size="3">導入原有數據 (JSON)</Dialog.Title>
 				<textarea
-					className="w-full h-48 p-4 rounded-xl border-none font-mono text-xs bg-slate-100 mt-4"
+					className="w-full h-48 p-4 rounded-xl border-none font-mono text-xs mt-4"
 					value={tempJson}
 					onChange={(e) => setTempJson(e.target.value)}
 				/>

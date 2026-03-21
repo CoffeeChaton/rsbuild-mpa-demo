@@ -1,9 +1,9 @@
 import type { IItemDataBundle } from "../services/itemFetcher";
 
-export interface IItemBundle {
-	items: Record<string, { name: { tw: string }, rare: number }>;
-	nameToIdMap: Map<string, string>;
-}
+// export interface IItemBundle {
+// 	items: Record<string, { name: { tw: string }, rare: number }>;
+// 	nameToIdMap: Map<string, string>;
+// }
 
 export function analyzeSource(
 	content: string,

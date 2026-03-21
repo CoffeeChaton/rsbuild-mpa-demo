@@ -5,6 +5,16 @@ export interface IPageInfo {
 	hidden?: boolean; // 是否在 Navbar 隱藏（例如 404）
 }
 
+export type TPageKey =
+	| "index"
+	| "products"
+	| "map-edit"
+	// | "game"
+	| "game2"
+	| "game3"
+	// | "game4"
+	| "404";
+
 export const PAGE_MAP = {
 	index: {
 		title: "首頁 - 品牌門面",
@@ -21,11 +31,11 @@ export const PAGE_MAP = {
 		description: "自定義您的地圖偏好與中心點",
 		label: "地圖編輯",
 	},
-	"game": {
-		title: "明日方舟 資源計畫器",
-		description: "資源計畫器",
-		label: "資源計畫器(預計刪除)",
-	},
+	// "game": {
+	// 	title: "明日方舟 資源計畫器",
+	// 	description: "資源計畫器",
+	// 	label: "資源計畫器(預計刪除)",
+	// },
 	"game2": {
 		title: "明日方舟 練度規劃表",
 		description: "練度規劃表",
@@ -33,16 +43,18 @@ export const PAGE_MAP = {
 	},
 	"game3": {
 		title: "明日方舟 材料未來視",
-		description: "材料未來視 計算器",
-		label: "材料未來視 計算器",
+		description: "材料未來視",
+		label: "材料未來視",
 	},
+	// "game4": {
+	// 	title: "明日方舟 練度規劃表2",
+	// 	description: "練度規劃表2",
+	// 	label: "練度規劃表2",
+	// },
 	"404": {
 		title: "404 - 找不到頁面",
 		description: "抱歉，您訪問的頁面不存在",
 		label: "404",
 		hidden: true,
 	},
-} as const as Record<"index" | "products" | "map-edit" | "game" | "game2" | "game3" | "404", IPageInfo>;
-
-// 定義導出的 Key 型別，供其他工具使用
-export type TPageKey = keyof typeof PAGE_MAP;
+} as const as Record<TPageKey, IPageInfo>;

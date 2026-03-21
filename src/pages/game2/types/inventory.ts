@@ -5,10 +5,6 @@ import type { IBookStacks } from "../config/inventory";
 export interface IInventory {
 	money: number;
 	/**
-	 * 透過作戰記錄冊折算後的總經驗值
-	 */
-	books: number;
-	/**
 	 * 各等級作戰記錄冊的数量
 	 */
 	bookStacks: IBookStacks;

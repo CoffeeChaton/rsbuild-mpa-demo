@@ -1,4 +1,4 @@
-import { Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
+import { Box, Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
 import { CopyIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import type { Dispatch, FC, SetStateAction } from "react";
 import type { IItemRow, TFilter } from "../type";
@@ -17,11 +17,18 @@ export const MaterialToolbar: FC<IMaterialToolbarProps> = ({
 }) => {
 	return (
 		<Flex align="center" gap="3">
-			<TextField.Root size="2" placeholder="搜尋項目..." className="w-56 bg-slate-50" value={filter.search} onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}>
-				<TextField.Slot>
-					<MagnifyingGlassIcon />
-				</TextField.Slot>
-			</TextField.Root>
+			<Box maxWidth="200px">
+				<TextField.Root
+					size="2"
+					placeholder="搜尋項目..."
+					value={filter.search}
+					onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}
+				>
+					<TextField.Slot>
+						<MagnifyingGlassIcon />
+					</TextField.Slot>
+				</TextField.Root>
+			</Box>
 
 			<Button
 				variant="outline"

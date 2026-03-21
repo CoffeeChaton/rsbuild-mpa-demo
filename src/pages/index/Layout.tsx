@@ -1,8 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pages";
 import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+import { Navbar } from "../../common/Navbar";
+import { ConfigProvider } from "../../common/context/ConfigProvider";
+import { Toaster } from "../../components/ui/sonner";
 
 const MetaUpdater: React.FC = () => {
 	// 1. 強制排除 any，符合 IPageInfo 嚴格型別
@@ -39,9 +41,21 @@ const MetaUpdater: React.FC = () => {
 	return null;
 };
 
-export const Layout: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => (
-	<Theme>
-		<MetaUpdater />
-		{children}
-	</Theme>
+export interface ILayoutProps {
+	children: ReactNode;
+	/** 命名空間：用於隔離存檔體系 (例如 "game4") */
+	namespace?: string;
+	/** 指定此頁面使用的配置 ID */
+	configId?: string;
+}
+
+export const Layout: React.FC<ILayoutProps> = ({ children, namespace, configId }) => (
+	<ConfigProvider namespace={namespace} overrideConfigId={configId}>
+		<div className="bg-(--gray-1) min-h-screen">
+			<MetaUpdater />
+			<Navbar />
+			{children}
+			<Toaster />
+		</div>
+	</ConfigProvider>
 );

@@ -4,6 +4,7 @@ import { calculateArknightsLevel } from "./calculateArknightsLevel";
 import type { ILevelData } from "./data";
 import type { IInventory, IItem, IRowResult } from "../types";
 import { calculateModuleCost } from "./moduleCost";
+import { calculateBookStacksValue } from "./calculateBookStacksValue";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 const parseNumber = (value: string | number | undefined, fallback: number) => {
@@ -16,6 +17,8 @@ export const calcArsenalRows = (
 	inventory: IInventory,
 	levelData: ILevelData,
 ): IRowResult[] => {
+	const { bookStacks, money } = inventory;
+	const books = calculateBookStacksValue(bookStacks);
 	let accMoney = 0;
 	let accBooks = 0;
 
@@ -63,10 +66,11 @@ export const calcArsenalRows = (
 
 		const moneyStatus: IRowResult["status"] = !item.calculate
 			? "disabled"
-			: (inventory.money >= cumMoney ? "safe" : "danger");
+			: (money >= cumMoney ? "safe" : "danger");
+
 		const booksStatus: IRowResult["status"] = !item.calculate
 			? "disabled"
-			: (inventory.books >= cumBooks ? "safe" : "danger");
+			: (books >= cumBooks ? "safe" : "danger");
 		const status: IRowResult["status"] = !item.calculate
 			? "disabled"
 			: (moneyStatus === "danger" || booksStatus === "danger" ? "danger" : "safe");

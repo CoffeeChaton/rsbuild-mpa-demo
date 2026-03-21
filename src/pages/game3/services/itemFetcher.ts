@@ -31,7 +31,7 @@ export const itemFetcher = async (url: string): Promise<IItemDataBundle> => {
 		nameToIdMap.set(item.name.us, id);
 
 		// 預設下拉選單顯示 tw
-		options.push({ label: item.name.tw, value: item.name.tw });
+		options.push({ label: item.name.tw, value: id });
 	}
 
 	return { items, nameToIdMap, options };

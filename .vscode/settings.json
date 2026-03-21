@@ -8,4 +8,13 @@
 	},
 	"files.eol": "\n",
 	"explorer.fileNesting.enabled": false,
+	"js/ts.tsdk.path": "node_modules/typescript/lib",
+	"[typescript]": {
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4,
+	},
+	"[typescriptreact]": {
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4,
+	},
 }

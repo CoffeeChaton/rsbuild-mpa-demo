@@ -1,9 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { calculateArknightsLevel } from "./calculateArknightsLevel";
 import { levelTestCases } from "./levelTestCases";
-import { levelDataFixture } from "./levelData.fixture";
+import * as v from "valibot";
+import rawLevelData from "@/src/assets/level.json";
+import { type ILevelData, LevelDataSchema } from "./data";
 
 describe("明日方舟練度計算驗證 (對標 Excel 數據)", () => {
+	const levelDataFixture: ILevelData = v.parse(LevelDataSchema, rawLevelData);
+
 	it.each(levelTestCases)(
 		"星級 $star: [精$fE/Lv$fL] -> [精$tE/Lv$tL]",
 		({ star, fE, fL, tE, tL, exp, lmd }) => {

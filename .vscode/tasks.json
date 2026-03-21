@@ -18,13 +18,13 @@
 				"runOn": "folderOpen",
 			},
 		},
-		{
-			"label": "test",
-			"type": "npm",
-			"script": "test",
-			"runOptions": {
-				"runOn": "folderOpen",
-			},
-		},
+		// {
+		// 	"label": "test",
+		// 	"type": "npm",
+		// 	"script": "test",
+		// 	"runOptions": {
+		// 		"runOn": "folderOpen",
+		// 	},
+		// },
 	],
 }

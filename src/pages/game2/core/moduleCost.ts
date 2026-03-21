@@ -1,9 +1,9 @@
 // src/pages/game2/core/moduleCost.ts
 
 const MODULE_COST_MATRIX: Record<number, [number, number, number]> = {
-	6: [80_000, 100_000, 120_000],
-	5: [40_000, 50_000, 60_000],
-	4: [20_000, 20_000, 30_000],
+	6: [80000, 100000, 120000],
+	5: [40000, 50000, 60000],
+	4: [20000, 20000, 30000],
 };
 
 const clampLevel = (level: number) => Math.min(Math.max(level, 0), 3);
