@@ -1,7 +1,14 @@
 import * as React from "react";
+import { memo } from "react";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 
-export const AppHeader: React.FC = () => {
+/**
+ * AppHeader
+ *
+ * 靜態頂部導航欄。
+ * 使用 memo 避免在全域狀態（如 ArsenalProvider）更新時觸發無謂的重新渲染。
+ */
+export const AppHeader: React.FC = memo(() => {
 	return (
 		<header
 			style={{
@@ -33,4 +40,6 @@ export const AppHeader: React.FC = () => {
 			</Flex>
 		</header>
 	);
-};
+});
+
+AppHeader.displayName = "AppHeader";

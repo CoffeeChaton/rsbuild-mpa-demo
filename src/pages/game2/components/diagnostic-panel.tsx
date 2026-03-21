@@ -11,7 +11,6 @@
  * - 透過 `useDiagnostics` 勾子計算最終的缺口與天數，並呈現給玩家。
  */
 
-import * as React from "react";
 import {
 	CheckCircledIcon,
 	ClockIcon,
@@ -23,9 +22,10 @@ import { Badge, Card, Flex, Grid, Text } from "@radix-ui/themes";
 import { useDiagnostics } from "../hooks/useDiagnostics";
 import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { ProgressCard } from "./progress-card";
+import { memo, useMemo } from "react";
 import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
 
-export const DiagnosticPanel: React.FC = () => {
+export const DiagnosticPanel: React.FC = memo(() => {
 	const { rows } = useArsenalRows();
 	const { inventory } = useArsenalInventory();
 
@@ -33,7 +33,7 @@ export const DiagnosticPanel: React.FC = () => {
 	const { logs, summary } = useDiagnostics(rows, inventory);
 
 	// 計算錯誤數量，用於校驗顯示
-	const counts = React.useMemo(() => {
+	const counts = useMemo(() => {
 		return logs.reduce((acc, log) => {
 			if (log.type === "error") acc.error++;
 			else if (log.type === "info" && log.id !== "ok") acc.info++;
@@ -49,6 +49,7 @@ export const DiagnosticPanel: React.FC = () => {
 		avgMoneyProduction,
 		avgBookProduction,
 	} = inventory;
+
 	const books = calculateBookStacksValue(bookStacks);
 
 	return (
@@ -131,4 +132,4 @@ export const DiagnosticPanel: React.FC = () => {
 			/>
 		</Grid>
 	);
-};
+});

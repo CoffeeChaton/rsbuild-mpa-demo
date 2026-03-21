@@ -35,6 +35,7 @@ import {
  * - PC 滿版：min-w-[1600px] 確保顯示。
  * - 透過 Tailwind 媒體查詢處理不同 Breakpoint 下的滾動行為。
  */
+
 export const TableArea: React.FC = memo(() => {
 	const { items, setItems } = useArsenalItems();
 	const { rows } = useArsenalRows();

@@ -20,7 +20,7 @@ import {
 	ChevronUpIcon,
 	InfoCircledIcon,
 } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import { Box, Flex, Text } from "@radix-ui/themes";
@@ -28,7 +28,7 @@ import { BasicInfoPanel } from "./basic-info-panel";
 
 const SIDEBAR_KEY = "sidebarOpen";
 
-export const LeftSidebar: React.FC = () => {
+export const LeftSidebar: React.FC = memo(() => {
 	const isMobile = useIsMobile();
 
 	// 從本地存儲恢復開關狀態
@@ -129,4 +129,6 @@ export const LeftSidebar: React.FC = () => {
 			</Collapsible.Content>
 		</Collapsible.Root>
 	);
-};
+});
+
+LeftSidebar.displayName = "LeftSidebar";

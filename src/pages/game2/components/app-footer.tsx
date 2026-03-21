@@ -1,9 +1,16 @@
 import * as React from "react";
+import { memo } from "react";
 import { ExternalLinkIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Flex, Separator, Text } from "@radix-ui/themes";
 import { IconLink } from "@/src/common/components/IconLink";
 
-export const AppFooter: React.FC = () => {
+/**
+ * AppFooter
+ *
+ * 靜態頁尾組件。
+ * 使用 memo 避免不必要的重新渲染。
+ */
+export const AppFooter: React.FC = memo(() => {
 	const sources = [
 		{
 			label: "arkntools",
@@ -63,4 +70,6 @@ export const AppFooter: React.FC = () => {
 			</Flex>
 		</footer>
 	);
-};
+});
+
+AppFooter.displayName = "AppFooter";

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { memo } from "react";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Badge, Card, Flex, Progress, Text } from "@radix-ui/themes";
 
@@ -53,7 +54,8 @@ const ProductionInsight = ({ gap, daily }: { gap: number, daily: number }) => {
 	}
 	return null;
 };
-interface IProgressCardProps {
+
+export interface IProgressCardProps {
 	/** 卡片標題 */
 	title: string;
 	/** 顯示的 Icon 組件 */
@@ -66,22 +68,20 @@ interface IProgressCardProps {
 	daily: number;
 	/** 進度條顏色 */
 	color: "blue" | "green";
-	/** 顯示數字的格式化函數 */
-	formatNumber?: (value: number) => string;
+
 	/** 當前文字顏色，差額為溢出時使用 */
 	overflowColor: "blue" | "green" | "grass";
 	gapColor: "blue" | "green" | "grass" | "red";
 	showPercentText?: boolean; // 是否顯示百分比文字
 }
 
-export const ProgressCard: React.FC<IProgressCardProps> = ({
+export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 	title,
 	Icon,
 	current,
 	need,
 	daily,
 	color = "blue",
-	formatNumber = (v) => v.toLocaleString(),
 	overflowColor = "grass",
 	gapColor = "red",
 	showPercentText = true,
@@ -92,6 +92,7 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 		return null;
 	}
 	const isMet = need <= 0;
+	const formatNumber = (v: number) => v.toLocaleString();
 
 	return (
 		<Card variant="surface" className="flex-1">
@@ -161,4 +162,6 @@ export const ProgressCard: React.FC<IProgressCardProps> = ({
 			</Flex>
 		</Card>
 	);
-};
+});
+
+ProgressCard.displayName = "ProgressCard";

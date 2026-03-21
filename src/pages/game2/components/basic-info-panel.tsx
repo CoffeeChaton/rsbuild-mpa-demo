@@ -11,7 +11,7 @@
  */
 
 import * as React from "react";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import { ReaderIcon, StackIcon } from "@radix-ui/react-icons";
 import {
 	Card,
@@ -39,7 +39,7 @@ const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, unit: string 
 	{ key: "avgBookProduction", label: "平均經驗書產出", unit: "EXP" },
 ];
 
-export const BasicInfoPanel: React.FC = () => {
+export const BasicInfoPanel: React.FC = memo(() => {
 	const { inventory, setInventory } = useArsenalInventory();
 
 	// 更新全域庫存狀態
@@ -146,4 +146,4 @@ export const BasicInfoPanel: React.FC = () => {
 			</Flex>
 		</Flex>
 	);
-};
+});

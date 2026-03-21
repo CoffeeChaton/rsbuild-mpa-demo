@@ -16,7 +16,7 @@ import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -27,7 +27,7 @@ import { DiagnosticPanel } from "./diagnostic-panel";
 
 const HEIGHT_KEY = "diagnostic-height";
 
-export const BottomDiagnosticPanel: React.FC = () => {
+export const BottomDiagnosticPanel: React.FC = memo(() => {
 	const isMobile = useIsMobile();
 	const modifier = getModifierKey();
 	const [open, setOpen] = useState(!isMobile);
@@ -126,4 +126,6 @@ export const BottomDiagnosticPanel: React.FC = () => {
 			</Collapsible.Content>
 		</Collapsible.Root>
 	);
-};
+});
+
+BottomDiagnosticPanel.displayName = "BottomDiagnosticPanel";
