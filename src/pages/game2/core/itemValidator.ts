@@ -6,7 +6,7 @@ const num = (v: string) => parseInt(v, 10) || 0;
 /**
  * 檢查培養進度是否合理 (To >= From)
  */
-export const checkProgress = (item: Pick<IItem, "e1" | "l1" | "e2" | "l2">): boolean => {
+const checkProgress = (item: Pick<IItem, "e1" | "l1" | "e2" | "l2">): boolean => {
 	const p1 = num(item.e1) * 100 + num(item.l1);
 	const p2 = num(item.e2) * 100 + num(item.l2);
 	return p2 >= p1;

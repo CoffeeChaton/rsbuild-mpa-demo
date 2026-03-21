@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /** 判斷是否為 Mac 系統 */
-export const isMac = (): boolean => {
+const isMac = (): boolean => {
 	if (typeof window === "undefined") return false;
 	return /Macintosh|Mac OS X/i.test(window.navigator.userAgent);
 };

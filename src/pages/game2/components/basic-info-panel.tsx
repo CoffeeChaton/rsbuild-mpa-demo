@@ -66,8 +66,8 @@ export const BasicInfoPanel: React.FC = () => {
 					<Flex direction="column" gap="4" p="2">
 						{/* 龍門幣輸入：直接修改 money 數值 */}
 						<Flex direction="column" gap="2">
-							<Text size="1" color="gray" weight="medium">
-								{`龍門幣 (${(inventory.money / 10000).toFixed(1)} 萬)`}
+							<Text size="1" weight="bold">
+								{`龍門幣 (LMD ${(inventory.money / 10000).toFixed(1)} 萬)`}
 							</Text>
 							<TextField.Root
 								type="number"

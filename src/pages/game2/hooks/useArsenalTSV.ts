@@ -9,8 +9,6 @@ export interface IArsenalActions {
 	isCopied: boolean;
 }
 
-export type TUseArsenalTSV = (setItems: (items: IItem[]) => void, rows: IRowResult[]) => IArsenalActions;
-
 export const useArsenalTSV = (
 	setItems: (items: IItem[]) => void,
 	inventory: IInventory,

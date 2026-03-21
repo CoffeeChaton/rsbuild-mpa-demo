@@ -17,16 +17,6 @@ import type { IItem } from "../types/item";
  */
 
 /**
- * TSV Export Header
- *
- * Excel compatible
- */
-export const TSV_HEADER: string = [
-	["", "", "", "", "模組", "", "初始練度", "", "目標練度", "", "自動估算"].join("\t"),
-	["是否計算", "星級", "角色名", "技能備註", "FROM", "TO", "精英化", "等級", "精英化", "等級", "預估錢", "預估書", "累計錢", "累計書"].join("\t"),
-].join("\n");
-
-/**
  * Default item template
  *
  * 新增角色時使用
@@ -47,16 +37,5 @@ export const DEFAULT_ITEM_TEMPLATE: Omit<IItem, "id"> = {
 	e2: "2",
 	l2: "1",
 };
-
-/**
- * TSV import 判斷 header
- */
-export const TSV_HEADER_KEYWORDS = [
-	"計算",
-	"角色",
-] as const;
-
-/** 預留導航欄高度常數 */
-export const NAV_BAR_HEIGHT = 100;
 
 export const STORAGE_KEY = "ark_arsenal_v6_final";
