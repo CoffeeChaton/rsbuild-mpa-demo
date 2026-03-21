@@ -46,7 +46,7 @@ export const FutureMaterialPage: React.FC = () => {
 				.map(r => [r.id, r.total]),
 		);
 
-		navigator.clipboard.writeText(
+		void navigator.clipboard.writeText(
 			JSON.stringify(result, null, 2),
 		);
 	}, [rows]);

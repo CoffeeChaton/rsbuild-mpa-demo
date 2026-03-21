@@ -46,7 +46,7 @@ export const Navbar: React.FC = () => {
 								active={isActive}
 								onMouseEnter={() => {
 									const page = VIEW_MAP[item.key as keyof typeof VIEW_MAP];
-									page?.loader?.();
+									void page.loader();
 								}}
 								className="transition-colors"
 							>

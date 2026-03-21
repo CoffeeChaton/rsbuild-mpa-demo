@@ -141,7 +141,7 @@ export const useArsenalTSV = (
 			output.push(rowData.join(t));
 		});
 
-		copy(output.join("\n"));
+		void copy(output.join("\n"));
 	}, [inventory, rows, copy]);
 
 	return { handleImport, handleExport, isCopied };

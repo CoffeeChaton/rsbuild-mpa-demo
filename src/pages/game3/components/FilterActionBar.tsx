@@ -34,7 +34,7 @@ export const MaterialToolbar: FC<IMaterialToolbarProps> = ({
 				variant="outline"
 				onClick={() => {
 					const lines: string[] = rows.map(r => `${r.rare}\t${r.name}\t${r.stock}\t${r.need}\t${r.total}`);
-					navigator.clipboard.writeText(
+					void navigator.clipboard.writeText(
 						["稀有度\t名稱\t原有\t需求\t合計", ...lines].join("\n"),
 					);
 				}}
