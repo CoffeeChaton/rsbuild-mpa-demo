@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateItem } from "./itemValidator";
+import { ITEM_ERR_MSG, validateItem } from "./itemValidator";
 import type { IItem } from "../types";
 
 describe("validateItem 業務邏輯測試", () => {
@@ -25,37 +25,43 @@ describe("validateItem 業務邏輯測試", () => {
 
 	it("應該攔截模組等級越界 (0~3)-初始", () => {
 		const result = validateItem({ ...baseItem, moduleFrom: "5" });
-		expect(result.fields.moduleFrom).toBe(true);
-		expect(result.messages).toContain("初始模組等級 0~3");
+		const expected = `初始模組 ${ITEM_ERR_MSG.MODULE_RANGE}`;
+		expect(result.fields.moduleFrom).toBe(expected);
+		expect(result.messages).toContain(expected);
 	});
 
 	it("應該攔截模組等級越界 (0~3)-目標", () => {
 		const result = validateItem({ ...baseItem, moduleTo: "5" });
-		expect(result.fields.moduleTo).toBe(true);
-		expect(result.messages).toContain("目標模組等級 0~3");
+		const expected = `目標模組 ${ITEM_ERR_MSG.MODULE_RANGE}`;
+		expect(result.fields.moduleTo).toBe(expected);
+		expect(result.messages).toContain(expected);
 	});
 
 	it("應該攔截模組目標低於初始", () => {
 		const result = validateItem({ ...baseItem, moduleFrom: "3", moduleTo: "1" });
-		expect(result.fields.moduleRange).toBe(true);
-		expect(result.messages).toContain("模組目標不可低於初始");
+		expect(result.fields.moduleTo).toBe(`目標模組${ITEM_ERR_MSG.MODULE_LOW_TARGET}`);
 	});
 
-	it("應該攔截等級超出上限 (E0 只能到 50)", () => {
+	it("應該攔截等級超出上限 (5星 E0 只能到 50)", () => {
 		const result = validateItem({ ...baseItem, e1: "0", l1: "51" });
-		expect(result.fields.l1).toBe(true);
-		expect(result.messages).toContain("初始等級超出上限");
+		expect(result.fields.l1).toBe(ITEM_ERR_MSG.INVALID_L_FROM);
 	});
 
 	it("應該攔截精英化階段錯誤 (3星沒有 E2)", () => {
 		const result = validateItem({ ...baseItem, rarity: 3, e2: "2", l2: "1" });
-		expect(result.fields.e2).toBe(true);
-		expect(result.messages).toContain("目標精英階段錯誤");
+		expect(result.fields.e2).toBe(ITEM_ERR_MSG.INVALID_E_TO);
 	});
 
 	it("應該攔截進度倒退 (E2 -> E1)", () => {
 		const result = validateItem({ ...baseItem, e1: "2", l1: "1", e2: "1", l2: "80" });
-		expect(result.fields.progress).toBe(true);
-		expect(result.messages).toContain("目標進度不可低於初始");
+		// 因為 progress 錯誤會同時標註在 e2, l2, progress 欄位
+		expect(result.fields.progress).toBe(ITEM_ERR_MSG.PROGRESS_BACKWARD);
+		expect(result.fields.e2).toBe(ITEM_ERR_MSG.PROGRESS_BACKWARD);
+		expect(result.messages).toContain(ITEM_ERR_MSG.PROGRESS_BACKWARD);
+	});
+
+	it("應該攔截低星級填寫模組", () => {
+		const result = validateItem({ ...baseItem, rarity: 3, moduleFrom: "1" });
+		expect(result.fields.moduleFrom).toBe(ITEM_ERR_MSG.MODULE_NOT_SUPPORTED);
 	});
 });

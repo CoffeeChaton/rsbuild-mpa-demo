@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
-import { Checkbox, Flex, IconButton, Table } from "@radix-ui/themes";
+import { Checkbox, Flex, IconButton } from "@radix-ui/themes";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
 import { StatCell } from "./TableRowItem/StatCell";
 import { RowInputs } from "./TableRowItem/RowInputs";
+import { TableCell, TableRow } from "@/src/components/ui/table";
 
 // dnd-kit imports
 import { useSortable } from "@dnd-kit/sortable";
@@ -43,12 +44,12 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 	};
 
 	return (
-		<Table.Row
+		<TableRow
 			ref={setNodeRef}
-			align="center"
 			style={style}
+			className={!row.calculate && !isDragging ? "grayscale" : ""}
 		>
-			<Table.Cell align="center">
+			<TableCell className="text-center">
 				<Flex
 					align="center"
 					justify="center"
@@ -58,31 +59,31 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 				>
 					<DragHandleDots2Icon className="text-gray-400" />
 				</Flex>
-			</Table.Cell>
-			<Table.Cell>
+			</TableCell>
+			<TableCell>
 				<Checkbox
 					checked={item.calculate}
 					onCheckedChange={v => handleUpdate("calculate", !!v)}
 				/>
-			</Table.Cell>
+			</TableCell>
 			{/* 中間計算區域 */}
 			<RowInputs
 				item={item}
 				onUpdate={onUpdate}
 			/>
 
-			<StatCell width="100px" value={row.costMoney} tone="money" variant="cost" />
-			<StatCell width="100px" value={row.costBooks} tone="books" variant="cost" />
-			<StatCell width="130px" value={row.cumMoney} tone="money" variant="cum" status={row.moneyStatus} showValue={item.calculate} />
-			<StatCell width="130px" value={row.cumBooks} tone="books" variant="cum" status={row.booksStatus} showValue={item.calculate} />
+			<StatCell value={row.costMoney} tone="money" variant="cost" />
+			<StatCell value={row.costBooks} tone="books" variant="cost" />
+			<StatCell value={row.cumMoney} tone="money" variant="cum" status={row.moneyStatus} showValue={item.calculate} />
+			<StatCell value={row.cumBooks} tone="books" variant="cum" status={row.booksStatus} showValue={item.calculate} />
 
 			{/* 尾部操作區域 */}
-			<Table.Cell width="60px">
+			<TableCell className="text-center">
 				<IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(item.id)} className="cursor-pointer">
 					<TrashIcon />
 				</IconButton>
-			</Table.Cell>
-		</Table.Row>
+			</TableCell>
+		</TableRow>
 	);
 };
 

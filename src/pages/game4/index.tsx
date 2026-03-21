@@ -8,9 +8,6 @@
  *    - 中間：核心需求表格 (TableArea)，處理角色列表與資源計算 (核心邏輯)
  *    - 底部：診斷與摘要面板 (BottomDiagnosticPanel > DiagnosticPanel)，顯示最終計算結果 (數據終點)
  * 3. 底部版權欄 (AppFooter)
- *
- * 數據流向 (Data Flow):
- * BasicInfoPanel (Inventory) -> TableArea (Items & Calculations) -> DiagnosticPanel (Results)
  */
 
 import * as React from "react";
@@ -29,6 +26,7 @@ export const App: React.FC = () => {
 		<div
 			className="grid overflow-hidden bg-gray-50 dark:bg-gray-950"
 			style={{
+				// 還有一個 外部 AI 看不太到的 Navbar 佔據了 頂部高度 避免滾動條跑來跑去，大約要扣 50px
 				height: "calc(100vh - 50px)",
 				gridTemplateRows: "auto 1fr auto",
 			}}
@@ -44,18 +42,20 @@ export const App: React.FC = () => {
 						gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
 					}}
 				>
-					{/* 左側側邊欄：輸入庫存與產能 (數據源) */}
-					<div className="min-h-0">
+					{/* 左側側邊欄 */}
+					<div className="flex flex-col min-h-0 h-full">
 						<LeftSidebar />
 					</div>
+
+					{/* 右側主內容區 */}
 					<div
 						className="grid min-w-0 min-h-0 overflow-hidden"
 						style={{
 							gridTemplateRows: "1fr auto",
 						}}
 					>
-						{/* Table */}
-						<div className="min-h-0 overflow-hidden">
+						{/* Table 區域：確保 h-full 以便 TableArea 內的 Box h-full 能生效 */}
+						<div className="min-h-0 overflow-hidden h-full relative">
 							<TableArea />
 						</div>
 

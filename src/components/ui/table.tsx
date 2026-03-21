@@ -1,27 +1,50 @@
 import type { ComponentProps } from "react";
 import { cn } from "../../lib/utils";
 import type { JSX } from "react/jsx-runtime";
+import { ScrollArea } from "@radix-ui/themes";
 
-function Table({ className, ...props }: ComponentProps<"table">): JSX.Element {
+interface TableProps extends ComponentProps<"table"> {
+	/** 強制表格寬高，超出時滾動 */
+	containerStyle?: React.CSSProperties;
+	/** 是否使用固定佈局，避免頻繁 Layout */
+	fixed?: boolean;
+}
+
+function Table({ className, containerStyle, fixed, ...props }: TableProps): JSX.Element {
 	return (
-		<div
+		<ScrollArea
 			data-slot="table-container"
-			className="relative w-full overflow-x-auto"
+			scrollbars="both"
+			style={{ ...containerStyle, width: "100%", height: "100%" }}
 		>
 			<table
 				data-slot="table"
-				className={cn("w-full caption-bottom text-sm", className)}
+				// 使用 table-fixed 是優化效能的關鍵
+				className={cn(
+					"w-full caption-bottom text-sm border-collapse",
+					fixed ? "table-fixed" : "table-auto",
+					className,
+				)}
 				{...props}
 			/>
-		</div>
+		</ScrollArea>
 	);
 }
 
-function TableHeader({ className, ...props }: ComponentProps<"thead">): JSX.Element {
+interface TableHeaderProps extends ComponentProps<"thead"> {
+	/** 是否固定表頭 */
+	sticky?: boolean;
+}
+
+function TableHeader({ className, sticky, ...props }: TableHeaderProps): JSX.Element {
 	return (
 		<thead
 			data-slot="table-header"
-			className={cn("[&_tr]:border-b", className)}
+			className={cn(
+				"[&_tr]:border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60",
+				sticky && "sticky top-0 z-10 shadow-sm", // 黏性表頭
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -63,12 +86,18 @@ function TableRow({ className, ...props }: ComponentProps<"tr">): JSX.Element {
 	);
 }
 
-function TableHead({ className, ...props }: ComponentProps<"th">): JSX.Element {
+interface TableHeadProps extends ComponentProps<"th"> {
+	/** 強制輸入寬度 */
+	width: number | string;
+}
+
+function TableHead({ className, width, ...props }: TableHeadProps): JSX.Element {
 	return (
 		<th
 			data-slot="table-head"
+			style={{ width, minWidth: width, maxWidth: width }}
 			className={cn(
-				"h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+				"h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground overflow-hidden text-ellipsis border-r last:border-r-0 border-border/50",
 				className,
 			)}
 			{...props}
@@ -81,7 +110,7 @@ function TableCell({ className, ...props }: ComponentProps<"td">): JSX.Element {
 		<td
 			data-slot="table-cell"
 			className={cn(
-				"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+				"p-2 align-middle whitespace-nowrap overflow-hidden text-ellipsis border-r last:border-r-0 border-border/50",
 				className,
 			)}
 			{...props}

@@ -8,11 +8,14 @@ export type TFieldError =
 	| "e2"
 	| "l2"
 	| "progress"
-	| "moduleRange";
+	| "moduleRange"
+	| "name"
+	| "note";
 
 export interface IItemError {
 	messages: string[];
-	fields: Partial<Record<TFieldError, true>>;
+	/** 鍵值為欄位名，值為該欄位的錯誤訊息字串 */
+	fields: Partial<Record<TFieldError, string>>;
 }
 
 /**

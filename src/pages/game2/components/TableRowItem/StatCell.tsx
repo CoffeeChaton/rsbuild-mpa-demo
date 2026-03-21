@@ -1,6 +1,7 @@
 import React, { memo } from "react";
-import { Table, Text } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 import type { TRowStatus } from "../../types";
+import { TableCell } from "@/src/components/ui/table";
 
 type TStatTone = "money" | "books";
 type TStatVariant = "cost" | "cum";
@@ -19,7 +20,6 @@ const cumStatusStyle: Record<TRowStatus, { backgroundColor: string, textColor: R
 };
 
 export interface IStatCellProps {
-	width: string;
 	value: number;
 	tone: TStatTone;
 	variant: TStatVariant;
@@ -27,32 +27,32 @@ export interface IStatCellProps {
 	showValue?: boolean;
 }
 
-export const StatCell: React.FC<IStatCellProps> = memo(({ width, value, tone, variant, status, showValue = true }) => {
+export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, status, showValue = true }) => {
 	if (!showValue) {
 		return (
-			<Table.Cell>
+			<TableCell className="text-right">
 				<Text style={numStyle}>&nbsp;</Text>
-			</Table.Cell>
+			</TableCell>
 		);
 	}
 
 	if (variant === "cost") {
 		return (
-			<Table.Cell width={width}>
+			<TableCell className="text-right">
 				<Text weight="bold" color={toneColorMap[tone]} style={numStyle}>
 					{value.toLocaleString()}
 				</Text>
-			</Table.Cell>
+			</TableCell>
 		);
 	}
 
 	const { backgroundColor, textColor } = cumStatusStyle[status ?? "safe"];
 	return (
-		<Table.Cell width={width} style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
+		<TableCell className="text-right" style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
 			<Text weight="bold" color={textColor} style={numStyle}>
 				Σ {value.toLocaleString()}
 			</Text>
-		</Table.Cell>
+		</TableCell>
 	);
 });
 StatCell.displayName = "StatCell";
