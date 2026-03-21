@@ -21,14 +21,14 @@ export const SummarySection: FC<ISummaryProps> = ({ summary, materialMap }) => {
 
 		const tsv = header + rows;
 
-		navigator.clipboard.writeText(tsv).then(() => {
+		void navigator.clipboard.writeText(tsv).then(() => {
 			// 這裡建議用更現代的 Toast，但 alert 也是 Evil 你的風格
 			alert("已複製 ");
 		});
 	};
 
 	const copyAsJSON = () => {
-		navigator.clipboard.writeText(JSON.stringify(summary, null, 2));
+		void navigator.clipboard.writeText(JSON.stringify(summary, null, 2));
 		alert("已複製為 JSON");
 	};
 

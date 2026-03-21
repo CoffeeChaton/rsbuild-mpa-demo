@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import type { TEditor } from "../type";
 
-export type UseEditor = (initial?: Partial<TEditor> | undefined) => {
+export type UseEditor = (initial?: Partial<TEditor>) => {
 	editor: TEditor,
 	setEditorOpen: (open: boolean, data?: Partial<TEditor>) => void,
 	updateEditor: (data: Partial<TEditor>) => void,
