@@ -1,14 +1,15 @@
 // src/common/components/ConfigSwitch.tsx
 import React, { useState } from "react";
-import { Button, Flex, IconButton, Popover, SegmentedControl, Text, TextField } from "@radix-ui/themes";
-import { ArchiveIcon, MoonIcon, PlusIcon, SunIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useConfigActions, useConfigs, useCurrentConfigId } from "../hooks/useConfig";
+import { Button, Flex, IconButton, Popover, SegmentedControl, Text, TextField, Tooltip } from "@radix-ui/themes";
+import { ArchiveIcon, LockClosedIcon, LockOpen2Icon, MoonIcon, PlusIcon, SunIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { useConfigActions, useConfigs, useCurrentConfigId, useIsConfigLocked } from "../hooks/useConfig";
 import type { TTheme } from "../types/config";
 
 export const ConfigSwitch: React.FC = () => {
 	const configs = useConfigs();
 	const currentConfigId = useCurrentConfigId();
-	const { switchConfig, addConfig, deleteConfig, renameConfig, updateTheme } = useConfigActions();
+	const isConfigLocked = useIsConfigLocked();
+	const { switchConfig, addConfig, deleteConfig, renameConfig, updateTheme, toggleLock } = useConfigActions();
 
 	const [newName, setNewName] = useState("");
 	const [isAdding, setIsAdding] = useState(false);
@@ -28,8 +29,13 @@ export const ConfigSwitch: React.FC = () => {
 		<Flex align="center" gap="2">
 			<Popover.Root>
 				<Popover.Trigger>
-					<Button variant="surface" color="gray" size="2">
-						<ArchiveIcon />
+					<Button
+						variant="surface"
+						color={isConfigLocked ? "amber" : "gray"}
+						size="2"
+						className="cursor-pointer"
+					>
+						{isConfigLocked ? <LockClosedIcon /> : <ArchiveIcon />}
 						<Text weight="bold" className="max-w-[100px] truncate">
 							{currentConfig?.name}
 						</Text>
@@ -38,9 +44,22 @@ export const ConfigSwitch: React.FC = () => {
 				<Popover.Content style={{ width: 300 }}>
 					<Flex direction="column" gap="3">
 						<Flex justify="between" align="center">
-							<Text size="1" weight="bold" color="gray">
-								存檔與主題管理
-							</Text>
+							<Flex align="center" gap="2">
+								<Text size="1" weight="bold" color="gray">
+									存檔與主題管理
+								</Text>
+								<Tooltip content={isConfigLocked ? "點擊解除鎖定" : "點擊鎖定當前帳號（防止在其他視窗切換時連動）"}>
+									<IconButton
+										size="1"
+										variant="ghost"
+										color={isConfigLocked ? "amber" : "gray"}
+										onClick={toggleLock}
+										className="cursor-pointer"
+									>
+										{isConfigLocked ? <LockClosedIcon /> : <LockOpen2Icon />}
+									</IconButton>
+								</Tooltip>
+							</Flex>
 							{currentConfig && (
 								<SegmentedControl.Root
 									size="1"
@@ -68,13 +87,19 @@ export const ConfigSwitch: React.FC = () => {
 									className={`rounded-md ${
 										config.id === currentConfigId
 											? "bg-[var(--accent-3)] shadow-sm"
+											: isConfigLocked
+											? "opacity-50"
 											: "hover:bg-[var(--gray-3)]"
 									}`}
 								>
 									<Text
 										size="2"
-										className="flex-1 cursor-pointer truncate px-2 py-1"
-										onClick={() => switchConfig(config.id)}
+										className={`flex-1 truncate px-2 py-1 ${isConfigLocked ? "cursor-not-allowed" : "cursor-pointer"}`}
+										onClick={() => {
+											if (!isConfigLocked) {
+												switchConfig(config.id);
+											}
+										}}
 									>
 										{config.name}
 									</Text>
@@ -129,7 +154,12 @@ export const ConfigSwitch: React.FC = () => {
 								</Flex>
 							)
 							: (
-								<Button variant="ghost" size="1" onClick={() => setIsAdding(true)}>
+								<Button
+									variant="ghost"
+									size="1"
+									onClick={() => setIsAdding(true)}
+									disabled={isConfigLocked}
+								>
 									<PlusIcon /> 新增存檔
 								</Button>
 							)}

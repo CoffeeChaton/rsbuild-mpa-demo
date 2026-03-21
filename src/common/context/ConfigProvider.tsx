@@ -1,24 +1,43 @@
 import React, { useCallback, useMemo } from "react";
 import { Theme } from "@radix-ui/themes";
-import { useConfigs, useCurrentConfigId } from "../state/config";
+import { updateLastUsedConfigId, useNamespacedConfigLock, useNamespacedConfigs, useNamespacedCurrentConfigId } from "../state/config";
 import type { IConfigEntry, TTheme } from "../types/config";
 import {
 	ConfigActionsContext,
 	ConfigsContext,
 	CurrentConfigIdContext,
 	CurrentThemeContext,
+	IsConfigLockedContext,
 } from "./ConfigContext";
 
 export interface IConfigProviderProps {
 	children: React.ReactNode;
+	/**
+	 * 命名空間：用於隔離不同頁面的存檔列表
+	 */
+	namespace?: string | undefined;
+	/**
+	 * 強制指定配置 ID (代碼層級鎖定)
+	 */
+	overrideConfigId?: string | undefined;
 }
 
-export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children }) => {
-	const [configsRaw, setConfigs] = useConfigs();
-	const [currentConfigIdRaw, setCurrentConfigId] = useCurrentConfigId();
+export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children, namespace = "", overrideConfigId }) => {
+	const ns = namespace ?? "";
+
+	const [configsRaw, setConfigs] = useNamespacedConfigs(ns);
+	const [currentConfigIdRaw, setCurrentConfigId] = useNamespacedCurrentConfigId(ns);
+
+	// 優先判定當前生效的 ID
+	const currentConfigId = overrideConfigId ?? currentConfigIdRaw ?? "default";
+
+	// 獲取該帳號的全域鎖定狀態
+	const [isLockedRaw, setIsLocked] = useNamespacedConfigLock(currentConfigId, ns);
 
 	const configs = useMemo(() => configsRaw ?? [], [configsRaw]);
-	const currentConfigId = currentConfigIdRaw ?? "default";
+
+	// 如果代碼強制指定，或者 localStorage 顯示該帳號已鎖定
+	const isConfigLocked = !!overrideConfigId || isLockedRaw;
 
 	const currentConfig = useMemo(
 		() => configs.find(c => c.id === currentConfigId) || configs[0] || { id: "default", theme: "light" as const },
@@ -29,7 +48,12 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children }) => 
 
 	const switchConfig = useCallback((id: string) => {
 		setCurrentConfigId(id);
-	}, [setCurrentConfigId]);
+		updateLastUsedConfigId(id, ns);
+	}, [ns, setCurrentConfigId]);
+
+	const toggleLock = useCallback(() => {
+		setIsLocked(prev => !prev);
+	}, [setIsLocked]);
 
 	const addConfig = useCallback((name: string) => {
 		const newConfig: IConfigEntry = {
@@ -39,22 +63,21 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children }) => 
 			theme: "dark",
 		};
 		setConfigs(prev => [...(prev ?? []), newConfig]);
-		setCurrentConfigId(newConfig.id);
-	}, [configs.length, setConfigs, setCurrentConfigId]);
+		switchConfig(newConfig.id);
+	}, [configs.length, setConfigs, switchConfig]);
 
 	const deleteConfig = useCallback((id: string) => {
 		if (id === "default") return;
 		setConfigs(prev => {
 			if (!prev) return [];
 			const next = prev.filter(c => c.id !== id);
-			if (currentConfigId === id) {
-				setCurrentConfigId(next[0]?.id || "default");
+			if (currentConfigIdRaw === id) {
+				const fallbackId = next[0]?.id || "default";
+				switchConfig(fallbackId);
 			}
 			return next;
 		});
-		// Note: We don't remove individual game data here because ConfigProvider is generic.
-		// Individual pages should handle their own cleanup if they want.
-	}, [currentConfigId, setConfigs, setCurrentConfigId]);
+	}, [currentConfigIdRaw, setConfigs, switchConfig]);
 
 	const renameConfig = useCallback((id: string, name: string) => {
 		setConfigs(prev => (prev ?? []).map(c => c.id === id ? { ...c, name, lastModified: Date.now() } : c));
@@ -70,17 +93,20 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children }) => 
 		deleteConfig,
 		renameConfig,
 		updateTheme,
-	}), [switchConfig, addConfig, deleteConfig, renameConfig, updateTheme]);
+		toggleLock,
+	}), [switchConfig, addConfig, deleteConfig, renameConfig, updateTheme, toggleLock]);
 
 	return (
 		<ConfigActionsContext.Provider value={actions}>
 			<ConfigsContext.Provider value={configs}>
 				<CurrentConfigIdContext.Provider value={currentConfigId}>
-					<CurrentThemeContext.Provider value={currentTheme}>
-						<Theme appearance={currentTheme} hasBackground={false}>
-							{children}
-						</Theme>
-					</CurrentThemeContext.Provider>
+					<IsConfigLockedContext.Provider value={isConfigLocked}>
+						<CurrentThemeContext.Provider value={currentTheme}>
+							<Theme appearance={currentTheme} hasBackground={false}>
+								{children}
+							</Theme>
+						</CurrentThemeContext.Provider>
+					</IsConfigLockedContext.Provider>
 				</CurrentConfigIdContext.Provider>
 			</ConfigsContext.Provider>
 		</ConfigActionsContext.Provider>
