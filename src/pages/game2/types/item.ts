@@ -1,5 +1,20 @@
 // src/pages/game2/types/item.ts
 
+export type TFieldError =
+	| "moduleFrom"
+	| "moduleTo"
+	| "e1"
+	| "l1"
+	| "e2"
+	| "l2"
+	| "progress"
+	| "moduleRange";
+
+export interface IItemError {
+	messages: string[];
+	fields: Partial<Record<TFieldError, true>>;
+}
+
 /**
  * 基本需求項目
  *
@@ -43,4 +58,7 @@ export interface IItem {
 	 */
 	e2: string;
 	l2: string;
+
+	/** 錯誤訊息 */
+	error?: IItemError;
 }

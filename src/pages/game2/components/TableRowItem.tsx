@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Checkbox, Flex, IconButton, Table } from "@radix-ui/themes";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
@@ -8,30 +8,6 @@ import { RowInputs } from "./TableRowItem/RowInputs";
 // dnd-kit imports
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-const areRowValuesEqual = (prev: IRowResult, next: IRowResult): boolean => (
-	prev.costMoney === next.costMoney
-	&& prev.costBooks === next.costBooks
-	&& prev.cumMoney === next.cumMoney
-	&& prev.cumBooks === next.cumBooks
-	&& prev.moneyStatus === next.moneyStatus
-	&& prev.booksStatus === next.booksStatus
-	&& prev.status === next.status
-);
-
-const areItemValuesEqual = (prev: IItem, next: IItem): boolean => (
-	prev.id === next.id
-	&& prev.calculate === next.calculate
-	&& prev.rarity === next.rarity
-	&& prev.name === next.name
-	&& prev.note === next.note
-	&& prev.moduleFrom === next.moduleFrom
-	&& prev.moduleTo === next.moduleTo
-	&& prev.e1 === next.e1
-	&& prev.l1 === next.l1
-	&& prev.e2 === next.e2
-	&& prev.l2 === next.l2
-);
 
 interface ITableRowItemProps {
 	item: IItem;
@@ -94,27 +70,20 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 				item={item}
 				onUpdate={onUpdate}
 			/>
-			<StatCell value={row.costMoney} tone="money" variant="cost" />
-			<StatCell value={row.costBooks} tone="books" variant="cost" />
-			<StatCell value={row.cumMoney} tone="money" variant="cum" status={row.moneyStatus} showValue={item.calculate} />
-			<StatCell value={row.cumBooks} tone="books" variant="cum" status={row.booksStatus} showValue={item.calculate} />
+
+			<StatCell width="100px" value={row.costMoney} tone="money" variant="cost" />
+			<StatCell width="100px" value={row.costBooks} tone="books" variant="cost" />
+			<StatCell width="130px" value={row.cumMoney} tone="money" variant="cum" status={row.moneyStatus} showValue={item.calculate} />
+			<StatCell width="130px" value={row.cumBooks} tone="books" variant="cum" status={row.booksStatus} showValue={item.calculate} />
 
 			{/* 尾部操作區域 */}
-			<Table.Cell>
-				<Flex gap="1" justify="center">
-					<IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(item.id)} className="cursor-pointer">
-						<TrashIcon />
-					</IconButton>
-				</Flex>
+			<Table.Cell width="60px">
+				<IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(item.id)} className="cursor-pointer">
+					<TrashIcon />
+				</IconButton>
 			</Table.Cell>
 		</Table.Row>
 	);
 };
 
-export const TableRowItem: React.FC<ITableRowItemProps> = memo(
-	TableRowItemComponent,
-	(prev, next) => (
-		areItemValuesEqual(prev.item, next.item)
-		&& areRowValuesEqual(prev.row, next.row)
-	),
-);
+export const TableRowItem: React.FC<ITableRowItemProps> = TableRowItemComponent;

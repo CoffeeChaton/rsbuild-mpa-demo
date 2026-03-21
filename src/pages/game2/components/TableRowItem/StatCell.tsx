@@ -19,6 +19,7 @@ const cumStatusStyle: Record<TRowStatus, { backgroundColor: string, textColor: R
 };
 
 export interface IStatCellProps {
+	width: string;
 	value: number;
 	tone: TStatTone;
 	variant: TStatVariant;
@@ -26,7 +27,7 @@ export interface IStatCellProps {
 	showValue?: boolean;
 }
 
-export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, status, showValue = true }) => {
+export const StatCell: React.FC<IStatCellProps> = memo(({ width, value, tone, variant, status, showValue = true }) => {
 	if (!showValue) {
 		return (
 			<Table.Cell>
@@ -37,7 +38,7 @@ export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, 
 
 	if (variant === "cost") {
 		return (
-			<Table.Cell>
+			<Table.Cell width={width}>
 				<Text weight="bold" color={toneColorMap[tone]} style={numStyle}>
 					{value.toLocaleString()}
 				</Text>
@@ -47,7 +48,7 @@ export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, 
 
 	const { backgroundColor, textColor } = cumStatusStyle[status ?? "safe"];
 	return (
-		<Table.Cell style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
+		<Table.Cell width={width} style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
 			<Text weight="bold" color={textColor} style={numStyle}>
 				Σ {value.toLocaleString()}
 			</Text>
