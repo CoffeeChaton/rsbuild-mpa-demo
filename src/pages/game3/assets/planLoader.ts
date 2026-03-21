@@ -3,13 +3,11 @@
 // 這裡明確列出所有檔案，Rsbuild 就能 100% 確保它們被打包
 
 export type TDEFAULT_PLANS = {
-	readonly plan_a: () => Promise<typeof import("*?raw")>,
 	readonly plan_b: () => Promise<typeof import("*?raw")>,
 	readonly plan_c: () => Promise<typeof import("*?raw")>,
 };
 
 export const DEFAULT_PLANS: TDEFAULT_PLANS = {
-	plan_a: () => import("./plan_a.tsv?raw"),
 	plan_b: () => import("./plan_b.tsv?raw"),
 	plan_c: () => import("./plan_c.tsv?raw"),
 } as const;
