@@ -21,10 +21,10 @@ import {
 	TextField,
 	Tooltip,
 } from "@radix-ui/themes";
-import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../../game2/config/inventory";
-import { useArsenalInventory } from "../../game2/context/ArsenalContext";
-import type { IInventory } from "../../game2/types/inventory";
-import { useInventory } from "../../game2/hooks/useInventory";
+import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../config/inventory";
+import { useArsenalInventory } from "../context/ArsenalContext";
+import type { IInventory } from "../types/inventory";
+import { useInventory } from "../hooks/useInventory";
 
 // 輔助函數：確保輸入值為正數
 const clampPositiveNumber = (value: string) => {

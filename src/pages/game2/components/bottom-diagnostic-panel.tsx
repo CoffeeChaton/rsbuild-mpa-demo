@@ -19,11 +19,11 @@ import {
 import { useCallback, useState } from "react";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import * as Collapsible from "@radix-ui/react-collapsible";
-import { DiagnosticPanel } from "./diagnostic-panel";
 import { useHotkeys } from "react-hotkeys-hook";
 import { cn, getModifierKey } from "@/src/lib/utils";
-import { useResizableHeight } from "../hooks/UseResizableHeightProps";
 import { Box, Flex, Text } from "@radix-ui/themes";
+import { useResizableHeight } from "../hooks/UseResizableHeightProps";
+import { DiagnosticPanel } from "./diagnostic-panel";
 
 const HEIGHT_KEY = "diagnostic-height";
 

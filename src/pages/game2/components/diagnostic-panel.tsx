@@ -20,8 +20,8 @@ import {
 	StackIcon,
 } from "@radix-ui/react-icons";
 import { Badge, Card, Flex, Grid, Text } from "@radix-ui/themes";
-import { useDiagnostics } from "../../game2/hooks/useDiagnostics";
-import { useArsenalInventory, useArsenalRows } from "../../game2/context/ArsenalContext";
+import { useDiagnostics } from "../hooks/useDiagnostics";
+import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { ProgressCard } from "./progress-card";
 
 export const DiagnosticPanel: React.FC = () => {

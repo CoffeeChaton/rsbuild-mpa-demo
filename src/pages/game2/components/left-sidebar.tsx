@@ -23,8 +23,8 @@ import {
 import { useEffect, useState } from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { useIsMobile } from "@/src/lib/use-mobile";
-import { BasicInfoPanel } from "./basic-info-panel";
 import { Box, Flex, Text } from "@radix-ui/themes";
+import { BasicInfoPanel } from "./basic-info-panel";
 
 const SIDEBAR_KEY = "sidebarOpen";
 

@@ -10,9 +10,9 @@ export type TPageKey =
 	| "products"
 	| "map-edit"
 	// | "game"
-	// | "game2"
+	| "game2"
 	| "game3"
-	| "game4"
+	// | "game4"
 	| "404";
 
 export const PAGE_MAP = {
@@ -36,21 +36,21 @@ export const PAGE_MAP = {
 	// 	description: "資源計畫器",
 	// 	label: "資源計畫器(預計刪除)",
 	// },
-	// "game2": {
-	// 	title: "明日方舟 練度規劃表",
-	// 	description: "練度規劃表",
-	// 	label: "練度規劃表",
-	// },
+	"game2": {
+		title: "明日方舟 練度規劃表",
+		description: "練度規劃表",
+		label: "練度規劃表",
+	},
 	"game3": {
 		title: "明日方舟 材料未來視",
 		description: "材料未來視",
 		label: "材料未來視",
 	},
-	"game4": {
-		title: "明日方舟 練度規劃表2",
-		description: "練度規劃表2",
-		label: "練度規劃表2",
-	},
+	// "game4": {
+	// 	title: "明日方舟 練度規劃表2",
+	// 	description: "練度規劃表2",
+	// 	label: "練度規劃表2",
+	// },
 	"404": {
 		title: "404 - 找不到頁面",
 		description: "抱歉，您訪問的頁面不存在",
