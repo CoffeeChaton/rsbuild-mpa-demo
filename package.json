@@ -19,7 +19,7 @@
 		"build": "rsbuild build",
 		"preview": "rsbuild preview",
 		"// ➜ 2. QC": "",
-		"lint": " eslint . --cache && oxlint",
+		"lint": "eslint . --cache && oxlint",
 		"lint:fix": "oxlint --fix",
 		"format": "dprint fmt",
 		"test": "vitest",

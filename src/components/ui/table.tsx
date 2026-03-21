@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, useMemo } from "react";
 import { cn } from "../../lib/utils";
 import type { JSX } from "react/jsx-runtime";
 import { ScrollArea } from "@radix-ui/themes";
@@ -11,11 +11,17 @@ interface TableProps extends ComponentProps<"table"> {
 }
 
 function Table({ className, containerStyle, fixed, ...props }: TableProps): JSX.Element {
+	const scrollAreaStyle = useMemo(() => ({
+		...containerStyle,
+		width: "100%",
+		height: "100%",
+	}), [containerStyle]);
+
 	return (
 		<ScrollArea
 			data-slot="table-container"
 			scrollbars="both"
-			style={{ ...containerStyle, width: "100%", height: "100%" }}
+			style={scrollAreaStyle}
 		>
 			<table
 				data-slot="table"
@@ -92,10 +98,16 @@ interface TableHeadProps extends ComponentProps<"th"> {
 }
 
 function TableHead({ className, width, ...props }: TableHeadProps): JSX.Element {
+	const headStyle = useMemo(() => ({
+		width,
+		minWidth: width,
+		maxWidth: width,
+	}), [width]);
+
 	return (
 		<th
 			data-slot="table-head"
-			style={{ width, minWidth: width, maxWidth: width }}
+			style={headStyle}
 			className={cn(
 				"h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground overflow-hidden text-ellipsis border-r last:border-r-0 border-border/50",
 				className,

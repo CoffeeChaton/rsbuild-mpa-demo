@@ -1,6 +1,92 @@
-import { type FC } from "react";
+import { type FC, memo, useCallback } from "react";
 import { Cross1Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { IAccountProfile, TAccountId } from "../types";
+
+const ProfileRow: FC<{
+	profile: IAccountProfile,
+	index: number,
+	canDelete: boolean,
+	onUpdate: (id: TAccountId, name: string, server: string) => void,
+	onDelete: (id: TAccountId) => void,
+}> = memo(({ profile, index, canDelete, onUpdate, onDelete }) => {
+	const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		onUpdate(profile.id, e.target.value, profile.server || "CN");
+	}, [onUpdate, profile.id, profile.server]);
+
+	const handleDelete = useCallback(() => {
+		onDelete(profile.id);
+	}, [onDelete, profile.id]);
+
+	return (
+		<div className="group flex items-center gap-4 p-4 bg-slate-50/50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-blue-100 rounded-2xl transition-all duration-200">
+			<div className="shrink-0 w-8 h-8 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-[10px] font-black text-slate-300 group-hover:text-blue-500 group-hover:border-blue-500 transition-colors">
+				{index + 1}
+			</div>
+
+			<div className="flex-1 flex flex-col gap-1">
+				<input
+					value={profile.accountName}
+					onChange={handleNameChange}
+					className="bg-transparent text-sm font-bold text-slate-700 outline-none focus:text-blue-600 placeholder:text-slate-300"
+					placeholder="帳號名稱..."
+				/>
+				<div className="flex items-center gap-2">
+					<span className="text-[9px] font-black text-slate-400 uppercase">Server</span>
+					<div className="flex items-center p-1 bg-slate-100 rounded-lg">
+						{["CN", "TW", "US"].map((srv) => (
+							<ServerButton
+								key={srv}
+								server={srv}
+								active={profile.server === srv}
+								onClick={onUpdate}
+								profileId={profile.id}
+								profileName={profile.accountName}
+							/>
+						))}
+					</div>
+				</div>
+			</div>
+
+			<button
+				onClick={handleDelete}
+				disabled={!canDelete}
+				className="text-slate-200 hover:text-rose-500 disabled:opacity-0 transition-all p-2 hover:bg-rose-50 rounded-xl"
+				title="刪除帳號"
+			>
+				<TrashIcon className="w-4 h-4" />
+			</button>
+		</div>
+	);
+});
+
+ProfileRow.displayName = "ProfileRow";
+
+const ServerButton: FC<{
+	server: string,
+	active: boolean,
+	onClick: (id: TAccountId, name: string, server: string) => void,
+	profileId: TAccountId,
+	profileName: string,
+}> = memo(({ server, active, onClick, profileId, profileName }) => {
+	const handleClick = useCallback(() => {
+		onClick(profileId, profileName, server);
+	}, [onClick, profileId, profileName, server]);
+
+	return (
+		<button
+			onClick={handleClick}
+			className={`px-2 py-1 text-[9px] font-black rounded-md transition-all ${
+				active
+					? "bg-white text-blue-600 shadow-sm"
+					: "text-slate-400 hover:text-slate-600"
+			}`}
+		>
+			{server}
+		</button>
+	);
+});
+
+ServerButton.displayName = "ServerButton";
 
 export const AccountManagerModal: FC<{
 	profiles: IAccountProfile[],
@@ -9,6 +95,10 @@ export const AccountManagerModal: FC<{
 	onDelete: (id: TAccountId) => void,
 	onUpdate: (id: TAccountId, name: string, server: string) => void,
 }> = ({ profiles, onClose, onAdd, onDelete, onUpdate }) => {
+	const handleAdd = useCallback(() => {
+		onAdd("新帳號");
+	}, [onAdd]);
+
 	return (
 		<div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
 			{/* 遮罩層：強化毛玻璃效果 */}
@@ -36,54 +126,14 @@ export const AccountManagerModal: FC<{
 				{/* 帳號列表：卡片式佈局 */}
 				<div className="max-h-112.5 overflow-y-auto p-6 space-y-3 custom-scrollbar">
 					{profiles.map((p, index) => (
-						<div
+						<ProfileRow
 							key={p.id}
-							className="group flex items-center gap-4 p-4 bg-slate-50/50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-blue-100 rounded-2xl transition-all duration-200"
-						>
-							{/* 序號/圖示 */}
-							<div className="shrink-0 w-8 h-8 flex items-center justify-center bg-white border border-slate-100 rounded-xl text-[10px] font-black text-slate-300 group-hover:text-blue-500 group-hover:border-blue-500 transition-colors">
-								{index + 1}
-							</div>
-
-							{/* 編輯區 */}
-							<div className="flex-1 flex flex-col gap-1">
-								<input
-									value={p.accountName}
-									onChange={(e) => onUpdate(p.id, e.target.value, p.server || "CN")}
-									className="bg-transparent text-sm font-bold text-slate-700 outline-none focus:text-blue-600 placeholder:text-slate-300"
-									placeholder="帳號名稱..."
-								/>
-								<div className="flex items-center gap-2">
-									<span className="text-[9px] font-black text-slate-400 uppercase">Server</span>
-
-									<div className="flex items-center p-1 bg-slate-100 rounded-lg">
-										{["CN", "TW", "US"].map((srv) => (
-											<button
-												key={srv}
-												onClick={() => onUpdate(p.id, p.accountName, srv)}
-												className={`px-2 py-1 text-[9px] font-black rounded-md transition-all ${
-													p.server === srv
-														? "bg-white text-blue-600 shadow-sm"
-														: "text-slate-400 hover:text-slate-600"
-												}`}
-											>
-												{srv}
-											</button>
-										))}
-									</div>
-								</div>
-							</div>
-
-							{/* 刪除按鈕：僅在非最後一個帳號時顯示 */}
-							<button
-								onClick={() => onDelete(p.id)}
-								disabled={profiles.length <= 1}
-								className="text-slate-200 hover:text-rose-500 disabled:opacity-0 transition-all p-2 hover:bg-rose-50 rounded-xl"
-								title="刪除帳號"
-							>
-								<TrashIcon className="w-4 h-4" />
-							</button>
-						</div>
+							profile={p}
+							index={index}
+							canDelete={profiles.length > 1}
+							onUpdate={onUpdate}
+							onDelete={onDelete}
+						/>
 					))}
 
 					{profiles.length === 0 && (
@@ -99,7 +149,7 @@ export const AccountManagerModal: FC<{
 						共 {profiles.length} 個配置存檔
 					</p>
 					<button
-						onClick={() => onAdd("新帳號")}
+						onClick={handleAdd}
 						className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-xs font-black hover:bg-slate-800 active:scale-95 transition-all shadow-lg shadow-slate-200"
 					>
 						<PlusIcon className="w-4 h-4" /> 添加新帳號

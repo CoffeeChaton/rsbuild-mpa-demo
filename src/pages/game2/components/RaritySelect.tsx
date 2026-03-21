@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useCallback, useMemo } from "react";
 import { Select } from "@radix-ui/themes";
 
 interface IRaritySelectProps {
@@ -15,17 +16,24 @@ export const RaritySelect: React.FC<IRaritySelectProps> = ({
 	onValueChange,
 	disabled = false,
 }) => {
-	const stringValue = String(value);
+	const stringValue = useMemo(() => String(value), [value]);
+
+	const handleValueChange = useCallback((val: string) => {
+		onValueChange(Number(val));
+	}, [onValueChange]);
+
+	const triggerStyle = useMemo(() => ({ width: 45 }), []);
+	const contentStyle = useMemo(() => ({ minWidth: 80 }), []);
 
 	return (
 		<Select.Root
 			size="1"
 			value={stringValue}
-			onValueChange={(val) => onValueChange(Number(val))}
+			onValueChange={handleValueChange}
 			disabled={disabled}
 		>
-			<Select.Trigger style={{ width: 45 }} variant="ghost" />
-			<Select.Content style={{ minWidth: 80 }}>
+			<Select.Trigger style={triggerStyle} variant="ghost" />
+			<Select.Content style={contentStyle}>
 				{/* 使用 textValue="6" 確保按鍵盤數字 6 可以快速選中 */}
 				<Select.Item value="6" textValue="6">★ 6</Select.Item>
 				<Select.Item value="5" textValue="5">★ 5</Select.Item>
