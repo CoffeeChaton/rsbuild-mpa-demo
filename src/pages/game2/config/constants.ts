@@ -38,4 +38,4 @@ export const DEFAULT_ITEM_TEMPLATE: Omit<IItem, "id"> = {
 	l2: "1",
 };
 
-export const STORAGE_KEY = "ark_arsenal_v6_final";
+export const STORAGE_KEY = "ark_arsenal_v7_final";
