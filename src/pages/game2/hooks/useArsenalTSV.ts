@@ -73,7 +73,7 @@ export const useArsenalTSV = (
 		const output: string[] = [
 			`#CONFIG${t}resource.money${t}${inventory.money}${t}龍門幣`,
 			`#CONFIG${t}resource.exp_advanced${t}${inventory.bookStacks.advanced}${t}高級作戰紀錄(個)`,
-			`#CONFIG${t}resource.exp_intermediate${t}${inventory.bookStacks.basic}${t}中級作戰紀錄(個)`,
+			`#CONFIG${t}resource.exp_intermediate${t}${inventory.bookStacks.intermediate}${t}中級作戰紀錄(個)`,
 			`#CONFIG${t}resource.exp_primary${t}${inventory.bookStacks.primary}${t}初級作戰紀錄(個)`,
 			`#CONFIG${t}resource.exp_basic${t}${inventory.bookStacks.basic}${t}基礎作戰紀錄(個)`,
 			`#CONFIG${t}production.money${t}${inventory.avgMoneyProduction}${t}日產龍門幣`,
