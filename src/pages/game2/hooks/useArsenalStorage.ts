@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import useSWR from "swr";
 import { STORAGE_KEY } from "../config/constants";
 import type { IInventory, IItem } from "../types";
-import { sanitizeBookStacks } from "../config/inventory";
+import { sanitizeBookStacks } from "../core/calculateBookStacksValue";
 
 const toPositiveNumber = (value: unknown) => {
 	const parsed = Number(value);

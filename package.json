@@ -28,11 +28,11 @@
 		"// ➜ 4. Utilities": "",
 		"tools:toAI": "pnpm dlx repomix@1.12.0 src/pages/game2/types  --compress",
 		"tools:knip": "knip --no-config-hints",
+		"ci:knip": "knip --include files --include dependencies --no-config-hints",
 		"// ➜ 5. hooks": "",
 		"prepare": "husky",
 		"commit:typecheck": "pnpm tsgo -b",
 		"commit:test": "vitest run",
-		"commit:knip": "knip --include files --include dependencies --no-config-hints",
 		"pre-commit": "lint-staged && pnpm run \"/^commit:.*/\""
 	},
 	"scripts_vault": {

@@ -23,7 +23,7 @@ import { Badge, Card, Flex, Grid, Text } from "@radix-ui/themes";
 import { useDiagnostics } from "../hooks/useDiagnostics";
 import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { ProgressCard } from "./progress-card";
-import { calculateBookStacksValue } from "../config/inventory";
+import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
 
 export const DiagnosticPanel: React.FC = () => {
 	const { rows } = useArsenalRows();

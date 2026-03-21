@@ -1,4 +1,4 @@
-import { calculateBookStacksValue } from "../config/inventory";
+import { calculateBookStacksValue } from "./calculateBookStacksValue";
 import type { IDiagnosticEntry, IInventory, IRowResult } from "../types";
 
 // 核心計算邏輯

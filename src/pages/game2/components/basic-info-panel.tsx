@@ -21,10 +21,11 @@ import {
 	TextField,
 	Tooltip,
 } from "@radix-ui/themes";
-import { BOOK_CONFIG, calculateBookStacksValue, DEFAULT_BOOK_STACKS } from "../config/inventory";
+import { BOOK_CONFIG, DEFAULT_BOOK_STACKS } from "../config/inventory";
 import { useArsenalInventory } from "../context/ArsenalContext";
 import type { IInventory } from "../types/inventory";
 import { useInventory } from "../hooks/useInventory";
+import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
 
 // 輔助函數：確保輸入值為正數
 const clampPositiveNumber = (value: string) => {
