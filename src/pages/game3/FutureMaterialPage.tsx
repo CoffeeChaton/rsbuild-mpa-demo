@@ -30,7 +30,7 @@ export const FutureMaterialPage: React.FC = () => {
 	const { editor, setEditorOpen } = useEditor();
 
 	/** 3. 計算 Row 數據 */
-	const { rows, groupedRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
+	const { rows, allRows, groupedRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
 
 	/** 4. 合併 Context，這時只需合併 Page 專屬的 setEditorOpen */
 	const planContextValue = useMemo(() => ({
@@ -38,10 +38,10 @@ export const FutureMaterialPage: React.FC = () => {
 		setEditorOpen,
 	}), [planManager, setEditorOpen]);
 
-	/** 5. 複製內容 */
+	/** 5. 複製內容：使用 allRows 確保不受 UI 過濾影響 */
 	const copyResult = useCallback(() => {
 		const result = Object.fromEntries(
-			rows
+			allRows
 				.filter(r => r.total > 0)
 				.map(r => [r.id, r.total]),
 		);
@@ -49,7 +49,7 @@ export const FutureMaterialPage: React.FC = () => {
 		void navigator.clipboard.writeText(
 			JSON.stringify(result, null, 2),
 		);
-	}, [rows]);
+	}, [allRows]);
 
 	return (
 		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden">

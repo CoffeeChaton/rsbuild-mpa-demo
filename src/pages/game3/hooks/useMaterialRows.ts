@@ -9,7 +9,11 @@ interface IItemBundle {
 }
 
 export type UseMaterialRows = (jsonA: string, tsvB: string, filter: TFilter, bundle: IItemDataBundle | undefined) => {
+	/** 用於顯示的過濾後數據 */
 	rows: IItemRow[],
+	/** 完整計算後的數據 (不論過濾條件)，用於導出 */
+	allRows: IItemRow[],
+	/** 按稀有度分組的過濾後數據 */
 	groupedRows: Record<number, IItemRow[]>,
 };
 
@@ -29,38 +33,47 @@ export const useMaterialRows: UseMaterialRows = (
 		[tsvB, bundle],
 	);
 
-	const rows = useMemo<IItemRow[]>(() => {
+	/** 1. 核心計算：計算出所有項目的數據 */
+	const allRows = useMemo<IItemRow[]>(() => {
 		const b = bundle as IItemBundle | undefined;
 		if (!b) return [];
-		const searchLower = filter.search.toLowerCase();
 		return Object.keys(b.items)
-			.reduce<IItemRow[]>((acc, id) => {
+			.map((id) => {
 				const item = b.items[id];
 				const name = item?.name.tw || id;
-
-				// 先做 search filter，減少後續運算
-				const matchSearch = name.toLowerCase().includes(searchLower);
-				if (!matchSearch) return acc;
-
 				const stock = dataA.get(id) || 0;
 				const need = dataB.get(id) || 0;
-				const hasData = stock !== 0 || need !== 0;
 
-				if (filter.hideEmpty && !hasData) return acc;
-
-				acc.push({
+				return {
 					id,
 					name,
 					rare: item?.rare || 0,
 					stock,
 					need,
 					total: stock + need,
-				});
-				return acc;
-			}, [])
+				};
+			})
 			.sort((a, b) => b.rare - a.rare || a.id.localeCompare(b.id));
-	}, [bundle, dataA, dataB, filter.search, filter.hideEmpty]);
+	}, [bundle, dataA, dataB]);
 
+	/** 2. 應用過濾：用於 UI 顯示 */
+	const rows = useMemo<IItemRow[]>(() => {
+		const searchLower = filter.search.toLowerCase();
+		return allRows.filter((r) => {
+			// Search filter
+			if (searchLower && !r.name.toLowerCase().includes(searchLower)) {
+				return false;
+			}
+			// Empty filter
+			const hasData = r.stock !== 0 || r.need !== 0;
+			if (filter.hideEmpty && !hasData) {
+				return false;
+			}
+			return true;
+		});
+	}, [allRows, filter.search, filter.hideEmpty]);
+
+	/** 3. 分組數據 */
 	const groupedRows = useMemo(() => {
 		const groups = Object.fromEntries(
 			RARE_LEVELS.map(r => [r, []]),
@@ -75,6 +88,7 @@ export const useMaterialRows: UseMaterialRows = (
 
 	return {
 		rows,
+		allRows,
 		groupedRows,
 	};
 };
