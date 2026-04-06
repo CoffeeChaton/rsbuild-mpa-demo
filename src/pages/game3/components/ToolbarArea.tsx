@@ -14,18 +14,20 @@ import type { IItemRow, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
 	rows: IItemRow[];
-	setImportOpen: Dispatch<SetStateAction<boolean>>;
+	handleImport: () => void;
 	filter: TFilter;
 	setFilter: Dispatch<SetStateAction<TFilter>>;
 	copyResult: () => void;
+	isCopied: boolean;
 }
 
 export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbarAreaProp>(({
 	rows,
-	setImportOpen,
+	handleImport,
 	filter,
 	setFilter,
 	copyResult,
+	isCopied,
 }) => {
 	return (
 		<Box p="3" className="border-b shadow-sm z-20">
@@ -33,17 +35,18 @@ export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbar
 				{/* 第一列：左上角核心操作 */}
 				<Flex gap="3">
 					<Flex gap="1">
-						<Button variant="outline" onClick={() => setImportOpen(true)}>
+						<Button variant="outline" onClick={handleImport}>
 							<ClipboardIcon /> 導入原有
 						</Button>
 
 						<PlanSwitcher />
 
 						<Button
-							variant="outline"
+							variant={isCopied ? "solid" : "outline"}
+							color={isCopied ? "green" : "indigo"}
 							onClick={copyResult}
 						>
-							<BackpackIcon /> 複製結果
+							<BackpackIcon /> {isCopied ? "已複製" : "複製結果"}
 						</Button>
 					</Flex>
 				</Flex>
