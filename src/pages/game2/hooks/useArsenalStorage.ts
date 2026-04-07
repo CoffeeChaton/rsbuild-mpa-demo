@@ -61,7 +61,7 @@ export const useArsenalStorage: TUseArsenalStorage = (configId) => {
 			if (event.data === "updated") {
 				// 如果沒被鎖定，自動同步畫面
 				if (!isLocked) {
-					mutate();
+					void mutate();
 					toast.info("資料已即時同步", { id: `sync_${dataKey}` });
 				} else {
 					// 即使鎖定了，也要通知「有人在改，但我不動」
@@ -94,7 +94,7 @@ export const useArsenalStorage: TUseArsenalStorage = (configId) => {
 	const setItems = useCallback((value: IItem[] | ((prev: IItem[]) => IItem[])): void => {
 		if (!checkGlobalLock()) return;
 
-		mutate((prev) => {
+		void mutate((prev) => {
 			const currentItems = prev?.items || [];
 			const nextItems = typeof value === "function" ? value(currentItems) : value;
 			const nextData = { items: nextItems, inv: prev?.inv || createInventoryState() };
@@ -108,7 +108,7 @@ export const useArsenalStorage: TUseArsenalStorage = (configId) => {
 	const setInventory = useCallback((value: IInventory | ((prev: IInventory) => IInventory)): void => {
 		if (!checkGlobalLock()) return;
 
-		mutate((prev) => {
+		void mutate((prev) => {
 			const currentInv = prev?.inv || createInventoryState();
 			const nextInv = typeof value === "function" ? value(currentInv) : value;
 			const nextData = { items: prev?.items || [], inv: nextInv };

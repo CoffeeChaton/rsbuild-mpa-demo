@@ -59,9 +59,8 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 								</Button>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
-								<DropdownMenu.Item onClick={() => handleImportDefault("plan_a")}>導入 方案 A</DropdownMenu.Item>
-								<DropdownMenu.Item onClick={() => handleImportDefault("plan_b")}>導入 方案 B</DropdownMenu.Item>
-								<DropdownMenu.Item onClick={() => handleImportDefault("plan_c")}>導入 方案 C</DropdownMenu.Item>
+								<DropdownMenu.Item onClick={() => handleImportDefault("plan_b")}>導入 方案 无忧梦呓</DropdownMenu.Item>
+								<DropdownMenu.Item onClick={() => handleImportDefault("plan_c")}>導入 方案 辭歲行</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</Flex>

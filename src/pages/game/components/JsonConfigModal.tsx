@@ -81,7 +81,7 @@ export const JsonConfigModal: FC<IProps> = ({
 
 		// 設定初次掛載時的格式化 (Optional)
 		setTimeout(() => {
-			editor.getAction("editor.action.formatDocument")?.run();
+			void editor.getAction("editor.action.formatDocument")?.run();
 		}, 150);
 
 		// 監聽 Marker 變化：這包含語法錯誤 (Syntax) 與 Schema 錯誤

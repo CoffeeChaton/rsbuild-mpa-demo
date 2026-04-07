@@ -24,9 +24,6 @@ export const PlanSwitcher: FC = () => {
 				</Button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content variant="soft" color="indigo" className="min-w-[180px]">
-				<DropdownMenu.Label>預設方案</DropdownMenu.Label>
-				{["plan_a", "plan_b", "plan_c"].map(p => <DropdownMenu.Item key={p} onClick={() => setPlanName(p)}>{p.toUpperCase()}</DropdownMenu.Item>)}
-				<DropdownMenu.Separator />
 				<DropdownMenu.Label>自定義方案</DropdownMenu.Label>
 				{Object.keys(customPlans).map(p => (
 					<DropdownMenu.Item key={p} onClick={() => setPlanName(p)}>

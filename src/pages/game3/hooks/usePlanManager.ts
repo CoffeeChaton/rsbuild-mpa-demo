@@ -33,7 +33,7 @@ export function usePlanManager(): IPlanManagerContext {
 	useEffect(() => {
 		// 只在初次掛載時把「所有」預設方案塞進 SWR 快取
 		Object.keys(DEFAULT_PLANS).forEach((key) => {
-			mutate(key, tsvFetcher(key as TDefaultPlanKey), false);
+			void mutate(key, tsvFetcher(key as TDefaultPlanKey), false);
 		});
 	}, []);
 

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { Text } from "@radix-ui/themes";
 import type { TRowStatus } from "../../types";
 import { TableCell } from "@/src/components/ui/table";
@@ -28,6 +28,16 @@ export interface IStatCellProps {
 }
 
 export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, status, showValue = true }) => {
+	const currentStatusStyle = useMemo(() => cumStatusStyle[status ?? "safe"], [status]);
+
+	const tableCellStyle = useMemo(() => {
+		if (variant === "cost" || !showValue) return undefined;
+		return {
+			backgroundColor: currentStatusStyle.backgroundColor,
+			transition: "background-color 0.15s ease",
+		};
+	}, [variant, showValue, currentStatusStyle.backgroundColor]);
+
 	if (!showValue) {
 		return (
 			<TableCell className="text-right">
@@ -46,10 +56,9 @@ export const StatCell: React.FC<IStatCellProps> = memo(({ value, tone, variant, 
 		);
 	}
 
-	const { backgroundColor, textColor } = cumStatusStyle[status ?? "safe"];
 	return (
-		<TableCell className="text-right" style={{ backgroundColor, transition: "background-color 0.15s ease" }}>
-			<Text weight="bold" color={textColor} style={numStyle}>
+		<TableCell className="text-right" style={tableCellStyle}>
+			<Text weight="bold" color={currentStatusStyle.textColor} style={numStyle}>
 				Σ {value.toLocaleString()}
 			</Text>
 		</TableCell>

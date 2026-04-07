@@ -12,7 +12,7 @@ export const ResourceManager: React.FC = () => {
 	const [materialMap, setMaterialMap] = useState<Record<string, string>>({});
 
 	useEffect(() => {
-		import("./material.json")
+		void import("./material.json")
 			.then((json) => setMaterialMap(json.default));
 		// fetch(process.env.ASSET_PREFIX + '/locales/tw/material.json')
 		//   .then(res => res.json())

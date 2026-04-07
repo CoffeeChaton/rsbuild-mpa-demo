@@ -77,12 +77,12 @@ export function useAccountManager(): IAccountManager {
 
 	// 封裝持久化寫入邏輯
 	const persist = (newData: IAccountProfile[]) => {
-		mutate(newData, false); // 先更新本地快取 (Optimistic)
+		void mutate(newData, false); // 先更新本地快取 (Optimistic)
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
 	};
 
 	const setActiveId = (id: TAccountId) => {
-		mutateActiveId(id, false);
+		void mutateActiveId(id, false);
 		localStorage.setItem("ACTIVE_ACCOUNT_ID", id);
 	};
 
