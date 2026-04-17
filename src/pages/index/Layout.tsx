@@ -3,7 +3,6 @@ import { type IPageInfo, PAGE_MAP, type TPageKey } from "../../common/config/pag
 import { type ReactNode, useEffect } from "react";
 import "@radix-ui/themes/styles.css";
 import { Navbar } from "../../common/Navbar";
-import { ConfigProvider } from "../../common/context/ConfigProvider";
 import { Toaster } from "../../components/ui/sonner";
 
 const MetaUpdater: React.FC = () => {
@@ -43,19 +42,13 @@ const MetaUpdater: React.FC = () => {
 
 export interface ILayoutProps {
 	children: ReactNode;
-	/** 命名空間：用於隔離存檔體系 (例如 "game4") */
-	namespace?: string;
-	/** 指定此頁面使用的配置 ID */
-	configId?: string;
 }
 
-export const Layout: React.FC<ILayoutProps> = ({ children, namespace, configId }) => (
-	<ConfigProvider namespace={namespace} overrideConfigId={configId}>
-		<div className="bg-(--gray-1) min-h-screen">
-			<MetaUpdater />
-			<Navbar />
-			{children}
-			<Toaster />
-		</div>
-	</ConfigProvider>
+export const Layout: React.FC<ILayoutProps> = ({ children }) => (
+	<div className="bg-(--gray-1) min-h-screen">
+		<MetaUpdater />
+		<Navbar />
+		{children}
+		<Toaster />
+	</div>
 );

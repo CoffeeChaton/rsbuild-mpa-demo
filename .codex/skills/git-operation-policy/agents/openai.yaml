@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Policy"
+  short_description: "Keep Git operations conservative and suggestion-first."
+  default_prompt: "Use $git-operation-policy to review changes and suggest safe Git commands or commit messages."

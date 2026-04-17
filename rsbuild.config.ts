@@ -83,30 +83,14 @@ const config: RsbuildConfig = defineConfig({
 						priority: 40,
 					},
 
-					// 3. 大型第三方庫 (獨立拆分，按需加載)
-					// Monaco Editor
-					monaco: {
-						test: /[\\/]node_modules[\\/](monaco-editor|@monaco-editor)[\\/]/,
-						name: "lib-monaco",
-						priority: 45,
-						chunks: "async", // 強制只在異步加載時拆分
-					},
-					// Leaflet
-					leaflet: {
-						test: /[\\/]node_modules[\\/]leaflet[\\/]/,
-						name: "lib-leaflet",
-						priority: 45,
-						chunks: "async",
-					},
-
-					// 4. 圖標庫 (單獨一包，因為 Lucide 通常很大)
+					// 3. 圖標庫 (單獨一包，因為 Lucide 通常很大)
 					icons: {
 						test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
 						name: "lib-icons",
 						priority: 30,
 					},
 
-					// 5. 剩下的 node_modules
+					// 4. 剩下的 node_modules
 					vendor: {
 						test: /[\\/]node_modules[\\/]/,
 						name: "lib-vendor",

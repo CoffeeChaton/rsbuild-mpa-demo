@@ -1,0 +1,4 @@
+interface:
+  display_name: "TS Clean Code"
+  short_description: "Follow this repo's TypeScript style and safety rules."
+  default_prompt: "Use $ts-clean-code to write or review TypeScript with the project's naming and safety conventions."

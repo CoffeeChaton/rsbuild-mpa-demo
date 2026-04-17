@@ -19,6 +19,7 @@ export interface IToolbarAreaProp {
 	setFilter: Dispatch<SetStateAction<TFilter>>;
 	copyResult: () => void;
 	isCopied: boolean;
+	isImportSuccess: boolean;
 }
 
 export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbarAreaProp>(({
@@ -28,15 +29,15 @@ export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbar
 	setFilter,
 	copyResult,
 	isCopied,
+	isImportSuccess,
 }) => {
 	return (
 		<Box p="3" className="border-b shadow-sm z-20">
 			<Flex direction="column" gap="3">
-				{/* 第一列：左上角核心操作 */}
-				<Flex gap="3">
-					<Flex gap="1">
-						<Button variant="outline" onClick={handleImport}>
-							<ClipboardIcon /> 導入原有
+				<Flex gap="3" wrap="wrap" align="center">
+					<Flex gap="1" wrap="wrap">
+						<Button variant={isImportSuccess ? "solid" : "outline"} color={isImportSuccess ? "green" : "indigo"} onClick={handleImport}>
+							<ClipboardIcon /> {isImportSuccess ? "已導入原有" : "導入原有"}
 						</Button>
 
 						<PlanSwitcher />
@@ -51,7 +52,6 @@ export const ToolbarArea: NamedExoticComponent<IToolbarAreaProp> = memo<IToolbar
 					</Flex>
 				</Flex>
 
-				{/* 第二列：左側對齊搜尋與工具 */}
 				<MaterialToolbar
 					rows={rows}
 					filter={filter}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Maintainer"
+  short_description: "Analyze requests and keep local skills up to date."
+  default_prompt: "Use $skill-maintainer to analyze this task and update or create reusable skills under `.gemini/skills`."

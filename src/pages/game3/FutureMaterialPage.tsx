@@ -26,6 +26,7 @@ export const FutureMaterialPage: React.FC = () => {
 	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
 	const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
 	const [importError, setImportError] = useState<string | null>(null);
+	const [isImportSuccess, setIsImportSuccess] = useState(false);
 
 	// 1. Hook 回傳值已經穩定，直接拿來用
 	const planManager: IPlanManagerContext = usePlanManager();
@@ -68,9 +69,8 @@ export const FutureMaterialPage: React.FC = () => {
 			try {
 				JSON.parse(text);
 				setJsonA(text);
-				toast.success("導入成功", {
-					description: "已成功從剪貼簿讀取並應用數據",
-				});
+				setIsImportSuccess(true);
+				window.setTimeout(() => setIsImportSuccess(false), 1800);
 			} catch {
 				setImportError("JSON 格式非法，請確保剪貼簿內容為有效的 JSON 格式物件");
 			}
@@ -90,6 +90,7 @@ export const FutureMaterialPage: React.FC = () => {
 					setFilter={setFilter}
 					copyResult={copyResult}
 					isCopied={copied}
+					isImportSuccess={isImportSuccess}
 				/>
 				{/* TableArea */}
 				<TableArea groupedRows={groupedRows} />

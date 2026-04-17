@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ark Data Wizard"
+  short_description: "Maintain Arknights data pipelines and formulas."
+  default_prompt: "Use $ark-data-wizard to update Arknights data compilation, validation, or formula logic safely."

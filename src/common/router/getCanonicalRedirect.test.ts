@@ -10,7 +10,7 @@ describe("getCanonicalRedirect 最終修復測試", () => {
 
 	it("應該處理重複斜線並補全結尾斜線", () => {
 		expect(getCanonicalRedirect("/page//")).toBe("/page/");
-		expect(getCanonicalRedirect("//game")).toBe("/game/"); // 開頭雙斜線也應修正
+		expect(getCanonicalRedirect("//game2")).toBe("/game2/"); // 開頭雙斜線也應修正
 	});
 
 	it("應該正確處理空格 %20", () => {

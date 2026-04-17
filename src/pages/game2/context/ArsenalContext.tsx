@@ -36,9 +36,12 @@ const InventoryContext = createContext<IInventoryContext | null>(null);
 const RowsContext = createContext<IRowsContext | null>(null);
 const ActionsContext = createContext<IActionsContext | null>(null);
 
-export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const currentConfigId = useCurrentConfigId();
-	const { items, setItems, inventory, setInventory } = useArsenalStorage(currentConfigId);
+interface IArsenalProviderInnerProps extends PropsWithChildren {
+	configId: string;
+}
+
+const ArsenalProviderInner: React.FC<IArsenalProviderInnerProps> = ({ children, configId }) => {
+	const { items, setItems, inventory, setInventory } = useArsenalStorage(configId);
 
 	const levelData = v.parse(LevelDataSchema, rawLevelData);
 	const rows = useArsenalRowsRaw(items, inventory, levelData);
@@ -59,6 +62,15 @@ export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 				</RowsContext.Provider>
 			</InventoryContext.Provider>
 		</ItemsContext.Provider>
+	);
+};
+
+export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
+	const currentConfigId = useCurrentConfigId();
+	return (
+		<ArsenalProviderInner key={currentConfigId} configId={currentConfigId}>
+			{children}
+		</ArsenalProviderInner>
 	);
 };
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Foxact Practices"
+  short_description: "Use foxact hooks with the project's patterns."
+  default_prompt: "Use $foxact-best-practices to implement foxact clipboard, storage, or retimer flows with project conventions."

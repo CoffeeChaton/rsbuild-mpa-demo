@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router";
 import { Box, Flex, TabNav, Text } from "@radix-ui/themes";
 import { PAGE_MAP, type TPageKey } from "./config/pages";
 import { VIEW_MAP } from "./router/view-map";
-import { ConfigSwitch } from "./components/ConfigSwitch";
+import { AppThemeSwitch } from "./components/AppThemeSwitch";
 
 interface INavItemProps {
 	item: { key: string, path: string, label: string };
@@ -52,31 +52,30 @@ export const Navbar: React.FC = () => {
 
 	return (
 		<Box className="shrink-0 border-b border-(--gray-5) bg-(--gray-1)">
-			<Flex align="center" px="4" gap="6" className="h-12">
-				{/* Logo 區域 */}
+			<Flex align="center" px="3" gap="3" className="h-12 min-w-0">
 				<Text
 					size="4"
 					weight="bold"
 					color="indigo"
-					className="select-none tracking-tight"
+					className="select-none tracking-tight shrink-0"
 				>
 					DEMO
 				</Text>
 
-				{/* 導覽連結 */}
-				<TabNav.Root className="h-full border-b-0">
-					{navItems.map((item) => (
-						<NavItem
-							key={item.key}
-							item={item}
-							isActive={currentPath === (item.path.replace(/\/+$/, "") || "/")}
-						/>
-					))}
-				</TabNav.Root>
+				<Box className="min-w-0 flex-1 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+					<TabNav.Root className="h-full min-w-max border-b-0 pr-2">
+						{navItems.map((item) => (
+							<NavItem
+								key={item.key}
+								item={item}
+								isActive={currentPath === (item.path.replace(/\/+$/, "") || "/")}
+							/>
+						))}
+					</TabNav.Root>
+				</Box>
 
-				{/* 右側：帳號切換 */}
-				<Flex ml="auto" align="center">
-					<ConfigSwitch />
+				<Flex align="center" className="shrink-0">
+					<AppThemeSwitch />
 				</Flex>
 			</Flex>
 		</Box>

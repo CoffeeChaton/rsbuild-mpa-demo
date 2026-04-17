@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rsbuild MPA Architect"
+  short_description: "Maintain page wiring and asset rules for Rsbuild."
+  default_prompt: "Use $rsbuild-mpa-architect to add or refactor pages and static asset handling in this Rsbuild MPA project."

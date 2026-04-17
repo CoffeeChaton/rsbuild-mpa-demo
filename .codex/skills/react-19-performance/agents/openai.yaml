@@ -1,0 +1,4 @@
+interface:
+  display_name: "React 19 Performance"
+  short_description: "Optimize heavy React 19 render and hydration paths."
+  default_prompt: "Use $react-19-performance to improve render cost, context structure, or hydration safety in this React app."

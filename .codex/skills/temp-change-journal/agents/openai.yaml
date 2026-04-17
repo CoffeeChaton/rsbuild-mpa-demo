@@ -1,0 +1,4 @@
+interface:
+  display_name: "Temp Change Journal"
+  short_description: "Write a disposable task summary into `.temp`."
+  default_prompt: "Use $temp-change-journal to create a `.temp` Markdown note for this completed task."

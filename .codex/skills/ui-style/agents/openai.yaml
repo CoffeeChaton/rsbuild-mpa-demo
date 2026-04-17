@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Style"
+  short_description: "Keep Radix styling and Tailwind layout responsibilities clear."
+  default_prompt: "Use $ui-style to style components with Radix themes and Tailwind utilities without fighting the design system."

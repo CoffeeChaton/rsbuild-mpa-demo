@@ -8,11 +8,8 @@ export interface IPageInfo {
 export type TPageKey =
 	| "index"
 	| "products"
-	| "map-edit"
-	// | "game"
 	| "game2"
 	| "game3"
-	// | "game4"
 	| "404";
 
 export const PAGE_MAP = {
@@ -26,16 +23,6 @@ export const PAGE_MAP = {
 		description: "探索我們精選的產品系列",
 		label: "產品",
 	},
-	"map-edit": { // 新增地圖編輯頁面
-		title: "地圖編輯器 - GIS 控制台",
-		description: "自定義您的地圖偏好與中心點",
-		label: "地圖編輯",
-	},
-	// "game": {
-	// 	title: "明日方舟 資源計畫器",
-	// 	description: "資源計畫器",
-	// 	label: "資源計畫器(預計刪除)",
-	// },
 	"game2": {
 		title: "明日方舟 練度規劃表",
 		description: "練度規劃表",
@@ -46,11 +33,6 @@ export const PAGE_MAP = {
 		description: "材料未來視",
 		label: "材料未來視",
 	},
-	// "game4": {
-	// 	title: "明日方舟 練度規劃表2",
-	// 	description: "練度規劃表2",
-	// 	label: "練度規劃表2",
-	// },
 	"404": {
 		title: "404 - 找不到頁面",
 		description: "抱歉，您訪問的頁面不存在",
