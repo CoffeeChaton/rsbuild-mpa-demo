@@ -8,7 +8,9 @@ description: Apply the project's TypeScript style guide. Use when writing or rev
 - Prefer explicit types where hidden inference would reduce readability or safety.
 - Favor immutable data with `readonly` properties and `ReadonlyArray` when mutation is not required.
 - Avoid partial functions and `any`; handle unknown input shapes explicitly.
+- Prefer top-down function ordering in a file: define helpers before the call sites that use them.
 - Use `IName` for interfaces, `TName` for types, and `EName` for enums when introducing new symbols.
 - Prefer composition over inheritance.
 - Catch errors as `unknown` and narrow them with guards before using their fields.
+- Avoid unnecessary type assertions; if an `as` is still required, make the narrowing explicit and defensible.
 - Prefer `valibot` for runtime validation and `vitest` for unit tests when adding supporting tooling.

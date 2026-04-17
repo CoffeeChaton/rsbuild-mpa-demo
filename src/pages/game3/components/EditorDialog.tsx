@@ -1,4 +1,4 @@
-import { type FC, memo, useState } from "react";
+import { type FC, memo, useCallback, useState } from "react";
 import {
 	Box,
 	Button,
@@ -12,7 +12,7 @@ import {
 	ChevronDownIcon,
 	MagicWandIcon,
 } from "@radix-ui/react-icons";
-import { type TDefaultPlanKey, tsvFetcher } from "../assets/planLoader";
+import { getDefaultPlanContent } from "../assets/planLoader";
 import type { TEditor } from "../type";
 import { type IPlanContext, usePlanContext } from "../context/PlanContext";
 
@@ -32,23 +32,31 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 	const [tempTitle, setTempTitle] = useState(initialData.title);
 	const [tempContent, setTempContent] = useState(initialData.content);
 
-	const handleInternalSave = () => {
+	const handleInternalSave = useCallback(() => {
 		if (!planContext) return;
 		planContext.updateCustomPlan(tempTitle, tempContent, initialData.targetId);
 		onOpenChange(false);
-	};
+	}, [initialData.targetId, onOpenChange, planContext, tempContent, tempTitle]);
 
-	const handleImportDefault = async (p: TDefaultPlanKey) => {
-		const raw = await tsvFetcher(p);
-		setTempContent(raw);
-	};
+	const handleImportPlanB = useCallback(() => {
+		setTempContent(getDefaultPlanContent("plan_b"));
+	}, []);
+	const handleImportPlanC = useCallback(() => {
+		setTempContent(getDefaultPlanContent("plan_c"));
+	}, []);
+	const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setTempTitle(e.target.value);
+	}, []);
+	const handleContentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setTempContent(e.target.value);
+	}, []);
 
 	return (
 		<Dialog.Root
 			open={open}
 			onOpenChange={onOpenChange}
 		>
-			<Dialog.Content style={{ maxWidth: 700 }} className="rounded-3xl p-0 overflow-hidden">
+			<Dialog.Content className="max-w-175 overflow-hidden rounded-3xl p-0">
 				<Box p="4" className="border-b">
 					<Flex justify="between" align="center">
 						<Text weight="bold">方案編輯器</Text>
@@ -59,8 +67,8 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 								</Button>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
-								<DropdownMenu.Item onClick={() => handleImportDefault("plan_b")}>導入 方案 无忧梦呓</DropdownMenu.Item>
-								<DropdownMenu.Item onClick={() => handleImportDefault("plan_c")}>導入 方案 辭歲行</DropdownMenu.Item>
+								<DropdownMenu.Item onClick={handleImportPlanB}>導入 方案 无忧梦呓</DropdownMenu.Item>
+								<DropdownMenu.Item onClick={handleImportPlanC}>導入 方案 辭歲行</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</Flex>
@@ -73,7 +81,7 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 								placeholder="輸入方案標題..."
 								className="border-none"
 								value={tempTitle}
-								onChange={e => setTempTitle(e.target.value)}
+								onChange={handleTitleChange}
 							/>
 						</Box>
 						<Box>
@@ -82,7 +90,7 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 								placeholder="活動名稱	產物	數量"
 								className="w-full h-72 p-4 rounded-xl border-none font-mono text-xs focus:ring-2 ring-indigo-500 outline-none"
 								value={tempContent}
-								onChange={e => setTempContent(e.target.value)}
+								onChange={handleContentChange}
 							/>
 						</Box>
 					</Flex>

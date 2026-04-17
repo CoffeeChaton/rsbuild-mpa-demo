@@ -18,6 +18,26 @@ export default defineConfig([
 		languageOptions: {
 			ecmaVersion: 2020,
 			globals: globals.browser,
+			parserOptions: {
+				projectService: true,
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+		rules: {
+			"@typescript-eslint/consistent-type-assertions": ["error", {
+				assertionStyle: "as",
+				objectLiteralTypeAssertions: "never",
+			}],
+			"@typescript-eslint/no-explicit-any": "error",
+			"@typescript-eslint/no-unnecessary-type-assertion": "error",
+			"@typescript-eslint/no-use-before-define": ["warn", {
+				functions: true,
+				classes: true,
+				variables: true,
+				enums: true,
+				typedefs: true,
+				ignoreTypeReferences: false,
+			}],
 		},
 	},
 ]);

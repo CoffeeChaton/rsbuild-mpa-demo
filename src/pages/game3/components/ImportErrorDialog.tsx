@@ -11,7 +11,7 @@ export interface IImportErrorDialogProps {
 export const ImportErrorDialog: React.FC<IImportErrorDialogProps> = ({ open, onOpenChange, errorMessage }) => {
 	return (
 		<Dialog.Root open={open} onOpenChange={onOpenChange}>
-			<Dialog.Content style={{ maxWidth: 400 }} className="rounded-3xl border border-red-3">
+			<Dialog.Content className="max-w-100 rounded-3xl border border-red-3">
 				<Flex direction="column" align="center" gap="4" p="2">
 					<Flex
 						align="center"

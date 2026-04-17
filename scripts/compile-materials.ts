@@ -35,7 +35,7 @@ async function main(): Promise<void> {
 		const resultParse = v.safeParse(ItemSchema, rawInput);
 
 		if (resultParse.success) {
-			result[key] = resultParse.output as TItem;
+			result[key] = resultParse.output;
 		} else {
 			console.warn(`[Invalid Data] Key: ${key} | Issues: ${resultParse.issues.length}`);
 		}

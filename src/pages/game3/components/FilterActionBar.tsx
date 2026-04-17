@@ -26,7 +26,7 @@ export const MaterialToolbar: FC<IMaterialToolbarProps> = ({
 	const handleCopyExcel = useCallback(() => {
 		const lines: string[] = rows.map(r => `${r.rare}\t${r.name}\t${r.stock}\t${r.need}\t${r.total}`);
 		const text = ["稀有度\t名稱\t原有\t需求\t合計", ...lines].join("\n");
-		copy(text);
+		void copy(text);
 		toast.success("已複製為 Excel 格式", {
 			description: "您可以直接貼上到 Excel 或 Google 試算表",
 		});

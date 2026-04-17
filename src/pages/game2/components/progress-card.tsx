@@ -2,6 +2,7 @@ import * as React from "react";
 import { memo } from "react";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Badge, Card, Flex, Progress, Text } from "@radix-ui/themes";
+import { cn } from "@/src/lib/utils";
 
 interface IStatusBadgeProps {
 	status: "ok" | "warning" | "error";
@@ -70,9 +71,8 @@ export interface IProgressCardProps {
 	color: "blue" | "green";
 
 	/** 當前文字顏色，差額為溢出時使用 */
-	overflowColor: "blue" | "green" | "grass";
-	gapColor: "blue" | "green" | "grass" | "red";
-	showPercentText?: boolean; // 是否顯示百分比文字
+	overflowColor: "blue" | "green";
+	gapColor: "blue" | "green" | "red";
 }
 
 export const ProgressCard: React.FC<IProgressCardProps> = memo(({
@@ -81,10 +81,9 @@ export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 	current,
 	need,
 	daily,
-	color = "blue",
-	overflowColor = "grass",
-	gapColor = "red",
-	showPercentText = true,
+	color,
+	overflowColor,
+	gapColor,
 }) => {
 	const target = current + need;
 	const percent = Math.max(0, Math.min(100, (current / target) * 100));
@@ -115,11 +114,9 @@ export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 				<div className="space-y-1.5 mt-1">
 					<Flex justify="between" align="center">
 						<Progress value={percent} size="1" color={color} className="flex-1 mr-2" />
-						{showPercentText && (
-							<Text size="1" weight="bold" className="w-10 text-right font-mono">
-								{percent.toFixed(0)}%
-							</Text>
-						)}
+						<Text size="1" weight="bold" className="w-10 text-right font-mono">
+							{percent.toFixed(0)}%
+						</Text>
 					</Flex>
 
 					<Flex justify="between" align="end">
@@ -128,7 +125,16 @@ export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 							<Text size="1" color="gray" className="text-[10px] uppercase opacity-50">
 								庫存
 							</Text>
-							<Text size="1" weight="bold" className="font-mono" style={{ color: color === "green" ? "#047857" : undefined }}>
+							<Text
+								size="1"
+								weight="bold"
+								className={cn(
+									"font-mono",
+									(color === "green")
+										? "text-emerald-700 dark:text-emerald-400"
+										: "",
+								)}
+							>
 								{formatNumber(current)}
 							</Text>
 						</Flex>
@@ -137,14 +143,24 @@ export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 						<Flex direction="column" align="center">
 							{need > 0
 								? (
-									<Text size="1" color={gapColor} className={`font-mono text-[10px] bg-${gapColor}-50 px-1.5 py-0.5 rounded border border-${gapColor}-100`}>
+									<Badge
+										size="1"
+										variant="surface"
+										color={gapColor}
+										className="px-1.5 py-0.5 font-mono text-[10px]"
+									>
 										缺 {formatNumber(need)}
-									</Text>
+									</Badge>
 								)
 								: (
-									<Text size="1" color={overflowColor} className={`font-mono text-[10px] bg-${overflowColor}-50 px-1.5 py-0.5 rounded border border-${overflowColor}-100`}>
+									<Badge
+										size="1"
+										variant="surface"
+										color={overflowColor}
+										className="px-1.5 py-0.5 font-mono text-[10px]"
+									>
 										溢出 {formatNumber(Math.abs(need))}
-									</Text>
+									</Badge>
 								)}
 						</Flex>
 

@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import { cn } from "@/src/lib/utils";
 import { TextField } from "@radix-ui/themes";
 import type React from "react";
@@ -19,15 +20,22 @@ export const TableInput: React.FC<TableInputProps> = ({
 	type = "number",
 	errorMessage,
 	onChange,
-}) => (
-	<TextField.Root
-		type={type}
-		size="1"
-		style={{ width }}
-		value={String(value ?? "")}
-		variant={errorMessage ? "soft" : "surface"}
-		color={errorMessage ? "red" : undefined}
-		className={cn("transition-all", errorMessage && "ring-1 ring-red-500 shadow-sm")}
-		onChange={(e) => onChange(id, e.target.value)}
-	/>
-);
+}) => {
+	const inputStyle = useMemo(() => ({ width }), [width]);
+	const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		onChange(id, e.target.value);
+	}, [id, onChange]);
+
+	return (
+		<TextField.Root
+			type={type}
+			size="1"
+			style={inputStyle}
+			value={String(value ?? "")}
+			variant={errorMessage ? "soft" : "surface"}
+			color={errorMessage ? "red" : undefined}
+			className={cn("transition-all", errorMessage && "ring-1 ring-red-500 shadow-sm")}
+			onChange={handleChange}
+		/>
+	);
+};

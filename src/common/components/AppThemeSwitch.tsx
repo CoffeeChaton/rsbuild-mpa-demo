@@ -1,9 +1,12 @@
 import { GearIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useCallback } from "react";
 import { Flex, IconButton, Popover, SegmentedControl, Select, Text, Tooltip } from "@radix-ui/themes";
-import { useAppTheme } from "../context/AppThemeContext";
+import { type TAccentColor, type TAppearanceMode, useAppTheme } from "../context/AppThemeContext";
 
 export const AppThemeSwitch: React.FC = () => {
 	const { accentColor, appearanceMode, setAccentColor, setAppearanceMode } = useAppTheme();
+	const handleAppearanceChange = useCallback((value: TAppearanceMode) => setAppearanceMode(value), [setAppearanceMode]);
+	const handleAccentChange = useCallback((value: TAccentColor) => setAccentColor(value), [setAccentColor]);
 
 	return (
 		<Popover.Root>
@@ -14,12 +17,12 @@ export const AppThemeSwitch: React.FC = () => {
 					</IconButton>
 				</Popover.Trigger>
 			</Tooltip>
-			<Popover.Content style={{ width: 220, maxWidth: "calc(100vw - 24px)" }}>
+			<Popover.Content className="w-55">
 				<Flex direction="column" gap="3">
 					<Text size="1" weight="bold" color="gray">
 						主題與配色
 					</Text>
-					<SegmentedControl.Root size="1" value={appearanceMode} onValueChange={(value) => setAppearanceMode(value as typeof appearanceMode)}>
+					<SegmentedControl.Root size="1" value={appearanceMode} onValueChange={handleAppearanceChange}>
 						<SegmentedControl.Item value="light">
 							<SunIcon />
 						</SegmentedControl.Item>
@@ -28,7 +31,7 @@ export const AppThemeSwitch: React.FC = () => {
 						</SegmentedControl.Item>
 						<SegmentedControl.Item value="system">Auto</SegmentedControl.Item>
 					</SegmentedControl.Root>
-					<Select.Root value={accentColor} onValueChange={(value) => setAccentColor(value as typeof accentColor)}>
+					<Select.Root value={accentColor} onValueChange={handleAccentChange}>
 						<Select.Trigger radius="full" variant="soft" />
 						<Select.Content position="popper">
 							<Select.Item value="indigo">Indigo</Select.Item>

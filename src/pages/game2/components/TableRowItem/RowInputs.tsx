@@ -20,18 +20,28 @@ export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInput
 		(field: keyof IItem, value: unknown) => onUpdate(item.id, field, value),
 		[item.id, onUpdate],
 	);
+	const handleRarityChange = useCallback((value: number) => {
+		handleUpdate("rarity", value);
+	}, [handleUpdate]);
+	const nameErrors = useMemo(() => [error.fields.name], [error.fields.name]);
+	const noteErrors = useMemo(() => [error.fields.note], [error.fields.note]);
+	const moduleErrors = useMemo(() => [error.fields.moduleFrom, error.fields.moduleTo], [error.fields.moduleFrom, error.fields.moduleTo]);
+	const levelErrors = useMemo(
+		() => [error.fields.e1, error.fields.l1, error.fields.e2, error.fields.l2, error.fields.progress],
+		[error.fields.e1, error.fields.l1, error.fields.e2, error.fields.l2, error.fields.progress],
+	);
 
 	return (
 		<>
 			<TableCell className="text-center p-2">
 				<RaritySelect
 					value={item.rarity}
-					onValueChange={(val) => handleUpdate("rarity", Number(val))}
+					onValueChange={handleRarityChange}
 				/>
 			</TableCell>
 
 			{/* 角色名稱 */}
-			<CellWithError errorMessages={[error.fields.name]}>
+			<CellWithError errorMessages={nameErrors}>
 				<TableInput
 					id="name"
 					type="text"
@@ -43,7 +53,7 @@ export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInput
 			</CellWithError>
 
 			{/* 備註 */}
-			<CellWithError errorMessages={[error.fields.note]}>
+			<CellWithError errorMessages={noteErrors}>
 				<TableInput
 					id="note"
 					type="text"
@@ -55,7 +65,7 @@ export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInput
 			</CellWithError>
 
 			{/* 模組進度 */}
-			<CellWithError errorMessages={[error.fields.moduleFrom, error.fields.moduleTo]}>
+			<CellWithError errorMessages={moduleErrors}>
 				<TableInput
 					id="moduleFrom"
 					width={40}
@@ -74,7 +84,7 @@ export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInput
 			</CellWithError>
 
 			{/* 等級進度 */}
-			<CellWithError errorMessages={[error.fields.e1, error.fields.l1, error.fields.e2, error.fields.l2, error.fields.progress]}>
+			<CellWithError errorMessages={levelErrors}>
 				<Flex gap="1">
 					<TableInput id="e1" width={40} value={item.e1} errorMessage={error.fields.e1} onChange={handleUpdate} />
 					<TableInput id="l1" width={40} value={item.l1} errorMessage={error.fields.l1} onChange={handleUpdate} />

@@ -4,6 +4,8 @@ import { Layout } from "./pages/index/Layout.tsx";
 import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Suspense } from "react";
 
+const LOADING_FALLBACK = <div className="py-20 text-center">Loading...</div>;
+
 // 直接定義 404 View (非 Lazy)
 const NotFoundView: React.FC = () => (
 	<>
@@ -30,7 +32,7 @@ function createRoutes(): RouteObject[] {
 				path,
 				Component: () => (
 					<Layout>
-						<Suspense fallback={<div className="text-center py-20">Loading...</div>}>
+						<Suspense fallback={LOADING_FALLBACK}>
 							<View />
 						</Suspense>
 					</Layout>

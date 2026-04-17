@@ -2,12 +2,13 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { Theme } from "@radix-ui/themes";
 
-type TAppearanceMode = "light" | "dark" | "system";
-type TAccentColor = "blue" | "crimson" | "grass" | "orange" | "indigo";
+export type TAppearanceMode = "light" | "dark" | "system";
+export type TAccentColor = "blue" | "crimson" | "grass" | "orange" | "indigo";
 
 interface IAppThemeContextValue {
 	accentColor: TAccentColor;
 	appearanceMode: TAppearanceMode;
+	resolvedAppearance: "light" | "dark";
 	setAccentColor: (value: TAccentColor) => void;
 	setAppearanceMode: (value: TAppearanceMode) => void;
 }
@@ -59,9 +60,10 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const value = useMemo<IAppThemeContextValue>(() => ({
 		accentColor,
 		appearanceMode,
+		resolvedAppearance: appearanceMode === "system" ? systemAppearance : appearanceMode,
 		setAccentColor,
 		setAppearanceMode,
-	}), [accentColor, appearanceMode]);
+	}), [accentColor, appearanceMode, systemAppearance]);
 
 	const appearance = appearanceMode === "system" ? systemAppearance : appearanceMode;
 

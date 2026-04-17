@@ -1,43 +1,40 @@
-import { Link } from "@radix-ui/themes";
+import { cn } from "@/src/lib/utils";
 
-// 1. 取得 Radix Link 的所有原始 Props 類型
-type RadixLinkProps = React.ComponentPropsWithoutRef<typeof Link>;
+type TIconLinkColor = "default" | "pink";
 
-// 2. 擴充介面，加入我們自定義的 icon 參數
-interface IconLinkProps extends RadixLinkProps {
+interface IconLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+	color?: TIconLinkColor;
 	icon?: React.ReactNode;
 }
+
+const colorClassMap: Record<TIconLinkColor, string> = {
+	default: "text-[var(--gray-11)] hover:text-[var(--gray-12)]",
+	pink: "text-[var(--pink-11)] hover:text-[var(--pink-12)]",
+};
 
 export const IconLink: React.FC<IconLinkProps> = ({
 	href,
 	icon,
 	children,
-	style,
+	color = "default",
 	className,
-	...restProps // 這裡包含了 color, size, highContrast, weight 等
-}) => (
-	<Link
-		href={href}
-		size="1"
-		target="_blank"
-		rel="noopener noreferrer"
-		asChild
-		{...restProps}
-	>
+	...restProps
+}) => {
+	return (
 		<a
-			className={className}
-			style={{
-				display: "inline-flex",
-				alignItems: "center",
-				gap: "4px",
-				whiteSpace: "nowrap",
-				transition: "color 0.2s ease",
-				cursor: "pointer",
-				...style, // 允許外部傳入 style 覆蓋或增加樣式
-			}}
+			href={href}
+			target="_blank"
+			rel="noopener noreferrer"
+			draggable={false}
+			className={cn(
+				"inline-flex max-w-max flex-none items-center gap-1 whitespace-nowrap break-normal text-xs leading-none underline-offset-2 transition-colors break-keep",
+				colorClassMap[color],
+				className,
+			)}
+			{...restProps}
 		>
-			{icon}
-			{children}
+			{icon ? <span className="shrink-0">{icon}</span> : null}
+			<span className="inline-block whitespace-nowrap break-keep">{children}</span>
 		</a>
-	</Link>
-);
+	);
+};

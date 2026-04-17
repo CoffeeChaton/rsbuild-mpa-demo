@@ -11,7 +11,7 @@
  */
 
 import * as React from "react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { ReaderIcon, StackIcon } from "@radix-ui/react-icons";
 import {
 	Card,
@@ -21,7 +21,7 @@ import {
 	TextField,
 	Tooltip,
 } from "@radix-ui/themes";
-import { BOOK_CONFIG, DEFAULT_BOOK_STACKS } from "../config/inventory";
+import { BOOK_CONFIG, DEFAULT_BOOK_STACKS, type TBookKey } from "../config/inventory";
 import { useArsenalInventory } from "../context/ArsenalContext";
 import type { IInventory } from "../types/inventory";
 import { useInventory } from "../hooks/useInventory";
@@ -34,10 +34,44 @@ const clampPositiveNumber = (value: string) => {
 };
 
 type ProductionFieldKey = "avgMoneyProduction" | "avgBookProduction";
+type TInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => void;
+
 const PRODUCTION_FIELDS: { key: ProductionFieldKey, label: string, unit: string }[] = [
 	{ key: "avgMoneyProduction", label: "平均龍門幣產出", unit: "LMD" },
 	{ key: "avgBookProduction", label: "平均經驗書產出", unit: "EXP" },
 ];
+
+function createBookStackChangeHandlers(
+	handleStackChange: (key: TBookKey, value: string) => void,
+): Record<TBookKey, TInputChangeHandler> {
+	return {
+		advanced: (event) => {
+			handleStackChange("advanced", event.target.value);
+		},
+		intermediate: (event) => {
+			handleStackChange("intermediate", event.target.value);
+		},
+		primary: (event) => {
+			handleStackChange("primary", event.target.value);
+		},
+		basic: (event) => {
+			handleStackChange("basic", event.target.value);
+		},
+	};
+}
+
+function createProductionChangeHandlers(
+	handleProductionChange: (key: ProductionFieldKey, value: string) => void,
+): Record<ProductionFieldKey, TInputChangeHandler> {
+	return {
+		avgMoneyProduction: (event) => {
+			handleProductionChange("avgMoneyProduction", event.target.value);
+		},
+		avgBookProduction: (event) => {
+			handleProductionChange("avgBookProduction", event.target.value);
+		},
+	};
+}
 
 export const BasicInfoPanel: React.FC = memo(() => {
 	const { inventory, setInventory } = useArsenalInventory();
@@ -48,6 +82,14 @@ export const BasicInfoPanel: React.FC = memo(() => {
 	}, [setInventory]);
 
 	const { handleStackChange, handleProductionChange } = useInventory(inventory, onUpdate);
+	const handleMoneyChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		onUpdate({ money: clampPositiveNumber(e.target.value) });
+	}, [onUpdate]);
+	const stackChangeHandlers = useMemo(() => createBookStackChangeHandlers(handleStackChange), [handleStackChange]);
+	const productionChangeHandlers = useMemo(
+		() => createProductionChangeHandlers(handleProductionChange),
+		[handleProductionChange],
+	);
 
 	const bookStacks = inventory.bookStacks ?? DEFAULT_BOOK_STACKS;
 	const totalExpValue = calculateBookStacksValue(bookStacks);
@@ -73,7 +115,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 							<TextField.Root
 								type="number"
 								value={inventory.money}
-								onChange={(e) => onUpdate({ money: clampPositiveNumber(e.target.value) })}
+								onChange={handleMoneyChange}
 								size="1"
 								variant="surface"
 								className="font-mono"
@@ -103,7 +145,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 											className="font-mono tabular-nums"
 											type="number"
 											value={bookStacks[conf.key] ?? 0}
-											onChange={(e) => handleStackChange(conf.key, e.target.value)}
+											onChange={stackChangeHandlers[conf.key]}
 										/>
 									</div>
 								))}
@@ -135,7 +177,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 									size="1"
 									variant="surface"
 									value={inventory[field.key] ?? 0}
-									onChange={(e) => handleProductionChange(field.key, e.target.value)}
+									onChange={productionChangeHandlers[field.key]}
 									className="font-mono"
 									placeholder={field.unit}
 								/>

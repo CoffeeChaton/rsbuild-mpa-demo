@@ -16,7 +16,7 @@ import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useIsMobile } from "@/src/lib/use-mobile";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -42,6 +42,10 @@ export const BottomDiagnosticPanel: React.FC = memo(() => {
 	});
 
 	const toggle = useCallback(() => setOpen((prev) => !prev), []);
+	const contentHeightStyle = useMemo(
+		() => (isMobile ? undefined : { height }),
+		[height, isMobile],
+	);
 
 	// 快捷鍵邏輯
 	useHotkeys("`", e => {
@@ -118,8 +122,8 @@ export const BottomDiagnosticPanel: React.FC = memo(() => {
 			>
 				<div
 					ref={panelRef}
-					style={{ height: isMobile ? "50vh" : height }}
-					className="overflow-y-auto p-4 transition-[height] duration-200"
+					style={contentHeightStyle}
+					className={cn("overflow-y-auto p-4 transition-[height] duration-200", isMobile && "h-[50vh]")}
 				>
 					<DiagnosticPanel />
 				</div>

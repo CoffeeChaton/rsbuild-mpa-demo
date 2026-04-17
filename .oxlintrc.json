@@ -6,6 +6,7 @@
 	},
 	//
 	"plugins": [
+		"typescript",
 		"react",
 		"react-perf",
 		"import",
@@ -16,7 +17,7 @@
 	"categories": {
 		// 1. Must Have
 		"correctness": "error",
-		// "perf": "warn",
+		"perf": "warn",
 		// 2.
 		// "suspicious":"warn",
 		// "style":"warn",
@@ -25,7 +26,10 @@
 		// "restriction":"deny",
 		// "nursery":"deny"
 	},
-	"rules": {},
+	"rules": {
+		"@typescript-eslint/no-explicit-any": "error",
+		"@typescript-eslint/no-unnecessary-type-assertion": "error",
+	},
 	"settings": {
 		"jsx-a11y": {
 			"polymorphicPropName": null,

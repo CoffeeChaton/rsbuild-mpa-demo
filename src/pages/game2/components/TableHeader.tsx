@@ -48,8 +48,8 @@ export const TableHeader: React.FC = memo(() => {
 												<TableRow key={row.rarity}>
 													<TableCell className="tabular-nums font-medium">★ {row.rarity}</TableCell>
 													{row.costs
-														? row.costs.map((cost, idx) => (
-															<TableCell key={idx} className="whitespace-nowrap tabular-nums">
+														? row.costs.map((cost) => (
+															<TableCell key={`${row.rarity}-${cost}`} className="whitespace-nowrap tabular-nums">
 																{cost.toLocaleString()}
 															</TableCell>
 														))

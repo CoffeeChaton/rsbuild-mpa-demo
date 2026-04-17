@@ -72,6 +72,18 @@ export const PlannerConfigSwitch: React.FC = () => {
 		setNewName("");
 		setIsAdding(false);
 	}, [addConfig, newName]);
+	const handleNewNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setNewName(e.target.value);
+	}, []);
+	const handleNewNameKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") handleAdd();
+	}, [handleAdd]);
+	const handleCancelAdding = useCallback(() => {
+		setIsAdding(false);
+	}, []);
+	const handleStartAdding = useCallback(() => {
+		setIsAdding(true);
+	}, []);
 
 	const popoverContentStyle = useMemo(() => ({ width: 300, maxWidth: "calc(100vw - 24px)" }), []);
 
@@ -79,7 +91,7 @@ export const PlannerConfigSwitch: React.FC = () => {
 		<Flex align="center" gap="2">
 			<Popover.Root>
 				<Popover.Trigger>
-					<Button variant="surface" color="gray" size="2" className="cursor-pointer max-w-full">
+					<Button variant="outline" color="indigo" size="2" className="cursor-pointer max-w-full">
 						<ArchiveIcon />
 						<Text weight="bold" className="max-w-32 truncate">
 							{currentConfig?.name}
@@ -116,17 +128,17 @@ export const PlannerConfigSwitch: React.FC = () => {
 										className="flex-1"
 										placeholder="新存檔名稱"
 										value={newName}
-										onChange={(e) => setNewName(e.target.value)}
-										onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+										onChange={handleNewNameChange}
+										onKeyDown={handleNewNameKeyDown}
 									/>
-									<Button size="1" onClick={handleAdd}>確定</Button>
-									<Button size="1" variant="soft" color="gray" onClick={() => setIsAdding(false)}>
+									<Button size="1" color="indigo" onClick={handleAdd}>確定</Button>
+									<Button size="1" variant="soft" color="gray" onClick={handleCancelAdding}>
 										取消
 									</Button>
 								</Flex>
 							)
 							: (
-								<Button variant="ghost" size="1" onClick={() => setIsAdding(true)}>
+								<Button variant="ghost" size="1" color="indigo" onClick={handleStartAdding}>
 									<PlusIcon /> 新增存檔
 								</Button>
 							)}

@@ -50,7 +50,7 @@ export const FutureMaterialPage: React.FC = () => {
 				.map(r => [r.id, r.total]),
 		);
 
-		copy(JSON.stringify(result, null, 2));
+		void copy(JSON.stringify(result, null, 2));
 		toast.success("已複製到剪貼簿", {
 			description: "數據已成功生成 JSON 並準備好用於導入",
 		});
@@ -78,6 +78,9 @@ export const FutureMaterialPage: React.FC = () => {
 			setImportError(err instanceof Error ? err.message : "無法讀取剪貼簿，請檢查權限");
 		}
 	}, [setJsonA]);
+	const handleImportErrorDialogChange = useCallback((open: boolean) => {
+		if (!open) setImportError(null);
+	}, []);
 
 	return (
 		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden relative">
@@ -106,7 +109,7 @@ export const FutureMaterialPage: React.FC = () => {
 				{/* Import Error Dialog */}
 				<ImportErrorDialog
 					open={importError !== null}
-					onOpenChange={(open) => !open && setImportError(null)}
+					onOpenChange={handleImportErrorDialogChange}
 					errorMessage={importError || ""}
 				/>
 			</PlanContext.Provider>

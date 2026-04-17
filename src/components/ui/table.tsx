@@ -4,24 +4,18 @@ import type { JSX } from "react/jsx-runtime";
 import { ScrollArea } from "@radix-ui/themes";
 
 interface TableProps extends ComponentProps<"table"> {
-	/** 強制表格寬高，超出時滾動 */
-	containerStyle?: React.CSSProperties;
+	/** 容器樣式類名，超出時滾動 */
+	containerClassName?: string;
 	/** 是否使用固定佈局，避免頻繁 Layout */
 	fixed?: boolean;
 }
 
-function Table({ className, containerStyle, fixed, ...props }: TableProps): JSX.Element {
-	const scrollAreaStyle = useMemo(() => ({
-		...containerStyle,
-		width: "100%",
-		height: "100%",
-	}), [containerStyle]);
-
+function Table({ className, containerClassName, fixed, ...props }: TableProps): JSX.Element {
 	return (
 		<ScrollArea
 			data-slot="table-container"
 			scrollbars="both"
-			style={scrollAreaStyle}
+			className={cn("h-full w-full", containerClassName)}
 		>
 			<table
 				data-slot="table"

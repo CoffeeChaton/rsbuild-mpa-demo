@@ -70,12 +70,13 @@ export const TableArea: React.FC = memo(() => {
 		items.forEach((item, index) => map.set(item.id, { item, index }));
 		return map;
 	}, [items]);
+	const sortableItemIds = useMemo(() => items.map(item => item.id), [items]);
 
 	return (
 		<div className="flex flex-col h-full w-full overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-sm">
 			{/* 工具列 */}
-			<div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
-				<div className="flex items-center gap-3">
+			<div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
+				<div className="flex items-center gap-3 shrink-0">
 					<h2 className="text-sm font-bold uppercase tracking-wider">
 						練度規劃列表
 					</h2>
@@ -83,10 +84,11 @@ export const TableArea: React.FC = memo(() => {
 						{rows.length} 筆
 					</Badge>
 				</div>
-				<Flex gap="2">
+				<Flex gap="2" wrap="wrap" justify="end">
 					<Button
 						size="1"
 						variant="outline"
+						color="indigo"
 						onClick={handleImport}
 					>
 						<DownloadIcon /> 從剪貼簿導入
@@ -95,13 +97,14 @@ export const TableArea: React.FC = memo(() => {
 					<Button
 						size="1"
 						variant={isCopied ? "solid" : "outline"}
+						color={isCopied ? "green" : "indigo"}
 						onClick={handleExport}
 					>
 						{isCopied ? <CheckIcon /> : <ClipboardCopyIcon />}
 						{isCopied ? "已複製" : "導出 TSV"}
 					</Button>
 
-					<Button onClick={createItem} size="1" className="gap-1.5 cursor-pointer">
+					<Button onClick={createItem} size="1" variant="outline" color="indigo" className="gap-1.5 cursor-pointer">
 						<Plus className="h-3.5 w-3.5" />
 						新增需求列
 					</Button>
@@ -117,18 +120,13 @@ export const TableArea: React.FC = memo(() => {
 				>
 					<Table
 						fixed
-						containerStyle={{
-							height: "100%",
-							width: "100%",
-							borderRadius: 0,
-							border: "none",
-						}}
-						className="min-w-[1600px]"
+						containerClassName="h-full w-full rounded-none border-0"
+						className="min-w-400"
 					>
 						<TableHeader />
 						<TableBody>
 							<SortableContext
-								items={items.map(item => item.id)}
+								items={sortableItemIds}
 								strategy={verticalListSortingStrategy}
 							>
 								{rows.map((row) => {
@@ -151,7 +149,7 @@ export const TableArea: React.FC = memo(() => {
 
 							<TableRow className="hover:bg-transparent border-none">
 								<TableCell colSpan={12} className="p-0 border-none">
-									<div style={{ height: "160px" }} className="flex items-center justify-center opacity-30 select-none">
+									<div className="flex h-40 items-center justify-center opacity-30 select-none">
 										<span className="text-[10px] tracking-[0.5em] uppercase">
 											— Arknights Planner End —
 										</span>

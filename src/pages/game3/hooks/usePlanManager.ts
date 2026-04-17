@@ -1,8 +1,6 @@
-import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo } from "react";
+import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 import { useLocalStorageState } from "./useLocalStorageState";
-import { DEFAULT_PLANS, type TDefaultPlanKey, tsvFetcher } from "../assets/planLoader";
-import { mutate } from "swr";
-import useSWRImmutable from "swr/immutable";
+import { DEFAULT_PLAN_CONTENT, getDefaultPlanContent, type TDefaultPlanKey } from "../assets/planLoader";
 
 export interface IPlanManagerContext {
 	planName: string;
@@ -14,28 +12,16 @@ export interface IPlanManagerContext {
 	deletePlan: (name: string) => void;
 }
 
+function isDefaultPlanKey(planName: string): planName is TDefaultPlanKey {
+	return planName in DEFAULT_PLAN_CONTENT;
+}
+
 export function usePlanManager(): IPlanManagerContext {
 	const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {});
 	const [planName, setPlanName] = useLocalStorageState<string>("fm_current_plan_name", "plan_a");
 
-	// 1. 使用 SWR 處理靜態資產載入
-	// 如果是 custom 方案，SWR Key 為 null，不觸發 fetcher
-	const isDefault = planName in DEFAULT_PLANS;
-	const { data: defaultTsv } = useSWRImmutable(
-		isDefault ? planName : null,
-		tsvFetcher,
-	);
-
-	// 2. 最終的 TSV 來源：優先看自定義，再看 SWR 載入的預設值
-	const tsvB = customPlans[planName] ?? defaultTsv ?? "";
-
-	// 3. 預載邏輯：利用 SWR 的 mutate 預熱快取
-	useEffect(() => {
-		// 只在初次掛載時把「所有」預設方案塞進 SWR 快取
-		Object.keys(DEFAULT_PLANS).forEach((key) => {
-			void mutate(key, tsvFetcher(key as TDefaultPlanKey), false);
-		});
-	}, []);
+	const defaultTsv = isDefaultPlanKey(planName) ? getDefaultPlanContent(planName) : "";
+	const tsvB = customPlans[planName] ?? defaultTsv;
 
 	// 新增：集中處理存檔邏輯，確保正確性
 	const updateCustomPlan = useCallback((title: string, content: string, targetId: string | null) => {

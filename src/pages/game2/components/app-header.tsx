@@ -11,13 +11,7 @@ import { PlannerConfigSwitch } from "../../../common/components/PlannerConfigSwi
  */
 export const AppHeader: React.FC = memo(() => {
 	return (
-		<header
-			style={{
-				backgroundColor: "var(--slate-1)",
-				borderBottom: "1px solid var(--slate-6)",
-			}}
-			className="sticky top-0 z-50 px-6 py-4 bg-opacity-80"
-		>
+		<header className="sticky top-0 z-50 border-b border-(--slate-6) bg-(--slate-1) px-6 py-4">
 			<Flex align="center" justify="between">
 				<PlannerConfigSwitch />
 			</Flex>

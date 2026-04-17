@@ -18,7 +18,7 @@ import {
 	ReaderIcon,
 	StackIcon,
 } from "@radix-ui/react-icons";
-import { Badge, Card, Flex, Grid, Text } from "@radix-ui/themes";
+import { Badge, Card, Flex, Text } from "@radix-ui/themes";
 import { useDiagnostics } from "../hooks/useDiagnostics";
 import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { ProgressCard } from "./progress-card";
@@ -53,7 +53,7 @@ export const DiagnosticPanel: React.FC = memo(() => {
 	const books = calculateBookStacksValue(bookStacks);
 
 	return (
-		<Grid columns={{ initial: "1", sm: "2", lg: "4" }} gap="4" width="100%">
+		<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			{/* 1. 數據校驗：確認表格輸入是否有誤 */}
 			<Card variant="surface">
 				<Flex direction="column" gap="2" height="100%">
@@ -130,6 +130,6 @@ export const DiagnosticPanel: React.FC = memo(() => {
 				overflowColor="green"
 				gapColor="red"
 			/>
-		</Grid>
+		</div>
 	);
 });

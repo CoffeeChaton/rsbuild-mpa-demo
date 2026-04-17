@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Checkbox, Flex, IconButton } from "@radix-ui/themes";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import type { IItem, IRowResult } from "../types";
@@ -33,15 +33,21 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 		},
 		[item.id, onUpdate],
 	);
+	const handleCalculateChange = useCallback((checked: boolean | "indeterminate") => {
+		handleUpdate("calculate", !!checked);
+	}, [handleUpdate]);
+	const handleDelete = useCallback(() => {
+		onDelete(item.id);
+	}, [item.id, onDelete]);
 
-	const style = {
+	const style = useMemo(() => ({
 		transform: CSS.Transform.toString(transform),
 		transition,
 		zIndex: isDragging ? 100 : "auto",
 		position: "relative" as const,
 		opacity: isDragging ? 0.5 : row.calculate ? 1 : 0.4,
 		background: isDragging ? "var(--gray-2)" : "transparent",
-	};
+	}), [isDragging, row.calculate, transform, transition]);
 
 	return (
 		<TableRow
@@ -63,7 +69,7 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 			<TableCell>
 				<Checkbox
 					checked={item.calculate}
-					onCheckedChange={v => handleUpdate("calculate", !!v)}
+					onCheckedChange={handleCalculateChange}
 				/>
 			</TableCell>
 			{/* 中間計算區域 */}
@@ -79,7 +85,7 @@ const TableRowItemComponent: React.FC<ITableRowItemProps> = ({ item, row, onUpda
 
 			{/* 尾部操作區域 */}
 			<TableCell className="text-center">
-				<IconButton size="1" variant="ghost" color="red" onClick={() => onDelete(item.id)} className="cursor-pointer">
+				<IconButton size="1" variant="ghost" color="red" onClick={handleDelete} className="cursor-pointer">
 					<TrashIcon />
 				</IconButton>
 			</TableCell>

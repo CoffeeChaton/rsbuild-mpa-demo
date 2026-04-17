@@ -1,4 +1,4 @@
-import { BOOK_CONFIG, type IBookStacks } from "../config/inventory";
+import { BOOK_CONFIG, DEFAULT_BOOK_STACKS, type IBookStacks } from "../config/inventory";
 
 /**
  * 計算總經驗值 (純函數)
@@ -17,10 +17,10 @@ export const calculateBookStacksValue = (stacks: IBookStacks): number => {
  * 利用 BOOK_CONFIG 動態生成物件，避免硬編碼
  */
 export const sanitizeBookStacks = (stacks?: Partial<IBookStacks>): IBookStacks => {
-	const result = {} as IBookStacks;
+	const result: IBookStacks = { ...DEFAULT_BOOK_STACKS };
 
 	BOOK_CONFIG.forEach(conf => {
-		result[conf.key] = stacks?.[conf.key] || 0;
+		result[conf.key] = stacks?.[conf.key] ?? 0;
 	});
 	return result;
 };
