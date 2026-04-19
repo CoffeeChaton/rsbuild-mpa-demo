@@ -8,14 +8,18 @@ import eslintReact from "@eslint-react/eslint-plugin";
 
 export default defineConfig([
 	globalIgnores(["dist", ".vscode"]),
+
 	{
 		files: ["**/*.{ts,tsx}"],
 		extends: [
 			js.configs.recommended,
-			tseslint.configs.recommended,
+			tseslint.configs.recommendedTypeChecked,
+			tseslint.configs.strictTypeChecked,
+			tseslint.configs.stylisticTypeChecked,
+
 			reactHooks.configs.flat["recommended-latest"],
 			reactRefresh.configs.recommended,
-			   eslintReact.configs["recommended-typescript"],
+			eslintReact.configs["recommended-typescript"],
 		],
 		languageOptions: {
 			ecmaVersion: 2020,
@@ -26,6 +30,14 @@ export default defineConfig([
 			},
 		},
 		rules: {
+			"@typescript-eslint/no-confusing-void-expression": "off",
+			"@typescript-eslint/consistent-type-definitions": "off", // TODO
+			"@typescript-eslint/restrict-template-expressions": [
+				"warn",
+				{
+					"allowNumber": true,
+				},
+			],
 			"@typescript-eslint/no-explicit-any": "error",
 			"@typescript-eslint/no-unnecessary-type-assertion": "error",
 			"@typescript-eslint/no-use-before-define": ["warn", {

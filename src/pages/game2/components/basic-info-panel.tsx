@@ -21,7 +21,7 @@ import {
 	TextField,
 	Tooltip,
 } from "@radix-ui/themes";
-import { BOOK_CONFIG, DEFAULT_BOOK_STACKS, type TBookKey } from "../config/inventory";
+import { BOOK_CONFIG, type TBookKey } from "../config/inventory";
 import { useArsenalInventory } from "../context/ArsenalContext";
 import type { IInventory } from "../types/inventory";
 import { useInventory } from "../hooks/useInventory";
@@ -91,7 +91,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 		[handleProductionChange],
 	);
 
-	const bookStacks = inventory.bookStacks ?? DEFAULT_BOOK_STACKS;
+	const bookStacks = inventory.bookStacks;
 	const totalExpValue = calculateBookStacksValue(bookStacks);
 
 	return (
@@ -144,7 +144,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 											variant="surface"
 											className="font-mono tabular-nums"
 											type="number"
-											value={bookStacks[conf.key] ?? 0}
+											value={bookStacks[conf.key]}
 											onChange={stackChangeHandlers[conf.key]}
 										/>
 									</div>
@@ -176,7 +176,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 									type="number"
 									size="1"
 									variant="surface"
-									value={inventory[field.key] ?? 0}
+									value={inventory[field.key]}
 									onChange={productionChangeHandlers[field.key]}
 									className="font-mono"
 									placeholder={field.unit}

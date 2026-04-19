@@ -1,10 +1,19 @@
 // src/pages/game2/hooks/useArsenalStorage.ts
 import { useCallback, useEffect, useMemo, useState } from "react";
+import * as v from "valibot";
 import { STORAGE_KEY } from "../config/constants";
 import type { IInventory, IItem } from "../types";
 import { sanitizeBookStacks } from "../core/calculateBookStacksValue";
+import { StoredItemSchema, toItem } from "../types/item";
 
-const createInventoryState = (inv?: Partial<IInventory>): IInventory => ({
+interface IInventoryStateInput {
+	money?: number | undefined;
+	bookStacks?: IInventory["bookStacks"] | undefined;
+	avgMoneyProduction?: number | undefined;
+	avgBookProduction?: number | undefined;
+}
+
+const createInventoryState = (inv?: IInventoryStateInput): IInventory => ({
 	money: Number(inv?.money) || 0,
 	bookStacks: sanitizeBookStacks(inv?.bookStacks),
 	avgMoneyProduction: Number(inv?.avgMoneyProduction) || 0,
@@ -16,13 +25,32 @@ interface IArsenalData {
 	inv: IInventory;
 }
 
+const BookStacksSchema = v.object({
+	advanced: v.number(),
+	intermediate: v.number(),
+	primary: v.number(),
+	basic: v.number(),
+});
+
+const InventorySchema = v.object({
+	money: v.number(),
+	bookStacks: BookStacksSchema,
+	avgMoneyProduction: v.number(),
+	avgBookProduction: v.number(),
+});
+
+const ArsenalDataSchema = v.object({
+	items: v.array(StoredItemSchema),
+	inv: v.optional(v.partial(InventorySchema)),
+});
+
 const arsenalDataFetcher = (key: string): IArsenalData => {
 	const saved = localStorage.getItem(key);
 	try {
-		const parsed = saved ? JSON.parse(saved) : {};
+		const parsed = saved ? v.parse(ArsenalDataSchema, JSON.parse(saved)) : null;
 		return {
-			items: Array.isArray(parsed.items) ? parsed.items : [],
-			inv: parsed.inv ? createInventoryState(parsed.inv) : createInventoryState(),
+			items: parsed?.items.map(toItem) ?? [],
+			inv: parsed?.inv ? createInventoryState(parsed.inv) : createInventoryState(),
 		};
 	} catch {
 		return { items: [], inv: createInventoryState() };

@@ -15,7 +15,7 @@ export function parseArknightsItemsToTSV(htmlString: string): string {
 	containers.forEach(container => {
 		// 1. 提取名稱：尋找 <a> 標籤的 title
 		const anchor = container.querySelector("a[title]");
-		const name = anchor ? anchor.getAttribute("title")!.trim() : null;
+		const name = anchor ? anchor.getAttribute("title")?.trim() : null;
 
 		// 2. 提取數量：尋找包含數量文字的 span
 		// 特徵是它的 style 包含 position:absolute 和 font-weight:bold

@@ -25,7 +25,7 @@ interface IRowsContext {
 }
 
 interface IActionsContext {
-	handleImport: () => Promise<void>;
+	handleImport: () => void;
 	handleExport: () => void;
 	isCopied: boolean;
 }

@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { ARKNIGHTS_CONFIG, validateLevel } from "./validateItem";
+import { LV_MAX_MAP, validateLevel } from "./validateItem";
 import { maxLevel } from "@/src/assets/level.json";
 
 describe("validateLevel 邏輯測試", () => {
 	describe("配置數據應該正確", () => {
-		it("ARKNIGHTS_CONFIG 數據應該正確", () => {
-			expect(ARKNIGHTS_CONFIG.maxLevel).toStrictEqual(maxLevel);
+		it("LV_MAX_MAP 數據應該正確", () => {
+			const map = new Map<number, number[]>();
+			let i = 0;
+			for (const arr of maxLevel) {
+				i += 1;
+				map.set(i, arr);
+			}
+			expect(LV_MAX_MAP).toStrictEqual(map);
 		});
 	});
 

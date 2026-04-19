@@ -63,7 +63,7 @@ export const PlannerConfigSwitch: React.FC = () => {
 	const [newName, setNewName] = useState("");
 	const [isAdding, setIsAdding] = useState(false);
 
-	const currentConfig = useMemo(() => configs.find(c => c.id === currentConfigId) || configs[0], [configs, currentConfigId]);
+	const currentConfig = useMemo(() => configs.find(c => c.id === currentConfigId) ?? configs[0], [configs, currentConfigId]);
 
 	const handleAdd = useCallback(() => {
 		const trimmedName = newName.trim();
@@ -94,7 +94,7 @@ export const PlannerConfigSwitch: React.FC = () => {
 					<Button variant="outline" color="indigo" size="2" className="cursor-pointer max-w-full">
 						<ArchiveIcon />
 						<Text weight="bold" className="max-w-32 truncate">
-							{currentConfig?.name}
+							{currentConfig.name}
 						</Text>
 					</Button>
 				</Popover.Trigger>
@@ -104,7 +104,7 @@ export const PlannerConfigSwitch: React.FC = () => {
 							<Text size="1" weight="bold" color="gray">
 								本頁配置
 							</Text>
-							{currentConfig && <Text size="1" color="gray" className="truncate">{currentConfig.id}</Text>}
+							<Text size="1" color="gray" className="truncate">{currentConfig.id}</Text>
 						</Flex>
 
 						<Flex direction="column" gap="1">

@@ -22,6 +22,9 @@ export const useResizableHeight: TUseResizableHeight = ({
 	maxHeight,
 	isMobile,
 }) => {
+	const noopResizeHandler = (): void => undefined;
+	const noopStopResize = (): void => undefined;
+
 	const [height, setHeight] = useState<number>(() => {
 		if (typeof window === "undefined") return defaultHeight;
 		const saved = localStorage.getItem(key);
@@ -30,8 +33,8 @@ export const useResizableHeight: TUseResizableHeight = ({
 
 	const panelRef = useRef<HTMLDivElement>(null);
 	const isResizingRef = useRef(false);
-	const resizeHandlerRef = useRef<(e: MouseEvent) => void>(null!);
-	const stopResizeRef = useRef<() => void>(null!);
+	const resizeHandlerRef = useRef<(e: MouseEvent) => void>(noopResizeHandler);
+	const stopResizeRef = useRef<() => void>(noopStopResize);
 
 	useEffect(() => {
 		resizeHandlerRef.current = (e: MouseEvent) => {

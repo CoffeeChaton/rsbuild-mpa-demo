@@ -102,7 +102,7 @@ function createPageDefinitions(): TPageDefinitionList {
 			cleanupDir: "404",
 			isView: false,
 		},
-	] as const satisfies ReadonlyArray<IPageDefinition>;
+	] as const satisfies readonly IPageDefinition[];
 }
 
 const PAGE_DEFINITIONS_INTERNAL: ReturnType<typeof createPageDefinitions> = createPageDefinitions();
@@ -114,8 +114,8 @@ export type TViewPageKey = Extract<TPageDefinition, { isView: true }>["key"];
 export type TPageDefinitionWithCleanupDir = Extract<TPageDefinition, { cleanupDir: string }>;
 
 export const NOT_FOUND_PAGE_KEY: TPageKey = "404";
-export const PAGE_KEYS: ReadonlyArray<TPageKey> = PAGE_DEFINITIONS.map(page => page.key);
-export const VIEW_PAGE_KEYS: ReadonlyArray<TViewPageKey> = PAGE_DEFINITIONS
+export const PAGE_KEYS: readonly TPageKey[] = PAGE_DEFINITIONS.map(page => page.key);
+export const VIEW_PAGE_KEYS: readonly TViewPageKey[] = PAGE_DEFINITIONS
 	.filter((page): page is Extract<TPageDefinition, { isView: true }> => page.isView)
 	.map(page => page.key);
 

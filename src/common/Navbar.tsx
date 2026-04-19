@@ -14,9 +14,7 @@ interface INavItemProps {
 const NavItem: React.FC<INavItemProps> = React.memo(({ item, isActive }) => {
 	const handleMouseEnter = useCallback(() => {
 		const page = VIEW_MAP[item.key];
-		if (page) {
-			void page.loader();
-		}
+		void page.loader();
 	}, [item.key]);
 
 	return (

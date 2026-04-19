@@ -1,9 +1,7 @@
+import * as v from "valibot";
 import type { IItemDataBundle } from "../services/itemFetcher";
 
-// export interface IItemBundle {
-// 	items: Record<string, { name: { tw: string }, rare: number }>;
-// 	nameToIdMap: Map<string, string>;
-// }
+const SourceJsonSchema = v.record(v.string(), v.number());
 
 export function analyzeSource(
 	content: string,
@@ -15,7 +13,7 @@ export function analyzeSource(
 
 	if (isJson) {
 		try {
-			const data = JSON.parse(content);
+			const data = v.parse(SourceJsonSchema, JSON.parse(content));
 			return new Map(Object.entries(data));
 		} catch {
 			return map;
@@ -28,10 +26,10 @@ export function analyzeSource(
 			const c = l.split("\t");
 			if (c.length < 3) return;
 
-			const id = typedBundle.nameToIdMap?.get(c[1]) || c[1];
+			const id = typedBundle.nameToIdMap.get(c[1]) ?? c[1];
 			const val = Number(c[2]) || 0;
 
-			map.set(id, (map.get(id) || 0) + val);
+			map.set(id, (map.get(id) ?? 0) + val);
 		});
 	}
 

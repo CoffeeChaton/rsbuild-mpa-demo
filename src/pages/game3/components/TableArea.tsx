@@ -30,7 +30,7 @@ export const TableArea: FC<ITableAreaParam> = memo<ITableAreaParam>(({ groupedRo
 						<Table.Body>
 							{RARE_LEVELS.map((rare) => (
 								<Fragment key={rare}>
-									{(groupedRows[rare] ?? []).length > 0 && (
+									{groupedRows[rare].length > 0 && (
 										<Table.Row>
 											<Table.RowHeaderCell colSpan={5} className="py-1 px-4">
 												<Text size="1" weight="bold" color="gray">RARE {rare}</Text>

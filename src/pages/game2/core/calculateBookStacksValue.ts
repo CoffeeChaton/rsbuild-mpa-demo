@@ -7,7 +7,7 @@ export const calculateBookStacksValue = (stacks: IBookStacks): number => {
 	let total = 0;
 	// 使用 for...of 在處理固定長度陣列時效能略高於 reduce
 	for (const conf of BOOK_CONFIG) {
-		const amount = stacks[conf.key] ?? 0;
+		const amount = stacks[conf.key];
 		total += amount * conf.value;
 	}
 	return total;

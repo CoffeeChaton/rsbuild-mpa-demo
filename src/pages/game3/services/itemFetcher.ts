@@ -17,8 +17,7 @@ export const itemFetcher = async (url: string): Promise<IItemDataBundle> => {
 	const response = await fetch(url);
 	if (!response.ok) throw new Error("Failed to fetch item data");
 
-	const rawData = await response.json();
-	const items = v.parse(ItemMapSchema, rawData);
+	const items = v.parse(ItemMapSchema, await response.json());
 
 	const nameToIdMap = new Map<string, string>();
 	const options: { label: string, value: string }[] = [];

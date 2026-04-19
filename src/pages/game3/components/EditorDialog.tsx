@@ -33,7 +33,6 @@ export const EditorDialog: FC<IEditorDialogParam> = memo(({
 	const [tempContent, setTempContent] = useState(initialData.content);
 
 	const handleInternalSave = useCallback(() => {
-		if (!planContext) return;
 		planContext.updateCustomPlan(tempTitle, tempContent, initialData.targetId);
 		onOpenChange(false);
 	}, [initialData.targetId, onOpenChange, planContext, tempContent, tempTitle]);

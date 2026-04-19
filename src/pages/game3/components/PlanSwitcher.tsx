@@ -60,7 +60,7 @@ export const PlanSwitcher: FC = () => {
 					<ChevronDownIcon />
 				</Button>
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content variant="soft" color="indigo" className="min-w-[180px]">
+			<DropdownMenu.Content variant="soft" color="indigo" className="min-w-45">
 				<DropdownMenu.Label>自定義方案</DropdownMenu.Label>
 				{Object.keys(customPlans).map(p => <CustomPlanItem key={p} planKey={p} onSelect={setPlanName} onDelete={deletePlan} />)}
 				<DropdownMenu.Separator />
@@ -70,7 +70,7 @@ export const PlanSwitcher: FC = () => {
 				>
 					<PlusIcon /> 新增方案...
 				</DropdownMenu.Item>
-				{customPlans[planName] !== undefined && (
+				{Object.hasOwn(customPlans, planName) && (
 					<DropdownMenu.Item onClick={handleEditCurrentPlan}>
 						<GearIcon /> 編輯方案名稱/內容...
 					</DropdownMenu.Item>

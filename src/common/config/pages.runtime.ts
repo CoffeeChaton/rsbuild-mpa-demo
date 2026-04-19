@@ -34,7 +34,7 @@ export function getPageInfoByPathname(pathname: string): IPageInfo {
 	return isPageKey(normalizedPath) ? getPageInfo(normalizedPath) : getPageInfo("index");
 }
 
-export const NAV_ITEMS: ReadonlyArray<INavItem> = VIEW_PAGE_KEYS
+export const NAV_ITEMS: readonly INavItem[] = VIEW_PAGE_KEYS
 	.filter((key) => !getConfigViewPageInfo(key).hidden)
 	.map((key) => ({
 		key,

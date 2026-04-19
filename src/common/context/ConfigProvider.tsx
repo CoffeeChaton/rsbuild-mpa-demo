@@ -42,7 +42,7 @@ const parseCurrentId = (raw: string | null): string | null => {
 const getScopedKey = (baseKey: string, namespace: string): string => (namespace ? `${baseKey}_${namespace}` : baseKey);
 
 export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children, namespace = "" }) => {
-	const ns = namespace ?? "";
+	const ns = namespace;
 	const listKey = getScopedKey(CONFIG_LIST_KEY, ns);
 	const currentKey = getScopedKey(CURRENT_CONFIG_KEY, ns);
 	const lastUsedKey = getScopedKey(LAST_USED_CONFIG_KEY, ns);

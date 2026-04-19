@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { Flex } from "@radix-ui/themes";
 import { useClipboard } from "foxact/use-clipboard";
 import { toast } from "sonner";
+import * as v from "valibot";
 import { ITEM_DATA_KEY, itemFetcher } from "./services/itemFetcher";
 import { ImportErrorDialog } from "./components/ImportErrorDialog";
 import { EditorDialog } from "./components/EditorDialog";
@@ -16,6 +17,7 @@ import { PlanContext } from "./context/PlanContext";
 import { useEditor } from "./hooks/useEditor";
 
 const NAVBAR_HEIGHT = 70; // px
+const JsonStringSchema = v.string();
 
 export const FutureMaterialPage: React.FC = () => {
 	const { data: bundle } = useSWR(ITEM_DATA_KEY, itemFetcher, {
@@ -23,7 +25,7 @@ export const FutureMaterialPage: React.FC = () => {
 		revalidateOnReconnect: false, // 斷線重連不用重新抓
 		dedupingInterval: 3600000, // 一小時內只會抓一次
 	});
-	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}");
+	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}", JsonStringSchema);
 	const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
 	const [importError, setImportError] = useState<string | null>(null);
 	const [isImportSuccess, setIsImportSuccess] = useState(false);
@@ -81,6 +83,9 @@ export const FutureMaterialPage: React.FC = () => {
 	const handleImportErrorDialogChange = useCallback((open: boolean) => {
 		if (!open) setImportError(null);
 	}, []);
+	const handleToolbarImport = useCallback(() => {
+		void handleImport();
+	}, [handleImport]);
 
 	return (
 		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden relative">
@@ -88,7 +93,7 @@ export const FutureMaterialPage: React.FC = () => {
 			<PlanContext value={planContextValue}>
 				<ToolbarArea
 					rows={rows}
-					handleImport={handleImport}
+					handleImport={handleToolbarImport}
 					filter={filter}
 					setFilter={setFilter}
 					copyResult={copyResult}
@@ -110,7 +115,7 @@ export const FutureMaterialPage: React.FC = () => {
 				<ImportErrorDialog
 					open={importError !== null}
 					onOpenChange={handleImportErrorDialogChange}
-					errorMessage={importError || ""}
+					errorMessage={importError ?? ""}
 				/>
 			</PlanContext>
 		</Flex>

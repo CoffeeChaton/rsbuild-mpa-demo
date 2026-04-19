@@ -46,14 +46,14 @@ export const useMaterialRows: UseMaterialRows = (
 		return Object.keys(bundle2.items)
 			.map((id) => {
 				const item = bundle2.items[id];
-				const name = item?.name.tw || id;
-				const stock = dataA.get(id) || 0;
-				const need = dataB.get(id) || 0;
+				const name = item?.name.tw ?? id;
+				const stock = dataA.get(id) ?? 0;
+				const need = dataB.get(id) ?? 0;
 
 				return {
 					id,
 					name,
-					rare: item?.rare || 0,
+					rare: item?.rare ?? 0,
 					stock,
 					need,
 					total: stock + need,
@@ -84,7 +84,7 @@ export const useMaterialRows: UseMaterialRows = (
 		const groups = createRareGroups();
 
 		rows.forEach((r) => {
-			groups[r.rare]?.push(r);
+			groups[r.rare].push(r);
 		});
 
 		return groups;
