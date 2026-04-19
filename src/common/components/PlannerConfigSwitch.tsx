@@ -12,22 +12,101 @@ interface IConfigItemProps {
 }
 
 const ConfigItem: React.FC<IConfigItemProps> = React.memo(({ config, isActive, onSwitch, onRename, onDelete }) => {
+	const [isRenaming, setIsRenaming] = useState(false);
+	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+	const [draftName, setDraftName] = useState(config.name);
+
 	const handleSwitch = useCallback(() => {
 		onSwitch(config.id);
 	}, [config.id, onSwitch]);
 
-	const handleRename = useCallback(() => {
-		const name = prompt("重新命名存檔", config.name);
-		if (name) {
-			onRename(config.id, name);
-		}
-	}, [config.id, config.name, onRename]);
+	const handleStartRename = useCallback(() => {
+		setDraftName(config.name);
+		setIsConfirmingDelete(false);
+		setIsRenaming(true);
+	}, [config.name]);
 
-	const handleDelete = useCallback(() => {
-		if (confirm(`確定要刪除「${config.name}」嗎？`)) {
-			onDelete(config.id);
+	const handleDraftNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+		setDraftName(event.target.value);
+	}, []);
+
+	const handleCancelRename = useCallback(() => {
+		setDraftName(config.name);
+		setIsRenaming(false);
+	}, [config.name]);
+
+	const handleSubmitRename = useCallback(() => {
+		const trimmedName = draftName.trim();
+		if (!trimmedName) {
+			return;
 		}
-	}, [config.id, config.name, onDelete]);
+
+		onRename(config.id, trimmedName);
+		setIsRenaming(false);
+	}, [config.id, draftName, onRename]);
+
+	const handleRenameKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === "Enter") {
+			handleSubmitRename();
+		}
+		if (event.key === "Escape") {
+			handleCancelRename();
+		}
+	}, [handleCancelRename, handleSubmitRename]);
+
+	const handleStartDelete = useCallback(() => {
+		setIsRenaming(false);
+		setIsConfirmingDelete(true);
+	}, []);
+
+	const handleCancelDelete = useCallback(() => {
+		setIsConfirmingDelete(false);
+	}, []);
+
+	const handleConfirmDelete = useCallback(() => {
+		onDelete(config.id);
+		setIsConfirmingDelete(false);
+	}, [config.id, onDelete]);
+
+	if (isRenaming) {
+		return (
+			<Flex direction="column" gap="2" p="2" className="rounded-md border border-(--indigo-6) bg-(--indigo-2)">
+				<TextField.Root
+					size="1"
+					value={draftName}
+					onChange={handleDraftNameChange}
+					onKeyDown={handleRenameKeyDown}
+					autoFocus
+				/>
+				<Flex justify="end" gap="2">
+					<Button size="1" variant="soft" color="gray" onClick={handleCancelRename}>
+						取消
+					</Button>
+					<Button size="1" color="indigo" onClick={handleSubmitRename}>
+						確定
+					</Button>
+				</Flex>
+			</Flex>
+		);
+	}
+
+	if (isConfirmingDelete) {
+		return (
+			<Flex direction="column" gap="2" p="2" className="rounded-md border border-(--red-6) bg-(--red-2)">
+				<Text size="1" weight="bold">
+					確定要刪除「{config.name}」嗎？
+				</Text>
+				<Flex justify="end" gap="2">
+					<Button size="1" variant="soft" color="gray" onClick={handleCancelDelete}>
+						取消
+					</Button>
+					<Button size="1" color="red" onClick={handleConfirmDelete}>
+						刪除
+					</Button>
+				</Flex>
+			</Flex>
+		);
+	}
 
 	return (
 		<Flex
@@ -41,11 +120,11 @@ const ConfigItem: React.FC<IConfigItemProps> = React.memo(({ config, isActive, o
 				{config.name}
 			</Text>
 			<Flex gap="1">
-				<IconButton size="1" variant="ghost" color="gray" onClick={handleRename}>
+				<IconButton size="1" variant="ghost" color="gray" onClick={handleStartRename}>
 					<UpdateIcon />
 				</IconButton>
 				{config.id !== "default" && (
-					<IconButton size="1" variant="ghost" color="red" onClick={handleDelete}>
+					<IconButton size="1" variant="ghost" color="red" onClick={handleStartDelete}>
 						<TrashIcon />
 					</IconButton>
 				)}

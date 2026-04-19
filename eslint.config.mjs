@@ -6,6 +6,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import eslintReact from "@eslint-react/eslint-plugin";
 
+// oxlint-disable-next-line import/no-default-export
 export default defineConfig([
 	globalIgnores(["dist", ".vscode"]),
 

@@ -75,6 +75,7 @@ export const BottomDiagnosticPanel: React.FC = memo(() => {
 			{/* 2. 面板標題與切換按鈕 */}
 			<Collapsible.Trigger asChild>
 				<button
+					type="button"
 					title={`切換摘要面板 (${modifier}+J 或 \`)`}
 					className="flex items-center justify-between px-4 py-2 border-b border-border bg-gray-50/50 dark:bg-gray-900/50 w-full text-left cursor-pointer hover:bg-blue-500/5 active:bg-blue-500/10 transition-colors group select-none outline-none"
 				>

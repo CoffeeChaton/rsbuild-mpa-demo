@@ -1,4 +1,5 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
+import { toast } from "sonner";
 import type { BaseSchema, InferOutput } from "valibot";
 import * as v from "valibot";
 
@@ -25,7 +26,7 @@ export function useLocalStorageState<T>(
 		try {
 			localStorage.setItem(key, JSON.stringify(state));
 		} catch {
-			console.warn("localStorage save failed:", key);
+			toast.warning("localStorage save failed:" + key);
 		}
 	}, [key, state]);
 

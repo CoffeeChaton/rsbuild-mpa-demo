@@ -32,7 +32,9 @@ const StatusBadge: React.FC<IStatusBadgeProps> = ({ status, label }) => {
 	);
 };
 
-const ProductionInsight = ({ gap, daily }: { gap: number, daily: number }) => {
+type TProductionInsightProps = { gap: number, daily: number };
+
+const ProductionInsight: React.FC<TProductionInsightProps> = ({ gap, daily }) => {
 	if (!daily || daily === 0) return null;
 
 	// gap 為正數代表「缺少」，負數代表「超出」
@@ -91,7 +93,7 @@ export const ProgressCard: React.FC<IProgressCardProps> = memo(({
 		return null;
 	}
 	const isMet = need <= 0;
-	const formatNumber = (v: number) => v.toLocaleString();
+	const formatNumber = (v: number): string => v.toLocaleString();
 
 	return (
 		<Card variant="surface" className="flex-1">

@@ -1,3 +1,4 @@
+// oxlint-disable no-console
 import type { RsbuildPlugin } from "@rsbuild/core";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -10,6 +11,7 @@ import {
 
 export const pluginSSG = (): RsbuildPlugin => ({
 	name: "plugin-ssg",
+	// oxlint-disable-next-line typescript/explicit-function-return-type
 	setup(api) {
 		api.onAfterBuild(() => {
 			const DIST = resolve(process.cwd(), "dist");

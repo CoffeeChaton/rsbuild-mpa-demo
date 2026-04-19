@@ -18,7 +18,7 @@ type TLazyPageReurn = {
 type TLazyPageFn = (loader: TLoader) => TLazyPageReurn;
 
 const lazyPage: TLazyPageFn = (loader) => {
-	const Component = lazy(() => loader().then(m => ({ default: m.App })));
+	const Component = lazy(async () => loader().then(m => ({ default: m.App })));
 	return {
 		Component,
 		loader,
@@ -29,8 +29,8 @@ const lazyPage: TLazyPageFn = (loader) => {
  * use https://rspack.rs/api/runtime-api/module-methods#magic-comments
  */
 export const VIEW_MAP: Record<TViewPageKey, TLazyPageReurn> = {
-	index: lazyPage(() => import(/* webpackChunkName: "p-index" */ "../../pages/index/index")),
-	products: lazyPage(() => import(/* webpackChunkName: "p-products" */ "../../pages/products/index")),
-	game2: lazyPage(() => import(/* webpackChunkName: "p-game2" */ "../../pages/game2/index")),
-	game3: lazyPage(() => import(/* webpackChunkName: "p-game3" */ "../../pages/game3/index")),
+	index: lazyPage(async () => import(/* webpackChunkName: "p-index" */ "../../pages/index/index")),
+	products: lazyPage(async () => import(/* webpackChunkName: "p-products" */ "../../pages/products/index")),
+	game2: lazyPage(async () => import(/* webpackChunkName: "p-game2" */ "../../pages/game2/index")),
+	game3: lazyPage(async () => import(/* webpackChunkName: "p-game3" */ "../../pages/game3/index")),
 };

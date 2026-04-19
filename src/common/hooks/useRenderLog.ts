@@ -5,6 +5,7 @@ export const useRenderLog = (name: string): void => {
 
 	useEffect(() => {
 		countRef.current += 1;
+		// oxlint-disable-next-line no-console
 		console.log(`🔄 ${name} render #${countRef.current}`);
 	});
 };

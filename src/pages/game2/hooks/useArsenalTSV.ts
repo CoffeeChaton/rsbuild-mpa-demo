@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useClipboard } from "foxact/use-clipboard";
 import type { IInventory, IItem, IRowResult } from "../types";
 import { applyConfigEntriesToInventory, formatArsenalTsv, parseArsenalTsv } from "../core/arsenalTsv";
+import { toast } from "sonner";
 
 export interface IArsenalActions {
 	handleImport: () => Promise<void>;
@@ -36,7 +37,9 @@ export const useArsenalTSV = (
 				setItems(newItems);
 			}
 		} catch (error) {
-			console.error("導入失敗", error);
+			toast.warning("導入失敗", {
+				description: JSON.stringify(error, null, "\t"),
+			});
 		}
 	}, [setInventory, setItems]);
 

@@ -60,6 +60,7 @@ export const LeftSidebar: React.FC = memo(() => {
 			{/* 觸發器：顯示標題與開關圖標 */}
 			<Collapsible.Trigger asChild>
 				<button
+					type="button"
 					title={sidebarOpen ? `收起面板 (${modifier} + B)` : `展開面板 (${modifier} + B)`}
 					className={cn(
 						"flex items-center justify-between shrink-0 cursor-pointer transition-all select-none outline-none border-border",

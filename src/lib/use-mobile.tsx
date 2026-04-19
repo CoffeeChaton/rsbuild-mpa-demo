@@ -13,11 +13,11 @@ export function useIsMobile(): boolean {
 
 	React.useEffect(() => {
 		const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-		const onChange = () => {
+		const onChange = (): void => {
 			setIsMobile(mql.matches);
 		};
 		mql.addEventListener("change", onChange);
-		return () => mql.removeEventListener("change", onChange);
+		return (): void => mql.removeEventListener("change", onChange);
 	}, []);
 
 	return isMobile;

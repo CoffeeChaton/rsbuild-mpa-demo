@@ -1,7 +1,7 @@
 import type { IItem, IItemError, TFieldError } from "../types/item";
 import { validateLevel } from "./validateItem";
 
-const num = (v: string) => parseInt(v, 10) || 0;
+const num = (v: string): number => parseInt(v, 10) || 0;
 
 /**
  * 檢查培養進度是否合理 (To >= From)
@@ -30,7 +30,7 @@ export const validateItem = (item: IItem): IItemError => {
 	const fields: IItemError["fields"] = {};
 	const messages: string[] = [];
 
-	const addErr = (fieldKey: TFieldError, msg: string) => {
+	const addErr = (fieldKey: TFieldError, msg: string): void => {
 		// 如果該欄位還沒記錄過錯誤，則記錄之（優先顯示第一個錯誤）
 		if (!fields[fieldKey]) {
 			fields[fieldKey] = msg;

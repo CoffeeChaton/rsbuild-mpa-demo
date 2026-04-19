@@ -42,5 +42,6 @@ export function parseArknightsItemsToTSV(htmlString: string): string {
 export function TEMP(): void {
 	const yourHtmlString = ``;
 	const tsvOutput = parseArknightsItemsToTSV(yourHtmlString);
+	// oxlint-disable-next-line no-console
 	console.log(tsvOutput);
 }

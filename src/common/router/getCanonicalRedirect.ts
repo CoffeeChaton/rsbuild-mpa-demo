@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 /**
  * 規範化路徑邏輯
  */
@@ -43,7 +45,7 @@ export function getCanonicalRedirect(urlStr: string): string | null {
 		// 比對原始完整路徑與處理後的路徑
 		return originalFull !== finalFull ? finalFull : null;
 	} catch (error) {
-		console.warn("unknon url error", { urlStr, error });
+		toast.warning("unknon url error:" + JSON.stringify({ urlStr, error }));
 		return null;
 	}
 }

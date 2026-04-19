@@ -35,8 +35,8 @@ export const DiagnosticPanel: React.FC = memo(() => {
 	// 計算錯誤數量，用於校驗顯示
 	const counts = useMemo(() => {
 		return logs.reduce((acc, log) => {
-			if (log.type === "error") acc.error++;
-			else if (log.type === "info" && log.id !== "ok") acc.info++;
+			if (log.type === "error") acc.error += 1;
+			else if (log.type === "info" && log.id !== "ok") acc.info += 1;
 			return acc;
 		}, { error: 0, info: 0 });
 	}, [logs]);

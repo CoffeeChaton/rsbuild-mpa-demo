@@ -6,4 +6,5 @@ const config: ViteUserConfig = defineConfig({
 	},
 });
 
+// oxlint-disable-next-line import/no-default-export
 export default config;

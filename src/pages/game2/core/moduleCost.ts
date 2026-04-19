@@ -9,7 +9,7 @@ export const MODULE_COST_DISPLAY_ROWS = [
 	{ rarity: 1, costs: null },
 ] as const;
 
-const clampLevel = (level: number) => Math.min(Math.max(level, 0), 3);
+const clampLevel = (level: number): number => Math.min(Math.max(level, 0), 3);
 
 export const calculateModuleCost = (rarity: number, fromLevel: number, toLevel: number): number => {
 	const costs = MODULE_COST_DISPLAY_ROWS.find((v) => v.rarity === rarity)?.costs;

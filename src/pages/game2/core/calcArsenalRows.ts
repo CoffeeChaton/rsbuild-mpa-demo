@@ -6,8 +6,8 @@ import type { IInventory, IItem, IRowResult } from "../types";
 import { calculateModuleCost } from "./moduleCost";
 import { calculateBookStacksValue } from "./calculateBookStacksValue";
 
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
-const parseNumber = (value: string | number | undefined, fallback: number) => {
+const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max);
+const parseNumber = (value: string | number | undefined, fallback: number): number => {
 	const parsed = Number(value);
 	return Number.isFinite(parsed) ? parsed : fallback;
 };

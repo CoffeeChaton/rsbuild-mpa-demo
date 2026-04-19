@@ -50,9 +50,9 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (typeof window === "undefined") return;
 		const media = window.matchMedia("(prefers-color-scheme: dark)");
-		const handleChange = () => setSystemAppearance(media.matches ? "dark" : "light");
+		const handleChange = (): void => setSystemAppearance(media.matches ? "dark" : "light");
 		media.addEventListener("change", handleChange);
-		return () => media.removeEventListener("change", handleChange);
+		return (): void => media.removeEventListener("change", handleChange);
 	}, []);
 
 	const value = useMemo<IAppThemeContextValue>(() => ({

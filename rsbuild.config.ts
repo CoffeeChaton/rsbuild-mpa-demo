@@ -10,7 +10,7 @@ const assetPrefix = `/rsbuild-mpa-demo/`; // .eq. package.json name but not IO
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const getEntries = () => {
+const getEntries = (): Record<string, string> => {
 	const entries: Record<string, string> = {};
 	PAGE_KEYS.forEach((key) => {
 		if (key === "404") return;
@@ -111,4 +111,5 @@ const rsbuildConfig: RsbuildConfig = defineConfig({
 	},
 });
 
+// oxlint-disable-next-line import/no-default-export
 export default rsbuildConfig;

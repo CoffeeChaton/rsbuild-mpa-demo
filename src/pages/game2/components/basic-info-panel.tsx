@@ -28,7 +28,7 @@ import { useInventory } from "../hooks/useInventory";
 import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
 
 // 輔助函數：確保輸入值為正數
-const clampPositiveNumber = (value: string) => {
+const clampPositiveNumber = (value: string): number => {
 	const parsed = Number(value);
 	return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
 };

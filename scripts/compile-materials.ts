@@ -1,3 +1,4 @@
+// oxlint-disable no-console
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import * as v from "valibot";

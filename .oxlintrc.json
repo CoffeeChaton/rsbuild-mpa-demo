@@ -23,7 +23,7 @@
 		// "style": "warn",
 		// 3.
 		// "pedantic":"warn",
-		// "restriction":"deny",
+		"restriction": "deny",
 		// "nursery":"deny"
 	},
 	"rules": {
@@ -31,6 +31,15 @@
 		"@typescript-eslint/no-unnecessary-type-assertion": "error",
 		// not need
 		"react/react-in-jsx-scope": "off",
+		"react/only-export-components": "off", // TODO
+		"import/unambiguous": "off", // TODO
+		// restriction
+		"import/no-relative-parent-imports": "off",
+		"react/no-multi-comp": "off",
+		"react/jsx-filename-extension": "off",
+		"no-void": "off",
+		"no-undefined": "off",
+		"no-plusplus": "off",
 	},
 	"settings": {
 		"jsx-a11y": {

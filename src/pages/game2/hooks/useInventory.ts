@@ -1,10 +1,10 @@
 // src/pages/game2/hooks/useInventory.ts
 import { useCallback } from "react";
 import type { IInventory } from "../types";
-import { type IBookStacks } from "../config/inventory";
+import type { IBookStacks } from "../config/inventory";
 import { sanitizeBookStacks } from "../core/calculateBookStacksValue";
 
-const clampPositiveNumber = (value: string) => {
+const clampPositiveNumber = (value: string): number => {
 	const n = Number(value);
 	return Number.isFinite(n) && n >= 0 ? n : 0;
 };

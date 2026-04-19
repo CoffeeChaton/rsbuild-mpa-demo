@@ -22,7 +22,7 @@ export const getProductionSummary: TGetProductionSummary = (rows, inventory) => 
 	const moneyGap = totalMoneyNeed - money;
 	const booksGap = totalBooksNeed - books;
 
-	const getDays = (gap: number, prod: number) => gap > 0 && prod > 0 ? Math.ceil(gap / prod) : null;
+	const getDays = (gap: number, prod: number): number | null => (gap > 0 && prod > 0) ? Math.ceil(gap / prod) : null;
 	const moneyDays = getDays(moneyGap, avgMoneyProduction);
 	const booksDays = getDays(booksGap, avgBookProduction);
 

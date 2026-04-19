@@ -88,6 +88,8 @@ export const applyConfigEntriesToInventory = (
 			case "production.exp":
 				nextInventory.avgBookProduction = value;
 				break;
+			default:
+				// TODO use const enum
 		}
 	});
 

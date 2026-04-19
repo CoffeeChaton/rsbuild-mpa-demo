@@ -37,7 +37,7 @@ export const useResizableHeight: TUseResizableHeight = ({
 	const stopResizeRef = useRef<() => void>(noopStopResize);
 
 	useEffect(() => {
-		resizeHandlerRef.current = (e: MouseEvent) => {
+		resizeHandlerRef.current = (e: MouseEvent): void => {
 			if (!isResizingRef.current) return;
 			const newHeight = Math.max(minHeight, Math.min(maxHeight, window.innerHeight - e.clientY));
 			if (panelRef.current) {
@@ -45,7 +45,7 @@ export const useResizableHeight: TUseResizableHeight = ({
 			}
 		};
 
-		stopResizeRef.current = () => {
+		stopResizeRef.current = (): void => {
 			if (!isResizingRef.current) return;
 			isResizingRef.current = false;
 
