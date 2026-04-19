@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 // src/pages/game2/context/ArsenalContext.tsx
 import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useMemo } from "react";
 import { useArsenalStorage } from "../hooks/useArsenalStorage";

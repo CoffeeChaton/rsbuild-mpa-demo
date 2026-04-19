@@ -1,7 +1,7 @@
 /// src/common/router/view-map.ts
 
 import { lazy } from "react";
-import type { TPageKey } from "../config/pages";
+import type { TViewPageKey } from "../config/pages.runtime";
 import type { LazyExoticComponent } from "react";
 
 // 定義頁面模組的標準形狀
@@ -28,7 +28,7 @@ const lazyPage: TLazyPageFn = (loader) => {
 /**
  * use https://rspack.rs/api/runtime-api/module-methods#magic-comments
  */
-export const VIEW_MAP: Record<Exclude<TPageKey, "404">, TLazyPageReurn> = {
+export const VIEW_MAP: Record<TViewPageKey, TLazyPageReurn> = {
 	index: lazyPage(() => import(/* webpackChunkName: "p-index" */ "../../pages/index/index")),
 	products: lazyPage(() => import(/* webpackChunkName: "p-products" */ "../../pages/products/index")),
 	game2: lazyPage(() => import(/* webpackChunkName: "p-game2" */ "../../pages/game2/index")),

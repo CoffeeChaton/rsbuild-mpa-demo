@@ -1,7 +1,7 @@
 import planB from "./plan_b.tsv?raw";
 import planC from "./plan_c.tsv?raw";
 
-export const DEFAULT_PLAN_CONTENT: {
+const DEFAULT_PLAN_CONTENT: {
 	readonly plan_b: string,
 	readonly plan_c: string,
 } = {
@@ -9,8 +9,13 @@ export const DEFAULT_PLAN_CONTENT: {
 	plan_c: planC,
 };
 
-export type TDefaultPlanKey = keyof typeof DEFAULT_PLAN_CONTENT;
+type TDefaultPlanKey = keyof typeof DEFAULT_PLAN_CONTENT;
+const DEFAULT_PLAN_KEY_SET: ReadonlySet<string> = new Set(Object.keys(DEFAULT_PLAN_CONTENT));
 
 export function getDefaultPlanContent(key: TDefaultPlanKey): string {
 	return DEFAULT_PLAN_CONTENT[key];
+}
+
+export function isDefaultPlanKey(value: string): value is TDefaultPlanKey {
+	return DEFAULT_PLAN_KEY_SET.has(value);
 }

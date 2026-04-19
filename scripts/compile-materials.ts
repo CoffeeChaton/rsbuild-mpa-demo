@@ -11,19 +11,34 @@ import { ItemSchema, type TItem } from "../shared/schemas/items.schema";
 
 const outputPath = "public/data/item.json";
 
+const LocaleMapSchema: v.GenericSchema<Record<string, string>> = v.record(v.string(), v.string());
+const ItemSourceSchema = v.object({
+	type: v.number(),
+	rare: v.number(),
+	formulaType: v.fallback(v.nullable(v.string()), null),
+	formula: v.fallback(v.nullable(v.record(v.string(), v.number())), null),
+	sortId: v.optional(v.object({
+		cn: v.fallback(v.nullable(v.number()), null),
+	})),
+});
+type TItemSource = v.InferOutput<typeof ItemSourceSchema>;
+const ItemSourceMapSchema: v.GenericSchema<Record<string, TItemSource>> = v.record(v.string(), ItemSourceSchema);
+
 async function main(): Promise<void> {
 	const result: Record<string, TItem> = {};
 
-	// 強型別化語言包
-	const cn = cnData as Record<string, string>;
-	const tw = twData as Record<string, string>;
-	const us = usData as Record<string, string>;
+	const cn = v.parse(LocaleMapSchema, cnData);
+	const tw = v.parse(LocaleMapSchema, twData);
+	const us = v.parse(LocaleMapSchema, usData);
+	const itemSourceRecord = v.parse(ItemSourceMapSchema, itemRawData);
 
-	for (const [key, value] of Object.entries(itemRawData as Record<string, unknown>)) {
-		// 預組裝資料
+	for (const [key, value] of Object.entries(itemSourceRecord)) {
 		const rawInput = {
-			...(value as object),
-			sortId: (value as { sortId: { cn: string } })?.sortId?.cn || null,
+			type: value.type,
+			rare: value.rare,
+			formulaType: value.formulaType,
+			formula: value.formula,
+			sortId: value.sortId?.cn ?? null,
 			name: {
 				cn: cn[key] ?? "Unknown",
 				tw: tw[key] ?? "Unknown",

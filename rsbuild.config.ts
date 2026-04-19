@@ -3,7 +3,7 @@ import { defineConfig, type RsbuildConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PAGE_MAP } from "./src/common/config/pages";
+import { getPageEntryName, getPageInfoByEntryName, PAGE_KEYS } from "./src/common/config/pages.build";
 import { pluginSSG } from "./scripts/ssg";
 
 const assetPrefix = `/rsbuild-mpa-demo/`; // .eq. package.json name but not IO
@@ -12,15 +12,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getEntries = () => {
 	const entries: Record<string, string> = {};
-	Object.keys(PAGE_MAP).forEach((key) => {
+	PAGE_KEYS.forEach((key) => {
 		if (key === "404") return;
-		const entry = key === "index" ? "" : key;
+		const entry = getPageEntryName(key);
 		entries[entry] = resolve(__dirname, "src/main.tsx");
 	});
 	return entries;
 };
 
-const config: RsbuildConfig = defineConfig({
+const rsbuildConfig: RsbuildConfig = defineConfig({
 	resolve: {
 		alias: {
 			"@": "./",
@@ -48,9 +48,9 @@ const config: RsbuildConfig = defineConfig({
 		template: "./public/index.html",
 		outputStructure: "nested",
 		templateParameters: ({ entryName }) => {
-			const configKey = entryName === "" ? "index" : entryName;
-			const config = PAGE_MAP[configKey as keyof typeof PAGE_MAP] || PAGE_MAP.index;
-			return { title: config.title, description: config.description, base: assetPrefix };
+			const safeEntryName = typeof entryName === "string" ? entryName : "";
+			const pageInfo = getPageInfoByEntryName(safeEntryName);
+			return { title: pageInfo.title, description: pageInfo.description, base: assetPrefix };
 		},
 	},
 	server: {
@@ -111,4 +111,4 @@ const config: RsbuildConfig = defineConfig({
 	},
 });
 
-export default config;
+export default rsbuildConfig;

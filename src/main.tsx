@@ -1,10 +1,11 @@
 // src/main.tsx
-import { type ComponentType, StrictMode } from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { getCanonicalRedirect } from "./common/router/getCanonicalRedirect";
 import { applyCanonicalTag } from "./common/router/canonical-seo";
 import { AppThemeProvider } from "./common/context/AppThemeContext";
+// oxlint-disable-next-line import/no-unassigned-import
 import "./styles/globals.css";
 
 /**
@@ -20,7 +21,7 @@ function canonicalUrl(): boolean {
 	return false;
 }
 
-const bootstrap = (App: ComponentType) => {
+const bootstrap = () => {
 	if (canonicalUrl()) return; // 自動 redirect 到 /game3/
 
 	applyCanonicalTag(); // SEO <link rel="canonical">
@@ -45,4 +46,4 @@ const bootstrap = (App: ComponentType) => {
 	}
 };
 
-bootstrap(App);
+bootstrap();

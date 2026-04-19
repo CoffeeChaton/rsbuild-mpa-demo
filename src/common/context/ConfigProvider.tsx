@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import * as v from "valibot";
 import { CONFIG_LIST_KEY, CURRENT_CONFIG_KEY, LAST_USED_CONFIG_KEY } from "../config/constants";
-import type { IConfigEntry } from "../types/config";
+import { ConfigEntrySchema, type TConfigEntry } from "../types/config";
 import {
 	ConfigActionsContext,
 	ConfigsContext,
@@ -12,17 +13,18 @@ export interface IConfigProviderProps {
 	namespace?: string | undefined;
 }
 
-const createDefaultConfig = (): IConfigEntry => ({
+const createDefaultConfig = (): TConfigEntry => ({
 	id: "default",
 	name: "預設存檔",
 	lastModified: Date.now(),
 });
 
-const parseConfigs = (raw: string | null): IConfigEntry[] | null => {
+const ConfigEntryArraySchema = v.array(ConfigEntrySchema);
+const parseConfigs = (raw: string | null): TConfigEntry[] | null => {
 	if (!raw) return null;
 	try {
-		const parsed = JSON.parse(raw) as IConfigEntry[];
-		return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
+		const parsed: TConfigEntry[] = v.parse(ConfigEntryArraySchema, JSON.parse(raw));
+		return parsed.length > 0 ? parsed : null;
 	} catch {
 		return null;
 	}
@@ -31,7 +33,7 @@ const parseConfigs = (raw: string | null): IConfigEntry[] | null => {
 const parseCurrentId = (raw: string | null): string | null => {
 	if (!raw) return null;
 	try {
-		return JSON.parse(raw) as string;
+		return v.parse(v.string(), raw);
 	} catch {
 		return null;
 	}
@@ -45,7 +47,7 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children, names
 	const currentKey = getScopedKey(CURRENT_CONFIG_KEY, ns);
 	const lastUsedKey = getScopedKey(LAST_USED_CONFIG_KEY, ns);
 
-	const [configs, setConfigs] = useState<IConfigEntry[]>(() => {
+	const [configs, setConfigs] = useState<TConfigEntry[]>(() => {
 		if (typeof window === "undefined") return [createDefaultConfig()];
 		return (
 			parseConfigs(window.sessionStorage.getItem(listKey))
@@ -83,7 +85,7 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children, names
 	}, []);
 
 	const addConfig = useCallback((name: string) => {
-		const newConfig: IConfigEntry = {
+		const newConfig: TConfigEntry = {
 			id: `config_${Date.now()}`,
 			name: name || `新存檔 ${configs.length + 1}`,
 			lastModified: Date.now(),

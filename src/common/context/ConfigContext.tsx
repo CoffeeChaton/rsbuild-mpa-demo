@@ -1,5 +1,5 @@
 import { type Context, createContext } from "react";
-import type { IConfigEntry } from "../types/config";
+import type { TConfigEntry } from "../types/config";
 
 export interface IConfigActionsContext {
 	/** 切換當前標籤頁使用的配置 */
@@ -13,5 +13,5 @@ export interface IConfigActionsContext {
 }
 
 export const CurrentConfigIdContext: Context<string | null> = createContext<string | null>(null);
-export const ConfigsContext: Context<IConfigEntry[] | null> = createContext<IConfigEntry[] | null>(null);
+export const ConfigsContext: Context<TConfigEntry[] | null> = createContext<TConfigEntry[] | null>(null);
 export const ConfigActionsContext: Context<IConfigActionsContext | null> = createContext<IConfigActionsContext | null>(null);

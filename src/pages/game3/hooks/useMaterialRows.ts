@@ -4,10 +4,6 @@ import { RARE_LEVELS } from "../shared/constants/material";
 import type { IItemRow, TFilter } from "../type";
 import type { IItemDataBundle } from "../services/itemFetcher";
 
-interface IItemBundle {
-	items: Record<string, { name: { tw: string }, rare: number }>;
-}
-
 export type UseMaterialRows = (jsonA: string, tsvB: string, filter: TFilter, bundle: IItemDataBundle | undefined) => {
 	/** 用於顯示的過濾後數據 */
 	rows: IItemRow[],
@@ -16,6 +12,16 @@ export type UseMaterialRows = (jsonA: string, tsvB: string, filter: TFilter, bun
 	/** 按稀有度分組的過濾後數據 */
 	groupedRows: Record<number, IItemRow[]>,
 };
+
+function createRareGroups(): Record<number, IItemRow[]> {
+	const groups: Record<number, IItemRow[]> = {};
+
+	for (const rareLevel of RARE_LEVELS) {
+		groups[rareLevel] = [];
+	}
+
+	return groups;
+}
 
 export const useMaterialRows: UseMaterialRows = (
 	jsonA: string,
@@ -35,11 +41,11 @@ export const useMaterialRows: UseMaterialRows = (
 
 	/** 1. 核心計算：計算出所有項目的數據 */
 	const allRows = useMemo<IItemRow[]>(() => {
-		const b = bundle as IItemBundle | undefined;
-		if (!b) return [];
-		return Object.keys(b.items)
+		const bundle2 = bundle;
+		if (!bundle2) return [];
+		return Object.keys(bundle2.items)
 			.map((id) => {
-				const item = b.items[id];
+				const item = bundle2.items[id];
 				const name = item?.name.tw || id;
 				const stock = dataA.get(id) || 0;
 				const need = dataB.get(id) || 0;
@@ -75,9 +81,7 @@ export const useMaterialRows: UseMaterialRows = (
 
 	/** 3. 分組數據 */
 	const groupedRows = useMemo(() => {
-		const groups = Object.fromEntries(
-			RARE_LEVELS.map(r => [r, []]),
-		) as Record<number, IItemRow[]>;
+		const groups = createRareGroups();
 
 		rows.forEach((r) => {
 			groups[r.rare]?.push(r);

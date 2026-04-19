@@ -12,7 +12,7 @@
 		"rsbuild.config.ts",
 		"scripts/**/*.ts",
 		"shared/**/*.ts",
-		"src/common/config/pages.ts",
+		"src/common/config/*.ts",
 		"vitest.config.ts"
 	]
 }

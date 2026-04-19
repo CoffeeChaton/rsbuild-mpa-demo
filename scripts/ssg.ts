@@ -1,7 +1,12 @@
 import type { RsbuildPlugin } from "@rsbuild/core";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
-import { PAGE_MAP } from "../src/common/config/pages";
+import { dirname, join, resolve } from "node:path";
+import {
+	getPageCleanupDir,
+	getPageInfo,
+	getPageOutputPath,
+	PAGE_KEYS,
+} from "../src/common/config/pages.build";
 
 export const pluginSSG = (): RsbuildPlugin => ({
 	name: "plugin-ssg",
@@ -15,23 +20,24 @@ export const pluginSSG = (): RsbuildPlugin => ({
 			}
 			const indexContent = readFileSync(indexTemplatePath, "utf-8");
 
-			for (const [key, info] of Object.entries(PAGE_MAP)) {
-				const dir = key === "index" ? DIST : join(DIST, key);
-				let path = join(dir, "index.html");
+			for (const key of PAGE_KEYS) {
+				const info = getPageInfo(key);
+				const outputPath = join(DIST, getPageOutputPath(key));
+				const cleanupDirName = getPageCleanupDir(key);
 
-				// 404 特殊處理
-				if (key === "404") {
-					path = join(DIST, "404.html");
-					if (existsSync(join(DIST, "404"))) rmSync(join(DIST, "404"), { recursive: true });
-				} else {
-					if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+				if (cleanupDirName) {
+					const cleanupDirPath = join(DIST, cleanupDirName);
+					if (existsSync(cleanupDirPath)) rmSync(cleanupDirPath, { recursive: true });
 				}
+
+				const outputDir = dirname(outputPath);
+				if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 
 				const content = indexContent
 					.replace(/<title>.*?<\/title>/, `<title>${info.title}</title>`)
 					.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${info.description}" />`);
 
-				writeFileSync(path, content);
+				writeFileSync(outputPath, content);
 				console.log(`✅ SSG processed: ${key}`);
 			}
 

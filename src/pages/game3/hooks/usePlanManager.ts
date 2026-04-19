@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 import { useLocalStorageState } from "./useLocalStorageState";
-import { DEFAULT_PLAN_CONTENT, getDefaultPlanContent, type TDefaultPlanKey } from "../assets/planLoader";
+import { getDefaultPlanContent, isDefaultPlanKey } from "../assets/planLoader";
 
 export interface IPlanManagerContext {
 	planName: string;
@@ -10,10 +10,6 @@ export interface IPlanManagerContext {
 	tsvB: string;
 	updateCustomPlan: (title: string, content: string, targetId: string | null) => void;
 	deletePlan: (name: string) => void;
-}
-
-function isDefaultPlanKey(planName: string): planName is TDefaultPlanKey {
-	return planName in DEFAULT_PLAN_CONTENT;
 }
 
 export function usePlanManager(): IPlanManagerContext {

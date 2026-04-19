@@ -3,6 +3,7 @@ import { createBrowserRouter, type RouteObject, RouterProvider } from "react-rou
 import { Layout } from "./pages/index/Layout.tsx";
 import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Suspense } from "react";
+import { getViewPagePath, VIEW_PAGE_KEYS } from "./common/config/pages.runtime";
 
 const LOADING_FALLBACK = <div className="py-20 text-center">Loading...</div>;
 
@@ -20,25 +21,21 @@ const NotFoundView: React.FC = () => (
 );
 
 function createRoutes(): RouteObject[] {
-	return Object
-		.keys(VIEW_MAP)
-		.map((key) => {
-			const View = VIEW_MAP[key as keyof typeof VIEW_MAP].Component;
-			const path = key === "index"
-				? "/"
-				: `/${key}/`;
+	return VIEW_PAGE_KEYS.map((key) => {
+		const View = VIEW_MAP[key].Component;
+		const path = getViewPagePath(key);
 
-			return {
-				path,
-				Component: () => (
-					<Layout>
-						<Suspense fallback={LOADING_FALLBACK}>
-							<View />
-						</Suspense>
-					</Layout>
-				),
-			};
-		});
+		return {
+			path,
+			Component: () => (
+				<Layout>
+					<Suspense fallback={LOADING_FALLBACK}>
+						<View />
+					</Suspense>
+				</Layout>
+			),
+		};
+	});
 }
 
 export const App: React.FC = () => {

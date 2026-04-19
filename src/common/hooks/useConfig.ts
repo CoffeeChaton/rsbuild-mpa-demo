@@ -5,7 +5,7 @@ import {
 	CurrentConfigIdContext,
 	type IConfigActionsContext,
 } from "../context/ConfigContext";
-import type { IConfigEntry } from "../types/config";
+import type { TConfigEntry } from "../types/config";
 
 export const useCurrentConfigId: () => string = () => {
 	const context = useContext(CurrentConfigIdContext);
@@ -13,7 +13,7 @@ export const useCurrentConfigId: () => string = () => {
 	return context;
 };
 
-export const useConfigs: () => IConfigEntry[] = () => {
+export const useConfigs: () => TConfigEntry[] = () => {
 	const context = useContext(ConfigsContext);
 	if (context === null) throw new Error("useConfigs must be used within ConfigProvider");
 	return context;
