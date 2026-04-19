@@ -20,6 +20,18 @@ const NotFoundView: React.FC = () => (
 	</>
 );
 
+interface IViewRouteProps {
+	View: React.ComponentType;
+}
+
+const ViewRoute: React.FC<IViewRouteProps> = ({ View }) => (
+	<Layout>
+		<Suspense fallback={LOADING_FALLBACK}>
+			<View />
+		</Suspense>
+	</Layout>
+);
+
 function createRoutes(): RouteObject[] {
 	return VIEW_PAGE_KEYS.map((key) => {
 		const View = VIEW_MAP[key].Component;
@@ -27,13 +39,7 @@ function createRoutes(): RouteObject[] {
 
 		return {
 			path,
-			Component: () => (
-				<Layout>
-					<Suspense fallback={LOADING_FALLBACK}>
-						<View />
-					</Suspense>
-				</Layout>
-			),
+			element: <ViewRoute View={View} />,
 		};
 	});
 }

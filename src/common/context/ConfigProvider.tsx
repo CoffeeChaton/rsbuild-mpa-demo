@@ -118,12 +118,12 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = ({ children, names
 	}), [switchConfig, addConfig, deleteConfig, renameConfig]);
 
 	return (
-		<ConfigActionsContext.Provider value={actions}>
-			<ConfigsContext.Provider value={configs}>
-				<CurrentConfigIdContext.Provider value={activeConfigId}>
+		<ConfigActionsContext value={actions}>
+			<ConfigsContext value={configs}>
+				<CurrentConfigIdContext value={activeConfigId}>
 					{children}
-				</CurrentConfigIdContext.Provider>
-			</ConfigsContext.Provider>
-		</ConfigActionsContext.Provider>
+				</CurrentConfigIdContext>
+			</ConfigsContext>
+		</ConfigActionsContext>
 	);
 };

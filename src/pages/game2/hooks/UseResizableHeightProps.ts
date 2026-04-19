@@ -29,22 +29,22 @@ export const useResizableHeight: TUseResizableHeight = ({
 	});
 
 	const panelRef = useRef<HTMLDivElement>(null);
-	const isResizing = useRef(false);
-	const handleResizeRef = useRef<(e: MouseEvent) => void>(null!);
-	const stopResizingRef = useRef<() => void>(null!);
+	const isResizingRef = useRef(false);
+	const resizeHandlerRef = useRef<(e: MouseEvent) => void>(null!);
+	const stopResizeRef = useRef<() => void>(null!);
 
 	useEffect(() => {
-		handleResizeRef.current = (e: MouseEvent) => {
-			if (!isResizing.current) return;
+		resizeHandlerRef.current = (e: MouseEvent) => {
+			if (!isResizingRef.current) return;
 			const newHeight = Math.max(minHeight, Math.min(maxHeight, window.innerHeight - e.clientY));
 			if (panelRef.current) {
 				panelRef.current.style.height = `${newHeight}px`;
 			}
 		};
 
-		stopResizingRef.current = () => {
-			if (!isResizing.current) return;
-			isResizing.current = false;
+		stopResizeRef.current = () => {
+			if (!isResizingRef.current) return;
+			isResizingRef.current = false;
 
 			if (panelRef.current) {
 				const finalHeight = panelRef.current.offsetHeight;
@@ -55,20 +55,20 @@ export const useResizableHeight: TUseResizableHeight = ({
 
 			document.body.style.cursor = "";
 			document.body.style.userSelect = "";
-			window.removeEventListener("mousemove", handleResizeRef.current);
-			window.removeEventListener("mouseup", stopResizingRef.current);
+			window.removeEventListener("mousemove", resizeHandlerRef.current);
+			window.removeEventListener("mouseup", stopResizeRef.current);
 		};
 	}, [key, maxHeight, minHeight]);
 
 	const startResizing = (e: React.MouseEvent): void => {
 		if (isMobile) return;
 		e.preventDefault();
-		isResizing.current = true;
+		isResizingRef.current = true;
 		if (panelRef.current) panelRef.current.style.transition = "none";
 		document.body.style.cursor = "row-resize";
 		document.body.style.userSelect = "none";
-		window.addEventListener("mousemove", handleResizeRef.current);
-		window.addEventListener("mouseup", stopResizingRef.current);
+		window.addEventListener("mousemove", resizeHandlerRef.current);
+		window.addEventListener("mouseup", stopResizeRef.current);
 	};
 
 	return { height, panelRef, startResizing };

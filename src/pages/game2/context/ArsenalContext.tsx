@@ -1,5 +1,5 @@
 // src/pages/game2/context/ArsenalContext.tsx
-import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useMemo } from "react";
+import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, use, useMemo } from "react";
 import { useArsenalStorage } from "../hooks/useArsenalStorage";
 import { useArsenalRowsRaw } from "../hooks/useArsenalRowsRaw";
 import { useArsenalTSV } from "../hooks/useArsenalTSV";
@@ -52,15 +52,15 @@ const ArsenalProviderInner: React.FC<IArsenalProviderInnerProps> = ({ children, 
 	const actionsValue = useMemo(() => ({ handleImport, handleExport, isCopied }), [handleImport, handleExport, isCopied]);
 
 	return (
-		<ItemsContext.Provider value={itemsValue}>
-			<InventoryContext.Provider value={inventoryValue}>
-				<RowsContext.Provider value={rowsValue}>
-					<ActionsContext.Provider value={actionsValue}>
+		<ItemsContext value={itemsValue}>
+			<InventoryContext value={inventoryValue}>
+				<RowsContext value={rowsValue}>
+					<ActionsContext value={actionsValue}>
 						{children}
-					</ActionsContext.Provider>
-				</RowsContext.Provider>
-			</InventoryContext.Provider>
-		</ItemsContext.Provider>
+					</ActionsContext>
+				</RowsContext>
+			</InventoryContext>
+		</ItemsContext>
 	);
 };
 
@@ -74,25 +74,25 @@ export const ArsenalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const useArsenalItems: () => IItemsContext = () => {
-	const context = useContext(ItemsContext);
+	const context = use(ItemsContext);
 	if (!context) throw new Error("useArsenalItems must be used within ArsenalProvider");
 	return context;
 };
 
 export const useArsenalInventory: () => IInventoryContext = () => {
-	const context = useContext(InventoryContext);
+	const context = use(InventoryContext);
 	if (!context) throw new Error("useArsenalInventory must be used within ArsenalProvider");
 	return context;
 };
 
 export const useArsenalRows: () => IRowsContext = () => {
-	const context = useContext(RowsContext);
+	const context = use(RowsContext);
 	if (!context) throw new Error("useArsenalRows must be used within ArsenalProvider");
 	return context;
 };
 
 export const useArsenalActions: () => IActionsContext = () => {
-	const context = useContext(ActionsContext);
+	const context = use(ActionsContext);
 	if (!context) throw new Error("useArsenalActions must be used within ArsenalProvider");
 	return context;
 };

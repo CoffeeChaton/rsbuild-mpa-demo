@@ -85,7 +85,7 @@ export const FutureMaterialPage: React.FC = () => {
 	return (
 		<Flex direction="column" height={`calc(100vh - ${NAVBAR_HEIGHT}px)`} className="bg-(--gray-1) overflow-hidden relative">
 			{/* ToolbarArea */}
-			<PlanContext.Provider value={planContextValue}>
+			<PlanContext value={planContextValue}>
 				<ToolbarArea
 					rows={rows}
 					handleImport={handleImport}
@@ -112,7 +112,7 @@ export const FutureMaterialPage: React.FC = () => {
 					onOpenChange={handleImportErrorDialogChange}
 					errorMessage={importError || ""}
 				/>
-			</PlanContext.Provider>
+			</PlanContext>
 		</Flex>
 	);
 };

@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import { reactRefresh } from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import eslintReact from "@eslint-react/eslint-plugin";
 
 export default defineConfig([
 	globalIgnores(["dist", ".vscode"]),
@@ -14,6 +15,7 @@ export default defineConfig([
 			tseslint.configs.recommended,
 			reactHooks.configs.flat["recommended-latest"],
 			reactRefresh.configs.recommended,
+			   eslintReact.configs["recommended-typescript"],
 		],
 		languageOptions: {
 			ecmaVersion: 2020,

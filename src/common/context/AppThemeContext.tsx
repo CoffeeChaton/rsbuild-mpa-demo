@@ -1,4 +1,4 @@
-import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, type PropsWithChildren, use, useEffect, useMemo, useState } from "react";
 import { Theme } from "@radix-ui/themes";
 
 export type TAppearanceMode = "light" | "dark" | "system";
@@ -51,7 +51,6 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		if (typeof window === "undefined") return;
 		const media = window.matchMedia("(prefers-color-scheme: dark)");
 		const handleChange = () => setSystemAppearance(media.matches ? "dark" : "light");
-		handleChange();
 		media.addEventListener("change", handleChange);
 		return () => media.removeEventListener("change", handleChange);
 	}, []);
@@ -67,16 +66,16 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const appearance = appearanceMode === "system" ? systemAppearance : appearanceMode;
 
 	return (
-		<AppThemeContext.Provider value={value}>
+		<AppThemeContext value={value}>
 			<Theme appearance={appearance} accentColor={accentColor} hasBackground>
 				{children}
 			</Theme>
-		</AppThemeContext.Provider>
+		</AppThemeContext>
 	);
 };
 
 export const useAppTheme = (): IAppThemeContextValue => {
-	const context = useContext(AppThemeContext);
+	const context = use(AppThemeContext);
 	if (!context) throw new Error("useAppTheme must be used within AppThemeProvider");
 	return context;
 };

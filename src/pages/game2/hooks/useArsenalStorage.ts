@@ -39,20 +39,20 @@ export type TUseArsenalStorage = (configId: string) => {
 export const useArsenalStorage: TUseArsenalStorage = (configId) => {
 	const dataKey = useMemo(() => configId === "default" ? STORAGE_KEY : `${STORAGE_KEY}_data_${configId}`, [configId]);
 	const initialData = useMemo(() => arsenalDataFetcher(dataKey), [dataKey]);
-	const [items, setItemsState] = useState<IItem[]>(initialData.items);
-	const [inventory, setInventoryState] = useState<IInventory>(initialData.inv);
+	const [items, setItems] = useState<IItem[]>(initialData.items);
+	const [inventory, setInventory] = useState<IInventory>(initialData.inv);
 
 	useEffect(() => {
 		localStorage.setItem(dataKey, JSON.stringify({ items, inv: inventory }));
 	}, [dataKey, items, inventory]);
 
-	const setItems = useCallback((value: IItem[] | ((prev: IItem[]) => IItem[])): void => {
-		setItemsState((prev) => typeof value === "function" ? value(prev) : value);
+	const updateItems = useCallback((value: IItem[] | ((prev: IItem[]) => IItem[])): void => {
+		setItems((prev) => typeof value === "function" ? value(prev) : value);
 	}, []);
 
-	const setInventory = useCallback((value: IInventory | ((prev: IInventory) => IInventory)): void => {
-		setInventoryState((prev) => typeof value === "function" ? value(prev) : value);
+	const updateInventory = useCallback((value: IInventory | ((prev: IInventory) => IInventory)): void => {
+		setInventory((prev) => typeof value === "function" ? value(prev) : value);
 	}, []);
 
-	return { items, setItems, inventory, setInventory };
+	return { items, setItems: updateItems, inventory, setInventory: updateInventory };
 };

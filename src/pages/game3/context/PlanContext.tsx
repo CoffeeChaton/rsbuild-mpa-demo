@@ -1,4 +1,4 @@
-import { type Context, createContext, useContext } from "react";
+import { type Context, createContext, use } from "react";
 import type { TEditor } from "../type";
 
 export interface IPlanContext {
@@ -15,7 +15,7 @@ export interface IPlanContext {
 export const PlanContext: Context<IPlanContext | null> = createContext<IPlanContext | null>(null);
 
 export function usePlanContext(): IPlanContext {
-	const ctx = useContext(PlanContext);
+	const ctx = use(PlanContext);
 
 	if (!ctx) {
 		throw new Error("usePlanContext must be used inside PlanContext");
