@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { analyzeSource } from "../utils/analyzeSource";
-import { RARE_LEVELS } from "../shared/constants/material";
 import type { IItemRow, TFilter } from "../type";
 import type { IItemDataBundle } from "../services/itemFetcher";
 
@@ -9,19 +8,7 @@ export type UseMaterialRows = (jsonA: string, tsvB: string, filter: TFilter, bun
 	rows: IItemRow[],
 	/** 完整計算後的數據 (不論過濾條件)，用於導出 */
 	allRows: IItemRow[],
-	/** 按稀有度分組的過濾後數據 */
-	groupedRows: Record<number, IItemRow[]>,
 };
-
-function createRareGroups(): Record<number, IItemRow[]> {
-	const groups: Record<number, IItemRow[]> = {};
-
-	for (const rareLevel of RARE_LEVELS) {
-		groups[rareLevel] = [];
-	}
-
-	return groups;
-}
 
 export const useMaterialRows: UseMaterialRows = (
 	jsonA: string,
@@ -40,7 +27,7 @@ export const useMaterialRows: UseMaterialRows = (
 	);
 
 	/** 1. 核心計算：計算出所有項目的數據 */
-	const allRows = useMemo<IItemRow[]>(() => {
+	const allRows: IItemRow[] = useMemo<IItemRow[]>(() => {
 		const bundle2 = bundle;
 		if (!bundle2) return [];
 		return Object.keys(bundle2.items)
@@ -63,7 +50,7 @@ export const useMaterialRows: UseMaterialRows = (
 	}, [bundle, dataA, dataB]);
 
 	/** 2. 應用過濾：用於 UI 顯示 */
-	const rows = useMemo<IItemRow[]>(() => {
+	const rows: IItemRow[] = useMemo<IItemRow[]>(() => {
 		const searchLower = filter.search.toLowerCase();
 		return allRows.filter((r) => {
 			// Search filter
@@ -79,20 +66,8 @@ export const useMaterialRows: UseMaterialRows = (
 		});
 	}, [allRows, filter.search, filter.hideEmpty]);
 
-	/** 3. 分組數據 */
-	const groupedRows = useMemo(() => {
-		const groups = createRareGroups();
-
-		rows.forEach((r) => {
-			groups[r.rare].push(r);
-		});
-
-		return groups;
-	}, [rows]);
-
 	return {
 		rows,
 		allRows,
-		groupedRows,
 	};
 };

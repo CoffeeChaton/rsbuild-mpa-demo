@@ -1,4 +1,4 @@
-import { type FC, Fragment, memo } from "react";
+import { type FC, Fragment, memo, useMemo } from "react";
 import { RARE_LEVELS } from "../shared/constants/material";
 import {
 	Box,
@@ -8,11 +8,28 @@ import {
 } from "@radix-ui/themes";
 import type { IItemRow } from "../type";
 
-export interface ITableAreaParam {
-	groupedRows: Record<number, IItemRow[]>;
+function createRareGroups(): Record<number, IItemRow[]> {
+	const groups: Record<number, IItemRow[]> = {};
+	for (const rareLevel of RARE_LEVELS) {
+		groups[rareLevel] = [];
+	}
+	return groups;
 }
 
-export const TableArea: FC<ITableAreaParam> = memo<ITableAreaParam>(({ groupedRows }) => {
+export interface ITableAreaParam {
+	rows: IItemRow[];
+}
+
+export const TableArea: FC<ITableAreaParam> = memo<ITableAreaParam>(({ rows }) => {
+	/** 按稀有度分組的過濾後數據 */
+	const groupedRows: Record<number, IItemRow[]> = useMemo(() => {
+		const groups = createRareGroups();
+		rows.forEach((r) => {
+			groups[r.rare].push(r);
+		});
+		return groups;
+	}, [rows]);
+
 	return (
 		<Box flexGrow="1" p="3" className="overflow-hidden">
 			<Card className="h-full p-0 overflow-hidden border-slate-200">

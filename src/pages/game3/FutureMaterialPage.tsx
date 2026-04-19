@@ -36,7 +36,7 @@ export const FutureMaterialPage: React.FC = () => {
 	const { copy, copied } = useClipboard({ timeout: 2000 });
 
 	/** 3. 計算 Row 數據 */
-	const { rows, allRows, groupedRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
+	const { rows, allRows } = useMaterialRows(jsonA, planManager.tsvB, filter, bundle);
 
 	/** 4. 合併 Context，這時只需合併 Page 專屬的 setEditorOpen */
 	const planContextValue = useMemo(() => ({
@@ -101,7 +101,7 @@ export const FutureMaterialPage: React.FC = () => {
 					isImportSuccess={isImportSuccess}
 				/>
 				{/* TableArea */}
-				<TableArea groupedRows={groupedRows} />
+				<TableArea rows={rows} />
 
 				{/* EditorDialog */}
 				<EditorDialog
