@@ -100,11 +100,9 @@ const ItemErrorFieldsSchemaInternal: v.GenericSchema<TStoredItemErrorFields> = v
 	name: v.optional(v.string()),
 	note: v.optional(v.string()),
 });
-export const ItemErrorFieldsSchema: typeof ItemErrorFieldsSchemaInternal = ItemErrorFieldsSchemaInternal;
-
 const ItemErrorSchemaInternal: v.GenericSchema<TStoredItemError> = v.object({
 	messages: v.array(v.string()),
-	fields: ItemErrorFieldsSchema,
+	fields: ItemErrorFieldsSchemaInternal,
 });
 export const ItemErrorSchema: typeof ItemErrorSchemaInternal = ItemErrorSchemaInternal;
 

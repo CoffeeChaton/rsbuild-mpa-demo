@@ -12,7 +12,7 @@ type _expected = {
 const NumberListSchema = v.array(v.number());
 
 // 2. 定義 Valibot Schema
-const _schema: v.GenericSchema<_expected> = v.object({
+export const LevelDataSchema: v.GenericSchema<_expected> = v.object({
 	maxLevel: v.array(NumberListSchema),
 	characterExp: v.array(NumberListSchema),
 	characterUpgradeCost: v.array(NumberListSchema),
@@ -20,8 +20,4 @@ const _schema: v.GenericSchema<_expected> = v.object({
 });
 
 // 3. 高階型別鎖定 (靜態斷言)
-type _type = TAssertEqual<v.InferOutput<typeof _schema>, _expected>;
-
-// 4. export
-export { _schema as LevelDataSchema };
-export type { _type as ILevelData };
+export type ILevelData = TAssertEqual<v.InferOutput<typeof LevelDataSchema>, _expected>;

@@ -2,7 +2,7 @@ import { Progress as ProgressPrimitive } from "radix-ui";
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 
-function Progress({
+export function Progress({
 	className,
 	value,
 	...props
@@ -29,5 +29,3 @@ function Progress({
 		</ProgressPrimitive.Root>
 	);
 }
-
-export { Progress };

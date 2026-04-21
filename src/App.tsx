@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router";
-import { getViewPagePath, VIEW_PAGE_KEYS } from "./common/config/pages.runtime";
+import { VIEW_PAGE_KEYS } from "./common/config/pages.config.ts";
+import { getViewPagePath } from "./common/config/pages.runtime";
 import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Layout } from "./pages/index/Layout.tsx";
 

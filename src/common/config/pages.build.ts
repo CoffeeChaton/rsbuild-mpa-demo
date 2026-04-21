@@ -8,9 +8,6 @@ import {
 	type TPageKey,
 } from "./pages.config";
 
-export type { TPageDefinition, TPageKey } from "./pages.config";
-export { NOT_FOUND_PAGE_KEY, PAGE_KEYS } from "./pages.config";
-
 function getPageDefinition(key: TPageKey): TPageDefinition {
 	const page = PAGE_DEFINITION_MAP.get(key);
 	if (page !== undefined) {

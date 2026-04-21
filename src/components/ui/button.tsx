@@ -5,7 +5,7 @@ import { Slot } from "radix-ui";
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
-const buttonVariants: (
+export const buttonVariants: (
 	props?: {
 		variant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link" | null | undefined,
 		size?: "default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg" | null | undefined,
@@ -43,7 +43,7 @@ const buttonVariants: (
 	},
 );
 
-function Button({
+export function Button({
 	className,
 	variant = "default",
 	size = "default",
@@ -68,5 +68,3 @@ function Button({
 		/>
 	);
 }
-
-export { Button, buttonVariants };

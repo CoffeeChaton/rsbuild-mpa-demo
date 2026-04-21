@@ -3,7 +3,7 @@ import { Accordion as AccordionPrimitive } from "radix-ui";
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
-function Accordion({
+export function Accordion({
 	className,
 	...props
 }: React.ComponentProps<typeof AccordionPrimitive.Root>): React.JSX.Element {
@@ -16,7 +16,7 @@ function Accordion({
 	);
 }
 
-function AccordionItem({
+export function AccordionItem({
 	className,
 	...props
 }: React.ComponentProps<typeof AccordionPrimitive.Item>): React.JSX.Element {
@@ -29,7 +29,7 @@ function AccordionItem({
 	);
 }
 
-function AccordionTrigger({
+export function AccordionTrigger({
 	className,
 	children,
 	...props
@@ -52,7 +52,7 @@ function AccordionTrigger({
 	);
 }
 
-function AccordionContent({
+export function AccordionContent({
 	className,
 	children,
 	...props
@@ -74,5 +74,3 @@ function AccordionContent({
 		</AccordionPrimitive.Content>
 	);
 }
-
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

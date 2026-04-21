@@ -6,8 +6,8 @@ import {
 	getPageCleanupDir,
 	getPageInfo,
 	getPageOutputPath,
-	PAGE_KEYS,
 } from "../src/common/config/pages.build";
+import { PAGE_KEYS } from "../src/common/config/pages.config";
 
 export const pluginSSG = (): RsbuildPlugin => ({
 	name: "plugin-ssg",

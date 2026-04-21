@@ -8,9 +8,6 @@ import {
 	VIEW_PAGE_KEYS,
 } from "./pages.config";
 
-export type { IPageInfo, TPageKey, TViewPageKey } from "./pages.config";
-export { NOT_FOUND_PAGE_KEY, PAGE_INFO_MAP, PAGE_KEYS, VIEW_PAGE_INFO_MAP, VIEW_PAGE_KEYS } from "./pages.config";
-
 export interface INavItem {
 	key: TViewPageKey;
 	path: string;

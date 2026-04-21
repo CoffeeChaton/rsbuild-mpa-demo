@@ -32,8 +32,8 @@
 		"oxc/no-barrel-file": [
 			"error",
 			{
-				"integer": 0
-			}
+				"integer": 0,
+			},
 		],
 		"import/no-cycle": [
 			"error",

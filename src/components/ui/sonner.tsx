@@ -18,7 +18,7 @@ const SONNER_TOAST_OPTIONS = {
 	},
 };
 
-const Toaster = ({ className, ...props }: ToasterProps): React.JSX.Element => {
+export const Toaster = ({ className, ...props }: ToasterProps): React.JSX.Element => {
 	const { resolvedAppearance } = useAppTheme();
 
 	return (
@@ -34,5 +34,3 @@ const Toaster = ({ className, ...props }: ToasterProps): React.JSX.Element => {
 		/>
 	);
 };
-
-export { Toaster };

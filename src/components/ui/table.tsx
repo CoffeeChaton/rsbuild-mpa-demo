@@ -3,14 +3,14 @@ import * as React from "react";
 import { type ComponentProps, useMemo } from "react";
 import { cn } from "../../lib/utils";
 
-interface TableProps extends ComponentProps<"table"> {
+export interface TableProps extends ComponentProps<"table"> {
 	/** 容器樣式類名，超出時滾動 */
 	containerClassName?: string;
 	/** 是否使用固定佈局，避免頻繁 Layout */
 	fixed?: boolean;
 }
 
-function Table({ className, containerClassName, fixed, ...props }: TableProps): React.JSX.Element {
+export function Table({ className, containerClassName, fixed, ...props }: TableProps): React.JSX.Element {
 	return (
 		<ScrollArea
 			data-slot="table-container"
@@ -31,12 +31,12 @@ function Table({ className, containerClassName, fixed, ...props }: TableProps): 
 	);
 }
 
-interface TableHeaderProps extends ComponentProps<"thead"> {
+export interface TableHeaderProps extends ComponentProps<"thead"> {
 	/** 是否固定表頭 */
 	sticky?: boolean;
 }
 
-function TableHeader({ className, sticky, ...props }: TableHeaderProps): React.JSX.Element {
+export function TableHeader({ className, sticky, ...props }: TableHeaderProps): React.JSX.Element {
 	return (
 		<thead
 			data-slot="table-header"
@@ -50,7 +50,7 @@ function TableHeader({ className, sticky, ...props }: TableHeaderProps): React.J
 	);
 }
 
-function TableBody({ className, ...props }: ComponentProps<"tbody">): React.JSX.Element {
+export function TableBody({ className, ...props }: ComponentProps<"tbody">): React.JSX.Element {
 	return (
 		<tbody
 			data-slot="table-body"
@@ -60,7 +60,7 @@ function TableBody({ className, ...props }: ComponentProps<"tbody">): React.JSX.
 	);
 }
 
-function TableFooter({ className, ...props }: ComponentProps<"tfoot">): React.JSX.Element {
+export function TableFooter({ className, ...props }: ComponentProps<"tfoot">): React.JSX.Element {
 	return (
 		<tfoot
 			data-slot="table-footer"
@@ -73,7 +73,7 @@ function TableFooter({ className, ...props }: ComponentProps<"tfoot">): React.JS
 	);
 }
 
-function TableRow({ className, ...props }: ComponentProps<"tr">): React.JSX.Element {
+export function TableRow({ className, ...props }: ComponentProps<"tr">): React.JSX.Element {
 	return (
 		<tr
 			data-slot="table-row"
@@ -86,12 +86,12 @@ function TableRow({ className, ...props }: ComponentProps<"tr">): React.JSX.Elem
 	);
 }
 
-interface TableHeadProps extends ComponentProps<"th"> {
+export interface TableHeadProps extends ComponentProps<"th"> {
 	/** 強制輸入寬度 */
 	width: number | string;
 }
 
-function TableHead({ className, width, ...props }: TableHeadProps): React.JSX.Element {
+export function TableHead({ className, width, ...props }: TableHeadProps): React.JSX.Element {
 	const headStyle = useMemo(() => ({
 		width,
 		minWidth: width,
@@ -111,7 +111,7 @@ function TableHead({ className, width, ...props }: TableHeadProps): React.JSX.El
 	);
 }
 
-function TableCell({ className, ...props }: ComponentProps<"td">): React.JSX.Element {
+export function TableCell({ className, ...props }: ComponentProps<"td">): React.JSX.Element {
 	return (
 		<td
 			data-slot="table-cell"
@@ -124,7 +124,7 @@ function TableCell({ className, ...props }: ComponentProps<"td">): React.JSX.Ele
 	);
 }
 
-function TableCaption({
+export function TableCaption({
 	className,
 	...props
 }: ComponentProps<"caption">): React.JSX.Element {
@@ -136,5 +136,3 @@ function TableCaption({
 		/>
 	);
 }
-
-export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

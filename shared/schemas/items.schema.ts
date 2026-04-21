@@ -19,7 +19,7 @@ type _expected = {
  * @section 2. Implementation / Schema 實作
  * 確保運行時校驗邏輯符合上述契約
  */
-const _schema: v.GenericSchema<_expected> = v.object({
+export const ItemSchema: v.GenericSchema<_expected> = v.object({
 	type: v.number(),
 	sortId: v.number(),
 	rare: v.number(),
@@ -33,8 +33,4 @@ const _schema: v.GenericSchema<_expected> = v.object({
 });
 
 // 3. 高階型別鎖定 (靜態斷言)，若 Schema 實作與 Expected 不符，此處會噴出型別錯誤 (never)
-type _type = TAssertEqual<v.InferOutput<typeof _schema>, _expected>;
-
-// 4. export
-export { _schema as ItemSchema };
-export type { _type as TItem };
+export type TItem = TAssertEqual<v.InferOutput<typeof ItemSchema>, _expected>;

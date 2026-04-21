@@ -5,7 +5,7 @@ import { Tabs as TabsPrimitive } from "radix-ui";
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 
-function Tabs({
+export function Tabs({
 	className,
 	orientation = "horizontal",
 	...props
@@ -23,7 +23,7 @@ function Tabs({
 	);
 }
 
-const tabsListVariants: (
+export const tabsListVariants: (
 	props?: {
 		variant?: "line" | "default" | null | undefined,
 	} & ClassProp,
@@ -42,7 +42,7 @@ const tabsListVariants: (
 	},
 );
 
-function TabsList({
+export function TabsList({
 	className,
 	variant = "default",
 	...props
@@ -60,7 +60,7 @@ function TabsList({
 	);
 }
 
-function TabsTrigger({
+export function TabsTrigger({
 	className,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>): React.JSX.Element {
@@ -79,7 +79,7 @@ function TabsTrigger({
 	);
 }
 
-function TabsContent({
+export function TabsContent({
 	className,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>): React.JSX.Element {
@@ -91,5 +91,3 @@ function TabsContent({
 		/>
 	);
 }
-
-export { Tabs, TabsContent, TabsList, tabsListVariants, TabsTrigger };

@@ -5,7 +5,7 @@ import { Slot } from "radix-ui";
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
-const badgeVariants: (
+export const badgeVariants: (
 	props?: {
 		variant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link" | null | undefined,
 	} & ClassProp,
@@ -28,7 +28,7 @@ const badgeVariants: (
 	},
 );
 
-function Badge({
+export function Badge({
 	className,
 	variant = "default",
 	asChild = false,
@@ -49,5 +49,3 @@ function Badge({
 		/>
 	);
 }
-
-export { Badge, badgeVariants };

@@ -72,8 +72,16 @@ export default defineConfig([
 					message: "[CR04] 禁止使用 `export * from`。",
 				},
 				{
+					selector: "ExportNamedDeclaration[source]",
+					message: "[CR05] 禁止使用 re-export (export {...} from);請直接從來源模組 import。",
+				},
+				{
 					selector: "ImportNamespaceSpecifier[source.value^='./']",
-					message: "[CR05] 本地模組禁止使用 `import *`。",
+					message: "[CR06] 本地模組禁止使用 `import *`。",
+				},
+				{
+					selector: "ExportNamedDeclaration:not([source])[specifiers.length>0]",
+					message: "[CR07] 禁止集中 export 請在定義處直接 export。",
 				},
 			],
 			//
