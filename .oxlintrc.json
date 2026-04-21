@@ -29,7 +29,12 @@
 	"rules": {
 		// import export
 		"no-restricted-exports": "error",
-		"oxc/no-barrel-file": ["error", { "integer": 0 }],
+		"oxc/no-barrel-file": [
+			"error",
+			{
+				"integer": 0
+			}
+		],
 		"import/no-cycle": [
 			"error",
 			{
@@ -38,6 +43,8 @@
 		],
 		"typescript/consistent-type-exports": "error",
 		"import/no-self-import": "error",
+		"typescript/consistent-type-imports": "error",
+		// type
 		"@typescript-eslint/no-explicit-any": "error",
 		"@typescript-eslint/no-unnecessary-type-assertion": "error",
 		// not need
