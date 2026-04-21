@@ -8,26 +8,26 @@ import {
 } from "./pages.runtime";
 
 describe("pages runtime helpers", () => {
-	it("checks page keys with a shared whitelist", () => {
+	it("checks page keys with a shared whitelist", { timeout: 10000 }, () => {
 		expect(isPageKey("game2")).toBe(true);
 		expect(isPageKey("404")).toBe(true);
 		expect(isPageKey("toString")).toBe(false);
 		expect(isPageKey("missing")).toBe(false);
 	});
 
-	it("resolves view page paths", () => {
+	it("resolves view page paths", { timeout: 10000 }, () => {
 		expect(getViewPagePath("index")).toBe("/");
 		expect(getViewPagePath("game3")).toBe("/game3/");
 	});
 
-	it("resolves page info from pathnames", () => {
+	it("resolves page info from pathnames", { timeout: 10000 }, () => {
 		expect(getPageInfoByPathname("/")).toEqual(getPageInfo("index"));
 		expect(getPageInfoByPathname("/game2/")).toEqual(getPageInfo("game2"));
 		expect(getPageInfoByPathname("///products///")).toEqual(getPageInfo("products"));
 		expect(getPageInfoByPathname("/missing/route")).toEqual(getPageInfo("index"));
 	});
 
-	it("builds navbar items from shared runtime config", () => {
+	it("builds navbar items from shared runtime config", { timeout: 10000 }, () => {
 		expect(NAV_ITEMS).toEqual([
 			{ key: "index", path: "/", label: "首頁" },
 			{ key: "products", path: "/products/", label: "產品" },

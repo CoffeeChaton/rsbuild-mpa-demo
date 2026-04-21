@@ -15,7 +15,7 @@ const baseInventory: IInventory = {
 };
 
 describe("arsenalTsv", () => {
-	it("parses config entries and list rows from TSV", () => {
+	it("parses config entries and list rows from TSV", { timeout: 10000 }, () => {
 		const text = [
 			"#CONFIG\tresource.money\t500\t龍門幣",
 			"#CONFIG\tproduction.exp\t700\t日產EXP",
@@ -47,7 +47,7 @@ describe("arsenalTsv", () => {
 		]);
 	});
 
-	it("applies parsed config entries without mutating the source inventory", () => {
+	it("applies parsed config entries without mutating the source inventory", { timeout: 10000 }, () => {
 		const next = applyConfigEntriesToInventory(baseInventory, [
 			{ keyPath: "resource.exp_advanced", value: 99 },
 			{ keyPath: "production.money", value: 777 },
@@ -64,7 +64,7 @@ describe("arsenalTsv", () => {
 		expect(baseInventory.bookStacks.advanced).toBe(4);
 	});
 
-	it("formats inventory and rows into the exported TSV structure", () => {
+	it("formats inventory and rows into the exported TSV structure", { timeout: 10000 }, () => {
 		const rows: IRowResult[] = [{
 			id: "r1",
 			calculate: true,

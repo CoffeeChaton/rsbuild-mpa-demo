@@ -25,7 +25,7 @@ export const FutureMaterialPage: React.FC = () => {
 		revalidateOnReconnect: false, // 斷線重連不用重新抓
 		dedupingInterval: 3600000, // 一小時內只會抓一次
 	});
-	const [jsonA, setJsonA] = useLocalStorageState<string>("fm_a_v5", "{}", JsonStringSchema);
+	const [jsonA, setJsonA] = useLocalStorageState("fm_a_v5", "{}", JsonStringSchema);
 	const [filter, setFilter] = useState<TFilter>({ search: "", hideEmpty: true });
 	const [importError, setImportError] = useState<string | null>(null);
 	const [isImportSuccess, setIsImportSuccess] = useState(false);

@@ -8,7 +8,7 @@ export type UseEditor = (initial?: Partial<TEditor>) => {
 };
 
 export const useEditor: UseEditor = (initial) => {
-	const [editor, setEditor] = useState<TEditor>({
+	const [editor, setEditor] = useState({
 		open: false,
 		targetId: null,
 		title: "",
@@ -34,7 +34,6 @@ export const useEditor: UseEditor = (initial) => {
 
 	return {
 		editor,
-		// setEditor,
 		setEditorOpen,
 		updateEditor,
 	};

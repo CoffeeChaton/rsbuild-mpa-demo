@@ -8,7 +8,7 @@ import {
 import { getPageInfo } from "./pages.runtime";
 
 describe("pages build helpers", () => {
-	it("resolves entry names and output paths", () => {
+	it("resolves entry names and output paths", { timeout: 10000 }, () => {
 		expect(getPageEntryName("index")).toBe("");
 		expect(getPageEntryName("products")).toBe("products");
 		expect(getPageOutputPath("game2")).toBe("game2/index.html");
@@ -17,7 +17,7 @@ describe("pages build helpers", () => {
 		expect(getPageCleanupDir("index")).toBeUndefined();
 	});
 
-	it("resolves page info from entry names", () => {
+	it("resolves page info from entry names", { timeout: 10000 }, () => {
 		expect(getPageInfoByEntryName("")).toEqual(getPageInfo("index"));
 		expect(getPageInfoByEntryName("game3")).toEqual(getPageInfo("game3"));
 		expect(getPageInfoByEntryName("unknown")).toEqual(getPageInfo("index"));

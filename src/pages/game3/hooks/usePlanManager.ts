@@ -30,7 +30,7 @@ function omitPlan(plans: Record<string, string>, omittedPlanName: string): Recor
 
 export function usePlanManager(): IPlanManagerContext {
 	const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {}, CustomPlansSchema);
-	const [planName, setPlanName] = useLocalStorageState<string>("fm_current_plan_name", "plan_a", PlanNameSchema);
+	const [planName, setPlanName] = useLocalStorageState("fm_current_plan_name", "plan_a", PlanNameSchema);
 
 	const defaultTsv = isDefaultPlanKey(planName) ? getDefaultPlanContent(planName) : "";
 	const tsvB = customPlans[planName] ?? defaultTsv;

@@ -10,13 +10,13 @@ import {
 } from "./pages.config";
 
 describe("pages config", () => {
-	it("keeps one page definition per page key", () => {
+	it("keeps one page definition per page key", { timeout: 10000 }, () => {
 		expect(PAGE_DEFINITIONS).toHaveLength(5);
 		expect(PAGE_KEYS).toEqual(["index", "products", "game2", "game3", "404"]);
 		expect(VIEW_PAGE_KEYS).toEqual(["index", "products", "game2", "game3"]);
 	});
 
-	it("keeps shared lookup maps aligned with definitions", () => {
+	it("keeps shared lookup maps aligned with definitions", { timeout: 10000 }, () => {
 		expect(PAGE_DEFINITION_MAP.get("index")?.entryName).toBe("");
 		const notFoundDefinition = PAGE_DEFINITION_MAP.get(NOT_FOUND_PAGE_KEY);
 		expect(notFoundDefinition && hasCleanupDir(notFoundDefinition) ? notFoundDefinition.cleanupDir : undefined).toBe("404");

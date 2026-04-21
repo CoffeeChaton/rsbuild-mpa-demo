@@ -66,9 +66,9 @@ export type TUseArsenalStorage = (configId: string) => {
 
 export const useArsenalStorage: TUseArsenalStorage = (configId) => {
 	const dataKey = useMemo(() => configId === "default" ? STORAGE_KEY : `${STORAGE_KEY}_data_${configId}`, [configId]);
-	const initialData = useMemo(() => arsenalDataFetcher(dataKey), [dataKey]);
-	const [items, setItems] = useState<IItem[]>(initialData.items);
-	const [inventory, setInventory] = useState<IInventory>(initialData.inv);
+	const initialData: IArsenalData = useMemo(() => arsenalDataFetcher(dataKey), [dataKey]);
+	const [items, setItems] = useState(initialData.items);
+	const [inventory, setInventory] = useState(initialData.inv);
 
 	useEffect(() => {
 		localStorage.setItem(dataKey, JSON.stringify({ items, inv: inventory }));

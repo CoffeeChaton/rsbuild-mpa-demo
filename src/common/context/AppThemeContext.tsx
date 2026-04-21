@@ -48,7 +48,6 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	}, [accentColor]);
 
 	useEffect(() => {
-		if (typeof window === "undefined") return;
 		const media = window.matchMedia("(prefers-color-scheme: dark)");
 		const handleChange = (): void => setSystemAppearance(media.matches ? "dark" : "light");
 		media.addEventListener("change", handleChange);
