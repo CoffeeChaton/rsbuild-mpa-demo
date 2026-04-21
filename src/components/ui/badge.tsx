@@ -1,9 +1,9 @@
+import type { ClassProp } from "class-variance-authority/types";
+import type { ComponentProps } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
+import * as React from "react";
 import { cn } from "../../lib/utils";
-import type { ComponentProps } from "react";
-import type { JSX } from "react/jsx-runtime";
-import type { ClassProp } from "class-variance-authority/types";
 
 const badgeVariants: (
 	props?: {
@@ -36,7 +36,7 @@ function Badge({
 }:
 	& ComponentProps<"span">
 	& VariantProps<typeof badgeVariants>
-	& { asChild?: boolean }): JSX.Element
+	& { asChild?: boolean }): React.JSX.Element
 {
 	const Comp = asChild ? Slot.Root : "span";
 

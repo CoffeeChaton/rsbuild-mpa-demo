@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
-import { CopyIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useClipboard } from "foxact/use-clipboard";
-import { toast } from "sonner";
-import { type Dispatch, type FC, type SetStateAction, useCallback } from "react";
 import type { IItemRow, TFilter } from "../type";
+import { CopyIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Box, Button, Flex, Switch, Text, TextField } from "@radix-ui/themes";
+import { useClipboard } from "foxact/use-clipboard";
+import { type Dispatch, type FC, type SetStateAction, useCallback } from "react";
+import { toast } from "sonner";
 
 export interface IMaterialToolbarProps {
 	rows: IItemRow[];

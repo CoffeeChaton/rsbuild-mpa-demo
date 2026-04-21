@@ -1,8 +1,8 @@
 /// src/common/router/view-map.ts
 
-import { lazy } from "react";
-import type { TViewPageKey } from "../config/pages.runtime";
 import type { LazyExoticComponent } from "react";
+import type { TViewPageKey } from "../config/pages.runtime";
+import { lazy } from "react";
 
 // 定義頁面模組的標準形狀
 interface IPageModule {

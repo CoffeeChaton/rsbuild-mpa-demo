@@ -1,12 +1,12 @@
-import { type FC, Fragment, memo, useMemo } from "react";
-import { RARE_LEVELS } from "../shared/constants/material";
+import type { IItemRow } from "../type";
 import {
 	Box,
 	Card,
 	Table,
 	Text,
 } from "@radix-ui/themes";
-import type { IItemRow } from "../type";
+import { type FC, Fragment, memo, useMemo } from "react";
+import { RARE_LEVELS } from "../shared/constants/material";
 
 function createRareGroups(): Record<number, IItemRow[]> {
 	const groups: Record<number, IItemRow[]> = {};

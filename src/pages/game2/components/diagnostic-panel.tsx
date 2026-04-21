@@ -19,11 +19,11 @@ import {
 	StackIcon,
 } from "@radix-ui/react-icons";
 import { Badge, Card, Flex, Text } from "@radix-ui/themes";
-import { useDiagnostics } from "../hooks/useDiagnostics";
-import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
-import { ProgressCard } from "./progress-card";
 import { memo, useMemo } from "react";
+import { useArsenalInventory, useArsenalRows } from "../context/ArsenalContext";
 import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
+import { useDiagnostics } from "../hooks/useDiagnostics";
+import { ProgressCard } from "./progress-card";
 
 export const DiagnosticPanel: React.FC = memo(() => {
 	const { rows } = useArsenalRows();

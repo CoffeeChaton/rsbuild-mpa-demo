@@ -1,6 +1,6 @@
 import { GearIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useCallback } from "react";
 import { Flex, IconButton, Popover, SegmentedControl, Select, Text, Tooltip } from "@radix-ui/themes";
+import { useCallback } from "react";
 import { type TAccentColor, type TAppearanceMode, useAppTheme } from "../context/AppThemeContext";
 
 export const AppThemeSwitch: React.FC = () => {

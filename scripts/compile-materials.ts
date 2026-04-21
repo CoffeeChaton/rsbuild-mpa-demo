@@ -2,13 +2,11 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import * as v from "valibot";
-
-// 假設匯入
+import { ItemSchema, type TItem } from "../shared/schemas/items.schema";
+import itemRawData from "./input/item.json";
 import cnData from "./input/material.cn.json";
 import twData from "./input/material.tw.json";
 import usData from "./input/material.us.json";
-import itemRawData from "./input/item.json";
-import { ItemSchema, type TItem } from "../shared/schemas/items.schema";
 
 const outputPath = "public/data/item.json";
 

@@ -1,4 +1,6 @@
-import type { IInventory, IItem, IRowResult } from "../types";
+import type { IInventory } from "../types/inventory";
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 
 interface IConfigEntry {
 	keyPath: string;

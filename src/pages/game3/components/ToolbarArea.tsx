@@ -1,16 +1,16 @@
+import type { IItemRow, TFilter } from "../type";
+import {
+	BackpackIcon,
+	ClipboardIcon,
+} from "@radix-ui/react-icons";
 import {
 	Box,
 	Button,
 	Flex,
 } from "@radix-ui/themes";
-import {
-	BackpackIcon,
-	ClipboardIcon,
-} from "@radix-ui/react-icons";
+import { type Dispatch, memo, type NamedExoticComponent, type SetStateAction } from "react";
 import { MaterialToolbar } from "./FilterActionBar";
 import { PlanSwitcher } from "./PlanSwitcher";
-import { type Dispatch, memo, type NamedExoticComponent, type SetStateAction } from "react";
-import type { IItemRow, TFilter } from "../type";
 
 export interface IToolbarAreaProp {
 	rows: IItemRow[];

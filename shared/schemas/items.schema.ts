@@ -1,6 +1,5 @@
-// shared/schemas/items.schema.ts
-import * as v from "valibot";
 import type { TAssertEqual } from "../../src/type";
+import * as v from "valibot";
 
 // 1. 定義基礎 類型
 type _expected = {

@@ -1,6 +1,6 @@
+import type { IItem } from "../types/item";
 import { describe, expect, it } from "vitest";
 import { ITEM_ERR_MSG, validateItem } from "./itemValidator";
-import type { IItem } from "../types";
 
 describe("validateItem 業務邏輯測試", () => {
 	const baseItem: IItem = {

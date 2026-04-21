@@ -1,8 +1,9 @@
-import { memo } from "react";
-import { Flex, HoverCard, Text } from "@radix-ui/themes";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { MODULE_COST_DISPLAY_ROWS } from "../core/moduleCost";
+import { Flex, HoverCard, Text } from "@radix-ui/themes";
+import { memo } from "react";
+// eslint-disable-next-line perfectionist/sort-named-imports
 import { Table, TableBody, TableCell, TableHead, TableHeader as ShadcnTableHeader, TableRow } from "@/src/components/ui/table";
+import { MODULE_COST_DISPLAY_ROWS } from "../core/moduleCost";
 
 /**
  * TableHeader

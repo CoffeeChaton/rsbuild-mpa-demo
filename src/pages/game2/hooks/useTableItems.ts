@@ -1,8 +1,6 @@
-// src/pages/game2/hooks/useTableItems.ts
-
+import type { IItem } from "../types/item";
 import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 import { DEFAULT_ITEM_TEMPLATE } from "../config/constants";
-import type { IItem } from "../types";
 
 /**
  * useTableItems

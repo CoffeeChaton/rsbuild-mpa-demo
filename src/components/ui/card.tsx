@@ -1,13 +1,11 @@
 import * as React from "react";
-
 import { cn } from "@/src/lib/utils";
-import type { JSX } from "react/jsx-runtime";
 
 function Card({
 	className,
 	size = "default",
 	...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }): JSX.Element {
+}: React.ComponentProps<"div"> & { size?: "default" | "sm" }): React.JSX.Element {
 	return (
 		<div
 			data-slot="card"
@@ -21,7 +19,7 @@ function Card({
 	);
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardHeader({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-header"
@@ -34,7 +32,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">): JSX.E
 	);
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardTitle({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-title"
@@ -47,7 +45,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">): JSX.El
 	);
 }
 
-function CardDescription({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardDescription({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-description"
@@ -57,7 +55,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">): 
 	);
 }
 
-function CardAction({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardAction({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-action"
@@ -70,7 +68,7 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">): JSX.E
 	);
 }
 
-function CardContent({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardContent({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-content"
@@ -80,7 +78,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">): JSX.
 	);
 }
 
-function CardFooter({ className, ...props }: React.ComponentProps<"div">): JSX.Element {
+function CardFooter({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element {
 	return (
 		<div
 			data-slot="card-footer"

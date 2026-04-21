@@ -1,6 +1,6 @@
+import { Select } from "@radix-ui/themes";
 import * as React from "react";
 import { useCallback, useMemo } from "react";
-import { Select } from "@radix-ui/themes";
 
 interface IRaritySelectProps {
 	value: number;

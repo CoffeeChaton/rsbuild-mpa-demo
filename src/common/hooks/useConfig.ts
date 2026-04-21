@@ -1,3 +1,4 @@
+import type { TConfigEntry } from "../types/config";
 import { use } from "react";
 import {
 	ConfigActionsContext,
@@ -5,7 +6,6 @@ import {
 	CurrentConfigIdContext,
 	type IConfigActionsContext,
 } from "../context/ConfigContext";
-import type { TConfigEntry } from "../types/config";
 
 export const useCurrentConfigId: () => string = () => {
 	const context = use(CurrentConfigIdContext);

@@ -1,6 +1,6 @@
+import { Flex } from "@radix-ui/themes";
 import * as React from "react";
 import { memo } from "react";
-import { Flex } from "@radix-ui/themes";
 import { PlannerConfigSwitch } from "../../../common/components/PlannerConfigSwitch";
 
 /**

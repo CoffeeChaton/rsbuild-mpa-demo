@@ -1,6 +1,7 @@
+import type { IInventory } from "../types/inventory";
+import type { IRowResult } from "../types/rowResult";
 import { describe, expect, it } from "vitest";
 import { applyConfigEntriesToInventory, formatArsenalTsv, parseArsenalTsv } from "./arsenalTsv";
-import type { IInventory, IRowResult } from "../types";
 
 const baseInventory: IInventory = {
 	money: 100,

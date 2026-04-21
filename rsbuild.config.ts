@@ -1,10 +1,9 @@
-// rsbuild.config.ts
-import { defineConfig, type RsbuildConfig } from "@rsbuild/core";
-import { pluginReact } from "@rsbuild/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { getPageEntryName, getPageInfoByEntryName, PAGE_KEYS } from "./src/common/config/pages.build";
+import { defineConfig, type RsbuildConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginSSG } from "./scripts/ssg";
+import { getPageEntryName, getPageInfoByEntryName, PAGE_KEYS } from "./src/common/config/pages.build";
 
 const assetPrefix = `/rsbuild-mpa-demo/`; // .eq. package.json name but not IO
 

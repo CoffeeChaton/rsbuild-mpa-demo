@@ -1,4 +1,8 @@
-import { type FC, memo, useCallback, useState } from "react";
+import type { TEditor } from "../type";
+import {
+	ChevronDownIcon,
+	MagicWandIcon,
+} from "@radix-ui/react-icons";
 import {
 	Box,
 	Button,
@@ -8,12 +12,8 @@ import {
 	Text,
 	TextField,
 } from "@radix-ui/themes";
-import {
-	ChevronDownIcon,
-	MagicWandIcon,
-} from "@radix-ui/react-icons";
+import { type FC, memo, useCallback, useState } from "react";
 import { getDefaultPlanContent } from "../assets/planLoader";
-import type { TEditor } from "../type";
 import { type IPlanContext, usePlanContext } from "../context/PlanContext";
 
 export interface IEditorDialogParam {

@@ -1,5 +1,5 @@
-import * as v from "valibot";
 import type { IItemDataBundle } from "../services/itemFetcher";
+import * as v from "valibot";
 
 const SourceJsonSchema = v.record(v.string(), v.number());
 

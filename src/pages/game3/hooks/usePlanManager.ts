@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 import * as v from "valibot";
-import { useLocalStorageState } from "./useLocalStorageState";
 import { getDefaultPlanContent, isDefaultPlanKey } from "../assets/planLoader";
+import { useLocalStorageState } from "./useLocalStorageState";
 
 export interface IPlanManagerContext {
 	planName: string;

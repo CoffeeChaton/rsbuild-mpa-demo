@@ -1,19 +1,19 @@
-import { memo, useCallback, useMemo } from "react";
+import type { IItem } from "../../types/item";
 import { Flex, Text } from "@radix-ui/themes";
-import type { IItem } from "../../types";
-import { RaritySelect } from "../RaritySelect";
-import { validateItem } from "../../core/itemValidator";
-import type { JSX } from "react/jsx-runtime";
+import * as React from "react";
+import { memo, useCallback, useMemo } from "react";
 import { TableCell } from "@/src/components/ui/table";
-import { TableInput } from "./TableInput";
+import { validateItem } from "../../core/itemValidator";
+import { RaritySelect } from "../RaritySelect";
 import { CellWithError } from "./CellWithError";
+import { TableInput } from "./TableInput";
 
 interface IRowInputsProps {
 	item: IItem;
 	onUpdate: (id: string, field: keyof IItem, value: unknown) => void;
 }
 
-export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInputsProps) => JSX.Element> = memo(({ item, onUpdate }: IRowInputsProps) => {
+export const RowInputs: React.MemoExoticComponent<({ item, onUpdate }: IRowInputsProps) => React.JSX.Element> = memo(({ item, onUpdate }: IRowInputsProps) => {
 	const error = useMemo(() => validateItem(item), [item]);
 
 	const handleUpdate = useCallback(

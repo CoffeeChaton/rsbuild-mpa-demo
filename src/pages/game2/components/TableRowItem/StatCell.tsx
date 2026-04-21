@@ -1,6 +1,6 @@
-import React, { memo, useMemo } from "react";
+import type { TRowStatus } from "../../types/rowResult";
 import { Text } from "@radix-ui/themes";
-import type { TRowStatus } from "../../types";
+import React, { memo, useMemo } from "react";
 import { TableCell } from "@/src/components/ui/table";
 
 type TStatTone = "money" | "books";

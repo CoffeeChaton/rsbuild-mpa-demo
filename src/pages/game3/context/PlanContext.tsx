@@ -1,5 +1,5 @@
-import { type Context, createContext, use } from "react";
 import type { TEditor } from "../type";
+import { type Context, createContext, use } from "react";
 
 export interface IPlanContext {
 	planName: string;

@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { calculateArknightsLevel } from "./calculateArknightsLevel";
-import { levelTestCases } from "./levelTestCases";
 import * as v from "valibot";
+import { describe, expect, it } from "vitest";
 import rawLevelData from "@/src/assets/level.json";
+import { calculateArknightsLevel } from "./calculateArknightsLevel";
 import { type ILevelData, LevelDataSchema } from "./data";
+import { levelTestCases } from "./levelTestCases";
 
 describe("明日方舟練度計算驗證 (對標 Excel 數據)", () => {
 	const levelDataFixture: ILevelData = v.parse(LevelDataSchema, rawLevelData);

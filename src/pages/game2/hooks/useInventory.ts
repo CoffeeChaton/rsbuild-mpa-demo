@@ -1,7 +1,6 @@
-// src/pages/game2/hooks/useInventory.ts
-import { useCallback } from "react";
-import type { IInventory } from "../types";
 import type { IBookStacks } from "../config/inventory";
+import type { IInventory } from "../types/inventory";
+import { useCallback } from "react";
 import { sanitizeBookStacks } from "../core/calculateBookStacksValue";
 
 const clampPositiveNumber = (value: string): number => {

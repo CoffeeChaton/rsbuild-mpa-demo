@@ -1,5 +1,5 @@
-import * as v from "valibot";
 import type { TAssertEqual } from "../../../type";
+import * as v from "valibot";
 
 // 1. 定義基礎 類型
 type _expected = {

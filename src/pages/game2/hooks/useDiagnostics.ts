@@ -1,6 +1,8 @@
+import type { IDiagnosticEntry } from "../types/diag";
+import type { IInventory } from "../types/inventory";
+import type { IRowResult } from "../types/rowResult";
 import { useMemo } from "react";
 import { generateLogs, getProductionSummary } from "../core/Diagnostic.utils";
-import type { IDiagnosticEntry, IInventory, IRowResult } from "../types";
 
 export type TUseDiagnostics = (rows: IRowResult[], inventory: IInventory) => {
 	logs: IDiagnosticEntry[],

@@ -1,13 +1,15 @@
+import type { IInventory } from "../types/inventory";
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 // src/pages/game2/context/ArsenalContext.tsx
 import React, { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, use, useMemo } from "react";
-import { useArsenalStorage } from "../hooks/useArsenalStorage";
-import { useArsenalRowsRaw } from "../hooks/useArsenalRowsRaw";
-import { useArsenalTSV } from "../hooks/useArsenalTSV";
-import type { IInventory, IItem, IRowResult } from "../types";
+import * as v from "valibot";
+import rawLevelData from "@/src/assets/level.json"; // only 5KM use import
 import { useCurrentConfigId } from "../../../common/hooks/useConfig";
 import { LevelDataSchema } from "../core/data";
-import rawLevelData from "@/src/assets/level.json"; // only 5KM use import
-import * as v from "valibot";
+import { useArsenalRowsRaw } from "../hooks/useArsenalRowsRaw";
+import { useArsenalStorage } from "../hooks/useArsenalStorage";
+import { useArsenalTSV } from "../hooks/useArsenalTSV";
 
 // Split contexts to prevent unnecessary re-renders
 interface IItemsContext {

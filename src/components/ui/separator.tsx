@@ -1,15 +1,13 @@
-import * as React from "react";
 import { Separator as SeparatorPrimitive } from "radix-ui";
-
+import * as React from "react";
 import { cn } from "@/src/lib/utils";
-import type { JSX } from "react/jsx-runtime";
 
 function Separator({
 	className,
 	orientation = "horizontal",
 	decorative = true,
 	...props
-}: React.ComponentProps<typeof SeparatorPrimitive.Root>): JSX.Element {
+}: React.ComponentProps<typeof SeparatorPrimitive.Root>): React.JSX.Element {
 	return (
 		<SeparatorPrimitive.Root
 			data-slot="separator"

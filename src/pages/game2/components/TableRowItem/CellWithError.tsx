@@ -1,5 +1,5 @@
-import { Box, Flex, HoverCard, Text } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Box, Flex, HoverCard, Text } from "@radix-ui/themes";
 import { TableCell } from "@/src/components/ui/table";
 import { cn } from "@/src/lib/utils";
 

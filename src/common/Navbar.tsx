@@ -1,10 +1,9 @@
-// @file src/common/Navbar.tsx
+import { Box, Flex, TabNav, Text } from "@radix-ui/themes";
 import React, { useCallback } from "react";
 import { Link, useLocation } from "react-router";
-import { Box, Flex, TabNav, Text } from "@radix-ui/themes";
+import { AppThemeSwitch } from "./components/AppThemeSwitch";
 import { type INavItem, NAV_ITEMS } from "./config/pages.runtime";
 import { VIEW_MAP } from "./router/view-map";
-import { AppThemeSwitch } from "./components/AppThemeSwitch";
 
 interface INavItemProps {
 	item: INavItem;

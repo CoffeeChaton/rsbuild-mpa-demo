@@ -1,9 +1,8 @@
-// src/App.tsx
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router";
-import { Layout } from "./pages/index/Layout.tsx";
-import { VIEW_MAP } from "./common/router/view-map.ts";
 import { Suspense } from "react";
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router";
 import { getViewPagePath, VIEW_PAGE_KEYS } from "./common/config/pages.runtime";
+import { VIEW_MAP } from "./common/router/view-map.ts";
+import { Layout } from "./pages/index/Layout.tsx";
 
 const LOADING_FALLBACK = <div className="py-20 text-center">Loading...</div>;
 

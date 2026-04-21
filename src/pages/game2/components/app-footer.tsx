@@ -1,6 +1,6 @@
+import { ExternalLinkIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { memo } from "react";
-import { ExternalLinkIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { IconLink } from "@/src/common/components/IconLink";
 
 const SOURCE_ICON = <GitHubLogoIcon width="13" height="13" />;

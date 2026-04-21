@@ -1,7 +1,7 @@
-import * as React from "react";
-import { memo } from "react";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Badge, Card, Flex, Progress, Text } from "@radix-ui/themes";
+import * as React from "react";
+import { memo } from "react";
 import { cn } from "@/src/lib/utils";
 
 interface IStatusBadgeProps {

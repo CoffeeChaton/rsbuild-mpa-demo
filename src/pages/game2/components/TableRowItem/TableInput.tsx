@@ -1,8 +1,8 @@
+import type React from "react";
+import type { IItem } from "../../types/item";
+import { TextField } from "@radix-ui/themes";
 import { useCallback, useMemo } from "react";
 import { cn } from "@/src/lib/utils";
-import { TextField } from "@radix-ui/themes";
-import type React from "react";
-import type { IItem } from "../../types";
 
 export interface TableInputProps {
 	id: keyof IItem;

@@ -1,5 +1,5 @@
-import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import React from "react";
 
 export interface IImportErrorDialogProps {

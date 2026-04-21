@@ -1,5 +1,5 @@
-import { createContext, type PropsWithChildren, use, useEffect, useMemo, useState } from "react";
 import { Theme } from "@radix-ui/themes";
+import { createContext, type PropsWithChildren, use, useEffect, useMemo, useState } from "react";
 
 export type TAppearanceMode = "light" | "dark" | "system";
 export type TAccentColor = "blue" | "crimson" | "grass" | "orange" | "indigo";

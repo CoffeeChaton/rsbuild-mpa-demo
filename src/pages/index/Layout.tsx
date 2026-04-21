@@ -1,10 +1,10 @@
+import { type ReactNode, useEffect } from "react";
 import { useLocation } from "react-router";
 import { getPageInfoByPathname } from "../../common/config/pages.runtime";
-import { type ReactNode, useEffect } from "react";
-// oxlint-disable-next-line import/no-unassigned-import
-import "@radix-ui/themes/styles.css";
 import { Navbar } from "../../common/Navbar";
 import { Toaster } from "../../components/ui/sonner";
+// oxlint-disable-next-line import/no-unassigned-import
+import "@radix-ui/themes/styles.css";
 
 const MetaUpdater: React.FC = () => {
 	const location = useLocation();

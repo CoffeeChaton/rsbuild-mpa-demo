@@ -1,9 +1,10 @@
-// src/pages/game2/hooks/useArsenalTSV.ts
-import { useCallback } from "react";
+import type { IInventory } from "../types/inventory";
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 import { useClipboard } from "foxact/use-clipboard";
-import type { IInventory, IItem, IRowResult } from "../types";
-import { applyConfigEntriesToInventory, formatArsenalTsv, parseArsenalTsv } from "../core/arsenalTsv";
+import { useCallback } from "react";
 import { toast } from "sonner";
+import { applyConfigEntriesToInventory, formatArsenalTsv, parseArsenalTsv } from "../core/arsenalTsv";
 
 export interface IArsenalActions {
 	handleImport: () => Promise<void>;

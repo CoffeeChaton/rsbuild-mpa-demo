@@ -10,8 +10,7 @@
  * - 作為數據的「源頭」，修改此處的 `inventory` 會觸發 `ArsenalContext` 重新計算所有 `rows`。
  */
 
-import * as React from "react";
-import { memo, useCallback, useMemo } from "react";
+import type { IInventory } from "../types/inventory";
 import { ReaderIcon, StackIcon } from "@radix-ui/react-icons";
 import {
 	Card,
@@ -21,11 +20,12 @@ import {
 	TextField,
 	Tooltip,
 } from "@radix-ui/themes";
+import * as React from "react";
+import { memo, useCallback, useMemo } from "react";
 import { BOOK_CONFIG, type TBookKey } from "../config/inventory";
 import { useArsenalInventory } from "../context/ArsenalContext";
-import type { IInventory } from "../types/inventory";
-import { useInventory } from "../hooks/useInventory";
 import { calculateBookStacksValue } from "../core/calculateBookStacksValue";
+import { useInventory } from "../hooks/useInventory";
 
 // 輔助函數：確保輸入值為正數
 const clampPositiveNumber = (value: string): number => {
@@ -78,7 +78,7 @@ export const BasicInfoPanel: React.FC = memo(() => {
 
 	// 更新全域庫存狀態
 	const onUpdate = useCallback((update: Partial<IInventory>) => {
-		setInventory(prev => ({ ...prev, ...update }));
+		setInventory((prev: IInventory) => ({ ...prev, ...update }));
 	}, [setInventory]);
 
 	const { handleStackChange, handleProductionChange } = useInventory(inventory, onUpdate);

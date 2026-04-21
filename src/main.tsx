@@ -1,10 +1,9 @@
-// src/main.tsx
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
-import { getCanonicalRedirect } from "./common/router/getCanonicalRedirect";
-import { applyCanonicalTag } from "./common/router/canonical-seo";
 import { AppThemeProvider } from "./common/context/AppThemeContext";
+import { applyCanonicalTag } from "./common/router/canonical-seo";
+import { getCanonicalRedirect } from "./common/router/getCanonicalRedirect";
 // oxlint-disable-next-line import/no-unassigned-import
 import "./styles/globals.css";
 

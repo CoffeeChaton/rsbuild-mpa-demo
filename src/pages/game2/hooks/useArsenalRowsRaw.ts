@@ -1,8 +1,10 @@
+import type { ILevelData } from "../core/data";
+import type { IInventory } from "../types/inventory";
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 // src/pages/game2/hooks/useArsenalRowsRaw.ts
 import { useDeferredValue, useMemo } from "react";
 import { calcArsenalRows } from "../core/calcArsenalRows";
-import type { IInventory, IItem, IRowResult } from "../types";
-import type { ILevelData } from "../core/data";
 
 export const useArsenalRowsRaw = (
 	items: IItem[],

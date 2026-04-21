@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
 import type { TEditor } from "../type";
+import { useCallback, useState } from "react";
 
 export type UseEditor = (initial?: Partial<TEditor>) => {
 	editor: TEditor,

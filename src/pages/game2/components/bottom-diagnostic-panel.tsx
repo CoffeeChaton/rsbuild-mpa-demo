@@ -11,17 +11,17 @@
  * - 作為頁面最下方的數據匯總區域，呈現所有計算的「結果」。
  */
 
+import * as Collapsible from "@radix-ui/react-collapsible";
 import {
 	ActivityLogIcon,
 	ChevronDownIcon,
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
-import { memo, useCallback, useMemo, useState } from "react";
-import { useIsMobile } from "@/src/lib/use-mobile";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { useHotkeys } from "react-hotkeys-hook";
-import { cn, getModifierKey } from "@/src/lib/utils";
 import { Box, Flex, Text } from "@radix-ui/themes";
+import { memo, useCallback, useMemo, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useIsMobile } from "@/src/lib/use-mobile";
+import { cn, getModifierKey } from "@/src/lib/utils";
 import { useResizableHeight } from "../hooks/UseResizableHeightProps";
 import { DiagnosticPanel } from "./diagnostic-panel";
 

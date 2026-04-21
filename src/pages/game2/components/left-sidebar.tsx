@@ -11,8 +11,7 @@
  * - 修復直向文字 (writing-mode) 時圖標與文字換列的問題。
  */
 
-import { useHotkeys } from "react-hotkeys-hook";
-import { cn, getModifierKey } from "@/src/lib/utils";
+import * as Collapsible from "@radix-ui/react-collapsible";
 import {
 	ChevronDownIcon,
 	ChevronLeftIcon,
@@ -20,10 +19,11 @@ import {
 	ChevronUpIcon,
 	InfoCircledIcon,
 } from "@radix-ui/react-icons";
-import { memo, useEffect, useState } from "react";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { useIsMobile } from "@/src/lib/use-mobile";
 import { Box, Flex, Text } from "@radix-ui/themes";
+import { memo, useEffect, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useIsMobile } from "@/src/lib/use-mobile";
+import { cn, getModifierKey } from "@/src/lib/utils";
 import { BasicInfoPanel } from "./basic-info-panel";
 
 const SIDEBAR_KEY = "sidebarOpen";

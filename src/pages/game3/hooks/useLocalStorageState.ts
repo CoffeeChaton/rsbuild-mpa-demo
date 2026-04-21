@@ -1,6 +1,6 @@
+import type { BaseSchema, InferOutput } from "valibot";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
-import type { BaseSchema, InferOutput } from "valibot";
 import * as v from "valibot";
 
 export function useLocalStorageState<T>(

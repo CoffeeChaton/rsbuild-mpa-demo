@@ -1,5 +1,5 @@
-import { type Context, createContext } from "react";
 import type { TConfigEntry } from "../types/config";
+import { type Context, createContext } from "react";
 
 export interface IConfigActionsContext {
 	/** 切換當前標籤頁使用的配置 */

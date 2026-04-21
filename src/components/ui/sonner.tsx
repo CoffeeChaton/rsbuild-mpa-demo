@@ -1,8 +1,8 @@
-import { Toaster as Sonner, type ToasterProps } from "sonner";
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from "lucide-react";
-import { cn } from "@/src/lib/utils";
+import * as React from "react";
+import { Toaster as Sonner, type ToasterProps } from "sonner";
 import { useAppTheme } from "@/src/common/context/AppThemeContext";
-import type { JSX } from "react/jsx-runtime";
+import { cn } from "@/src/lib/utils";
 
 const SONNER_ICONS = {
 	success: <CircleCheckIcon className="size-4" />,
@@ -18,7 +18,7 @@ const SONNER_TOAST_OPTIONS = {
 	},
 };
 
-const Toaster = ({ className, ...props }: ToasterProps): JSX.Element => {
+const Toaster = ({ className, ...props }: ToasterProps): React.JSX.Element => {
 	const { resolvedAppearance } = useAppTheme();
 
 	return (

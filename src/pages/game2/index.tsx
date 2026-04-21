@@ -1,3 +1,13 @@
+import * as React from "react";
+import { useIsMobile } from "@/src/lib/use-mobile";
+import { ConfigProvider } from "../../common/context/ConfigProvider";
+import { TableArea } from "../game2/components/TableArea";
+import { ArsenalProvider } from "../game2/context/ArsenalContext";
+import { AppFooter } from "./components/app-footer";
+import { AppHeader } from "./components/app-header";
+import { BottomDiagnosticPanel } from "./components/bottom-diagnostic-panel";
+import { LeftSidebar } from "./components/left-sidebar";
+
 /**
  * Game4 頁面主入口 (Arknights Planner V4)
  *
@@ -9,17 +19,6 @@
  *    - 底部：診斷與摘要面板 (BottomDiagnosticPanel > DiagnosticPanel)，顯示最終計算結果 (數據終點)
  * 3. 底部版權欄 (AppFooter)
  */
-
-import * as React from "react";
-import { ConfigProvider } from "../../common/context/ConfigProvider";
-import { AppHeader } from "./components/app-header";
-import { AppFooter } from "./components/app-footer";
-import { ArsenalProvider } from "../game2/context/ArsenalContext";
-import { LeftSidebar } from "./components/left-sidebar";
-import { BottomDiagnosticPanel } from "./components/bottom-diagnostic-panel";
-import { TableArea } from "../game2/components/TableArea";
-import { useIsMobile } from "@/src/lib/use-mobile";
-
 export const App: React.FC = () => {
 	const isMobile = useIsMobile();
 

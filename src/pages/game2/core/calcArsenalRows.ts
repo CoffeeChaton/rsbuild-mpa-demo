@@ -1,10 +1,12 @@
 // src/pages/game2/core/calcArsenalRows.ts
 
-import { calculateArknightsLevel } from "./calculateArknightsLevel";
+import type { IInventory } from "../types/inventory";
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 import type { ILevelData } from "./data";
-import type { IInventory, IItem, IRowResult } from "../types";
-import { calculateModuleCost } from "./moduleCost";
+import { calculateArknightsLevel } from "./calculateArknightsLevel";
 import { calculateBookStacksValue } from "./calculateBookStacksValue";
+import { calculateModuleCost } from "./moduleCost";
 
 const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max);
 const parseNumber = (value: string | number | undefined, fallback: number): number => {

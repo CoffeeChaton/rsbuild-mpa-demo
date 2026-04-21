@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { LV_MAX_MAP, validateLevel } from "./validateItem";
 import { maxLevel } from "@/src/assets/level.json";
+import { LV_MAX_MAP, validateLevel } from "./validateItem";
 
 describe("validateLevel 邏輯測試", () => {
 	describe("配置數據應該正確", () => {

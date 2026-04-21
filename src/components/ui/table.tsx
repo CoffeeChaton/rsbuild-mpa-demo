@@ -1,7 +1,7 @@
+import { ScrollArea } from "@radix-ui/themes";
+import * as React from "react";
 import { type ComponentProps, useMemo } from "react";
 import { cn } from "../../lib/utils";
-import type { JSX } from "react/jsx-runtime";
-import { ScrollArea } from "@radix-ui/themes";
 
 interface TableProps extends ComponentProps<"table"> {
 	/** 容器樣式類名，超出時滾動 */
@@ -10,7 +10,7 @@ interface TableProps extends ComponentProps<"table"> {
 	fixed?: boolean;
 }
 
-function Table({ className, containerClassName, fixed, ...props }: TableProps): JSX.Element {
+function Table({ className, containerClassName, fixed, ...props }: TableProps): React.JSX.Element {
 	return (
 		<ScrollArea
 			data-slot="table-container"
@@ -36,7 +36,7 @@ interface TableHeaderProps extends ComponentProps<"thead"> {
 	sticky?: boolean;
 }
 
-function TableHeader({ className, sticky, ...props }: TableHeaderProps): JSX.Element {
+function TableHeader({ className, sticky, ...props }: TableHeaderProps): React.JSX.Element {
 	return (
 		<thead
 			data-slot="table-header"
@@ -50,7 +50,7 @@ function TableHeader({ className, sticky, ...props }: TableHeaderProps): JSX.Ele
 	);
 }
 
-function TableBody({ className, ...props }: ComponentProps<"tbody">): JSX.Element {
+function TableBody({ className, ...props }: ComponentProps<"tbody">): React.JSX.Element {
 	return (
 		<tbody
 			data-slot="table-body"
@@ -60,7 +60,7 @@ function TableBody({ className, ...props }: ComponentProps<"tbody">): JSX.Elemen
 	);
 }
 
-function TableFooter({ className, ...props }: ComponentProps<"tfoot">): JSX.Element {
+function TableFooter({ className, ...props }: ComponentProps<"tfoot">): React.JSX.Element {
 	return (
 		<tfoot
 			data-slot="table-footer"
@@ -73,7 +73,7 @@ function TableFooter({ className, ...props }: ComponentProps<"tfoot">): JSX.Elem
 	);
 }
 
-function TableRow({ className, ...props }: ComponentProps<"tr">): JSX.Element {
+function TableRow({ className, ...props }: ComponentProps<"tr">): React.JSX.Element {
 	return (
 		<tr
 			data-slot="table-row"
@@ -91,7 +91,7 @@ interface TableHeadProps extends ComponentProps<"th"> {
 	width: number | string;
 }
 
-function TableHead({ className, width, ...props }: TableHeadProps): JSX.Element {
+function TableHead({ className, width, ...props }: TableHeadProps): React.JSX.Element {
 	const headStyle = useMemo(() => ({
 		width,
 		minWidth: width,
@@ -111,7 +111,7 @@ function TableHead({ className, width, ...props }: TableHeadProps): JSX.Element 
 	);
 }
 
-function TableCell({ className, ...props }: ComponentProps<"td">): JSX.Element {
+function TableCell({ className, ...props }: ComponentProps<"td">): React.JSX.Element {
 	return (
 		<td
 			data-slot="table-cell"
@@ -127,7 +127,7 @@ function TableCell({ className, ...props }: ComponentProps<"td">): JSX.Element {
 function TableCaption({
 	className,
 	...props
-}: ComponentProps<"caption">): JSX.Element {
+}: ComponentProps<"caption">): React.JSX.Element {
 	return (
 		<caption
 			data-slot="table-caption"

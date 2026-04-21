@@ -1,14 +1,13 @@
-import React, { useCallback, useMemo } from "react";
-import { Checkbox, Flex, IconButton } from "@radix-ui/themes";
-import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import type { IItem, IRowResult } from "../types";
-import { StatCell } from "./TableRowItem/StatCell";
-import { RowInputs } from "./TableRowItem/RowInputs";
-import { TableCell, TableRow } from "@/src/components/ui/table";
-
-// dnd-kit imports
+import type { IItem } from "../types/item";
+import type { IRowResult } from "../types/rowResult";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { Checkbox, Flex, IconButton } from "@radix-ui/themes";
+import React, { useCallback, useMemo } from "react";
+import { TableCell, TableRow } from "@/src/components/ui/table";
+import { RowInputs } from "./TableRowItem/RowInputs";
+import { StatCell } from "./TableRowItem/StatCell";
 
 interface ITableRowItemProps {
 	item: IItem;

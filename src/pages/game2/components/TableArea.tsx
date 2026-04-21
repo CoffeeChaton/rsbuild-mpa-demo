@@ -1,17 +1,4 @@
-// src/pages/game2/components/TableArea.tsx
-
-import React, { memo, useCallback, useMemo } from "react";
-import { Badge, Button, Flex } from "@radix-ui/themes";
-import { CheckIcon, ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
-import { TableRowItem } from "./TableRowItem";
-import { useTableItems } from "../hooks/useTableItems";
-import type { IItem } from "../types";
-import { TableHeader } from "./TableHeader";
-import { useArsenalActions, useArsenalItems, useArsenalRows } from "../context/ArsenalContext";
-import { Plus } from "lucide-react";
-import { Table, TableBody, TableCell, TableRow } from "@/src/components/ui/table";
-
-// dnd-kit imports
+import type { IItem } from "../types/item";
 import {
 	closestCenter,
 	DndContext,
@@ -27,6 +14,15 @@ import {
 	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { CheckIcon, ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { Badge, Button, Flex } from "@radix-ui/themes";
+import { Plus } from "lucide-react";
+import React, { memo, useCallback, useMemo } from "react";
+import { Table, TableBody, TableCell, TableRow } from "@/src/components/ui/table";
+import { useArsenalActions, useArsenalItems, useArsenalRows } from "../context/ArsenalContext";
+import { useTableItems } from "../hooks/useTableItems";
+import { TableHeader } from "./TableHeader";
+import { TableRowItem } from "./TableRowItem";
 
 /**
  * TableArea

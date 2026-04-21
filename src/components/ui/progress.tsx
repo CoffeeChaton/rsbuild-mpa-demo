@@ -1,14 +1,12 @@
-import * as React from "react";
 import { Progress as ProgressPrimitive } from "radix-ui";
-
+import * as React from "react";
 import { cn } from "@/src/lib/utils";
-import type { JSX } from "react/jsx-runtime";
 
 function Progress({
 	className,
 	value,
 	...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>): JSX.Element {
+}: React.ComponentProps<typeof ProgressPrimitive.Root>): React.JSX.Element {
 	const progressTransformStyle = React.useMemo(
 		() => ({ transform: `translateX(-${100 - (value ?? 0)}%)` }),
 		[value],

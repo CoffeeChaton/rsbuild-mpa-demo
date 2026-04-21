@@ -1,10 +1,10 @@
+import type { IInventory } from "../types/inventory";
 // src/pages/game2/hooks/useArsenalStorage.ts
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as v from "valibot";
 import { STORAGE_KEY } from "../config/constants";
-import type { IInventory, IItem } from "../types";
 import { sanitizeBookStacks } from "../core/calculateBookStacksValue";
-import { StoredItemSchema, toItem } from "../types/item";
+import { type IItem, StoredItemSchema, toItem } from "../types/item";
 
 interface IInventoryStateInput {
 	money?: number | undefined;
