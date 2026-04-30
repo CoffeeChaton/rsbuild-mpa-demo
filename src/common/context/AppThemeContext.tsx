@@ -1,10 +1,11 @@
 import { Theme } from "@radix-ui/themes";
-import { createContext, type PropsWithChildren, use, useEffect, useMemo, useState } from "react";
+import { useLocalStorage } from "foxact/use-local-storage";
+import { createContext, use, useEffect, useMemo, useState } from "react";
 
 export type TAppearanceMode = "light" | "dark" | "system";
 export type TAccentColor = "blue" | "crimson" | "grass" | "orange" | "indigo";
 
-interface IAppThemeContextValue {
+export interface IAppThemeContextValue {
 	accentColor: TAccentColor;
 	appearanceMode: TAppearanceMode;
 	resolvedAppearance: "light" | "dark";
@@ -22,30 +23,14 @@ const getSystemAppearance = (): "light" | "dark" => {
 	return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 };
 
-export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const [appearanceMode, setAppearanceMode] = useState<TAppearanceMode>(() => {
-		if (typeof window === "undefined") return "system";
-		const saved = window.localStorage.getItem(APPEARANCE_KEY);
-		return saved === "light" || saved === "dark" || saved === "system" ? saved : "system";
-	});
-	const [accentColor, setAccentColor] = useState<TAccentColor>(() => {
-		if (typeof window === "undefined") return "indigo";
-		const saved = window.localStorage.getItem(ACCENT_KEY);
-		return saved === "blue" || saved === "crimson" || saved === "grass" || saved === "orange" || saved === "indigo"
-			? saved
-			: "indigo";
-	});
+export interface IAppThemeProviderProps {
+	children: React.ReactNode;
+}
+
+export const AppThemeProvider: React.FC<IAppThemeProviderProps> = ({ children }) => {
+	const [appearanceMode, setAppearanceMode] = useLocalStorage<TAppearanceMode>(APPEARANCE_KEY, "system");
+	const [accentColor, setAccentColor] = useLocalStorage<TAccentColor>(ACCENT_KEY, "indigo");
 	const [systemAppearance, setSystemAppearance] = useState<"light" | "dark">(() => getSystemAppearance());
-
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-		window.localStorage.setItem(APPEARANCE_KEY, appearanceMode);
-	}, [appearanceMode]);
-
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-		window.localStorage.setItem(ACCENT_KEY, accentColor);
-	}, [accentColor]);
 
 	useEffect(() => {
 		const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -54,15 +39,15 @@ export const AppThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		return (): void => media.removeEventListener("change", handleChange);
 	}, []);
 
+	const appearance = appearanceMode === "system" ? systemAppearance : appearanceMode;
+
 	const value = useMemo<IAppThemeContextValue>(() => ({
 		accentColor,
 		appearanceMode,
-		resolvedAppearance: appearanceMode === "system" ? systemAppearance : appearanceMode,
+		resolvedAppearance: appearance,
 		setAccentColor,
 		setAppearanceMode,
-	}), [accentColor, appearanceMode, systemAppearance]);
-
-	const appearance = appearanceMode === "system" ? systemAppearance : appearanceMode;
+	}), [accentColor, appearanceMode, appearance, setAccentColor, setAppearanceMode]);
 
 	return (
 		<AppThemeContext value={value}>

@@ -1,7 +1,6 @@
+import { useLocalStorage } from "foxact/use-local-storage";
 import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
-import * as v from "valibot";
 import { getDefaultPlanContent, isDefaultPlanKey } from "../assets/planLoader";
-import { useLocalStorageState } from "./useLocalStorageState";
 
 export interface IPlanManagerContext {
 	planName: string;
@@ -13,55 +12,70 @@ export interface IPlanManagerContext {
 	deletePlan: (name: string) => void;
 }
 
-const CustomPlansSchema = v.record(v.string(), v.string());
-const PlanNameSchema = v.string();
-
-function omitPlan(plans: Record<string, string>, omittedPlanName: string): Record<string, string> {
-	const nextPlans: Record<string, string> = {};
-
-	for (const [planKey, planContent] of Object.entries(plans)) {
-		if (planKey !== omittedPlanName) {
-			nextPlans[planKey] = planContent;
-		}
-	}
-
-	return nextPlans;
-}
-
 export function usePlanManager(): IPlanManagerContext {
-	const [customPlans, setCustomPlans] = useLocalStorageState<Record<string, string>>("fm_custom_plans", {}, CustomPlansSchema);
-	const [planName, setPlanName] = useLocalStorageState("fm_current_plan_name", "plan_a", PlanNameSchema);
+	const [customPlans, setCustomPlans] = useLocalStorage<Record<string, string>>("fm_custom_plans", {});
+	const [planName, setPlanName] = useLocalStorage<string>("fm_current_plan_name", "plan_a");
 
-	const defaultTsv = isDefaultPlanKey(planName) ? getDefaultPlanContent(planName) : "";
-	const tsvB = customPlans[planName] ?? defaultTsv;
+	const tsvB = useMemo(() => {
+		const name = planName;
+		const plans = customPlans;
+		const defaultTsv = isDefaultPlanKey(name) ? getDefaultPlanContent(name) : "";
+		return plans[name] ?? defaultTsv;
+	}, [customPlans, planName]);
 
-	// 新增：集中處理存檔邏輯，確保正確性
 	const updateCustomPlan = useCallback((title: string, content: string, targetId: string | null) => {
 		const finalTitle = title.trim() || "未命名方案";
-		const renamedPlans = targetId && targetId !== finalTitle ? omitPlan(customPlans, targetId) : customPlans;
-		const nextPlans = {
-			...renamedPlans,
-			[finalTitle]: content,
-		};
+		setCustomPlans(prev => {
+			const current = prev ?? {};
+			const next: Record<string, string> = {};
+			for (const [key, value] of Object.entries(current)) {
+				if (key !== targetId) {
+					next[key] = value;
+				}
+			}
+			next[finalTitle] = content;
+			return next;
+		});
+		setPlanName(finalTitle);
+	}, [setCustomPlans, setPlanName]);
 
-		setCustomPlans(nextPlans);
-		setPlanName(finalTitle); // 存檔後自動切換到該方案
-	}, [customPlans, setCustomPlans, setPlanName]);
-
-	// 新增：刪除邏輯收攏
 	const deletePlan = useCallback((name: string) => {
-		setCustomPlans(omitPlan(customPlans, name));
+		setCustomPlans(prev => {
+			const current = prev ?? {};
+			const next: Record<string, string> = {};
+			for (const [key, value] of Object.entries(current)) {
+				if (key !== name) {
+					next[key] = value;
+				}
+			}
+			return next;
+		});
 		if (planName === name) setPlanName("plan_a");
-	}, [customPlans, setCustomPlans, planName, setPlanName]);
+	}, [planName, setCustomPlans, setPlanName]);
 
-	// 2. 直接在 Hook 內產出穩定的 result 物件
+	const memoizedSetPlanName = useCallback((action: SetStateAction<string>) => {
+		if (typeof action === "function") {
+			setPlanName(prev => action(prev ?? "plan_a"));
+		} else {
+			setPlanName(action);
+		}
+	}, [setPlanName]);
+
+	const memoizedSetCustomPlans = useCallback((action: SetStateAction<Record<string, string>>) => {
+		if (typeof action === "function") {
+			setCustomPlans(prev => action(prev ?? {}));
+		} else {
+			setCustomPlans(action);
+		}
+	}, [setCustomPlans]);
+
 	return useMemo(() => ({
 		planName,
-		setPlanName,
+		setPlanName: memoizedSetPlanName,
 		customPlans,
-		setCustomPlans,
+		setCustomPlans: memoizedSetCustomPlans,
 		tsvB,
 		updateCustomPlan,
 		deletePlan,
-	}), [planName, setPlanName, customPlans, setCustomPlans, tsvB, updateCustomPlan, deletePlan]);
+	}), [planName, memoizedSetPlanName, customPlans, memoizedSetCustomPlans, tsvB, updateCustomPlan, deletePlan]);
 }

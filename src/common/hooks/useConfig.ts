@@ -7,20 +7,12 @@ import {
 	type IConfigActionsContext,
 } from "../context/ConfigContext";
 
-export const useCurrentConfigId: () => string = () => {
-	const context = use(CurrentConfigIdContext);
-	if (context === null) throw new Error("useCurrentConfigId must be used within ConfigProvider");
-	return context;
-};
+function useRequiredContext<T>(context: React.Context<T | null>, name: string): T {
+	const val = use(context);
+	if (val === null) throw new Error(`${name} must be used within ConfigProvider`);
+	return val;
+}
 
-export const useConfigs: () => TConfigEntry[] = () => {
-	const context = use(ConfigsContext);
-	if (context === null) throw new Error("useConfigs must be used within ConfigProvider");
-	return context;
-};
-
-export const useConfigActions: () => IConfigActionsContext = () => {
-	const context = use(ConfigActionsContext);
-	if (context === null) throw new Error("useConfigActions must be used within ConfigProvider");
-	return context;
-};
+export const useCurrentConfigId = (): string => useRequiredContext(CurrentConfigIdContext, "useCurrentConfigId");
+export const useConfigs = (): TConfigEntry[] => useRequiredContext(ConfigsContext, "useConfigs");
+export const useConfigActions = (): IConfigActionsContext => useRequiredContext(ConfigActionsContext, "useConfigActions");
